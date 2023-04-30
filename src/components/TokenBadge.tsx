@@ -48,7 +48,11 @@ const TokenBadge = ({
       {token ? (
         <>
           <ImgWrap>
-            <img src={token.icon} />
+            <img
+              onError={(e: any) => (e.target.src = "/no-token.png")}
+              src={token.icon}
+              alt="Logo"
+            />
           </ImgWrap>
           <Spacer width={6} />
           <Text size="s2" uppercase weight="400">

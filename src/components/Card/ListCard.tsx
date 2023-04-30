@@ -100,7 +100,7 @@ const ListCard = () => {
   const { setForm, form } = useContext(ListContext) as ListContextType;
   const [show, setShow] = useState<boolean>(false);
   const [hasDeadline, setHasDeadline] = useState<boolean>(false);
-  const { account, chainId } = useWeb3React<Web3Provider>();
+  const { account, chainId, library } = useWeb3React<Web3Provider>();
   const { connect } = useContext(ConnectContext) as ConnectContextType;
 
   const navigate = useNavigate();
@@ -366,6 +366,7 @@ const ListCard = () => {
         show={open}
         handleClose={() => setOpen(false)}
         chainId={chainId}
+        provider={library}
       />
 
       <Settings show={openS} handleClose={() => setOpenS(false)} />

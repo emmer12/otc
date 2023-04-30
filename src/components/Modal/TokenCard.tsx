@@ -44,7 +44,11 @@ const TokenCard = ({ symbol, name, icon, address, callback }: IToken) => {
   return (
     <Container align="center" onClick={() => callback(address)}>
       <Avatar>
-        <img src={icon} />
+        <img
+          src={icon}
+          onError={(e: any) => (e.target.src = "/no-token.png")}
+          alt="Logo"
+        />
       </Avatar>
       <Details>
         <Text size="s1" weight="400" color="#170728">

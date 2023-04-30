@@ -5,7 +5,7 @@ import { parseError } from "@/utils";
 import { getDefaultTokens, getLocalTokens, isAddress } from "@/helpers";
 import { BASE_URL } from "@/helpers/apiHelper";
 import { chains } from "@/data";
-
+import { ethers } from "ethers";
 function useThrottle<T>(value: T, interval = 500): T {
   const [throttledValue, setThrottledValue] = useState<T>(value);
   const lastExecuted = useRef<number>(Date.now());
@@ -70,12 +70,21 @@ export const useListFetch = (curChain = "eth") => {
   return { loading, data, query, setQuery, volume };
 };
 
-export const useTokenFetch = (query: string, chainId = 1) => {
+export const useTokenFetch = (query: string, chainId = 1, provider: any) => {
   const tokens = getDefaultTokens(chainId) as any[];
   const [results, setResults] = useState(tokens);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const throttledTerm = useThrottle(query, 100);
+
+  // const walletTokens = async () => {
+  //   const tokenAddresses = await provider.send("eth_accounts", []);
+  //   const signer = provider.getSigner();
+  //   const address = await signer.getAddress();
+  //   console.log(tokenAddresses);
+  // };
+
+  // walletTokens();
 
   let res = useMemo(() => {
     let rs = tokens.filter((token: any) =>
@@ -120,6 +129,55 @@ export const useTokenFetch = (query: string, chainId = 1) => {
     loading,
     error,
   };
+};
+
+export const useGetWalletTokens = (provider: any, address: any) => {
+  const [tokens, setTokens] = useState([]);
+
+  console.log(provider);
+
+  useEffect(() => {
+    async function fetchTokens() {
+      try {
+        const abi = [
+          // ABI for the ERC-20 token standard
+          "function balanceOf(address) view returns (uint)",
+          "function decimals() view returns (uint8)",
+          "function symbol() view returns (string)",
+          "function name() view returns (string)",
+        ];
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+        const balancePromises = await Promise.all(
+          tokens.map((token: any) => {
+            const contract = new ethers.Contract(token.address, abi, signer);
+            return Promise.all([
+              token,
+              contract.balanceOf(address),
+              contract.decimals(),
+              contract.symbol(),
+              contract.name(),
+            ]);
+          })
+        );
+        const balanceData: any = balancePromises.map(
+          ([token, balance, decimals, symbol, name]) => ({
+            ...token,
+            balance: balance.toString(),
+            decimals: decimals.toNumber(),
+            symbol,
+            name,
+          })
+        );
+        setTokens(balanceData);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchTokens();
+  }, [provider, address]);
+
+  return tokens;
 };
 
 const getDecimal = (chainId: any, details: any) => {

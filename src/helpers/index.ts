@@ -1,13 +1,13 @@
 import axios from "axios";
-import {
-  fuji_test_tokens,
-  eth_tokens,
-  goeily_tokens,
-  bsc_tokens,
-  polygon_tokens,
-} from "@/data";
+import { fuji_test_tokens } from "@/data";
 import { ethers } from "ethers";
 import { Blockchain } from "@/types";
+import {
+  goerliTokens,
+  polygonTokens,
+  bnbTokens,
+  ethereumTokens,
+} from "@/constansts/tokens";
 
 export const truncate = (
   fullStr: string,
@@ -42,15 +42,15 @@ export const getDefaultTokens = (chainId = 5) => {
     case 43113:
       return fuji_test_tokens;
     case 1:
-      return eth_tokens;
+      return ethereumTokens;
     case 5:
-      return goeily_tokens;
+      return goerliTokens;
     case 56:
-      return bsc_tokens;
+      return bnbTokens;
     case 137:
-      return polygon_tokens;
+      return polygonTokens;
     default:
-      return eth_tokens;
+      return ethereumTokens;
       break;
   }
 };

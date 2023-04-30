@@ -3,6 +3,7 @@ import { Widget } from "@kyberswap/widgets";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { Flex, KWidgetWrapper } from "@/components";
+import { useGetWalletTokens } from "@/hooks/customHooks";
 
 const theme: any = {
   primary: "#170728",
@@ -63,8 +64,10 @@ const defaultTokenOut = {
 const Kybar = () => {
   const context = useWeb3React<Web3Provider>();
   const { library, chainId, account } = context;
+  // const tokens = useGetWalletTokens(library, account);
   return (
     <KWidgetWrapper>
+      {/* {JSON.stringify(tokens)} */}
       <Flex justify="center">
         <Widget
           client="vetMe"
