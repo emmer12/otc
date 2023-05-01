@@ -252,7 +252,7 @@ export const claimGeorli = async (provider: any, address: any) => {
 };
 
 Moralis.start({
-  apiKey: "3WYBbAgRqvuDvm55bFeWbzkTmM6RG40Z7qtiL2ZQFnelRUSM6UqBUEjwsfLnZsQ7",
+  apiKey: import.meta.env.VITE_MORALIS_API_KEY,
 });
 const getPairToken = async (tokenOut: string, nToken: string) => {
   try {

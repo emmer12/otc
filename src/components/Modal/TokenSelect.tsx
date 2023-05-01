@@ -153,6 +153,7 @@ interface TokenSelect {
   show: boolean;
   chainId: number | undefined;
   provider: any;
+  w_tokens: any[];
 }
 
 const TokenSelect = ({
@@ -160,12 +161,12 @@ const TokenSelect = ({
   handleClose,
   handleSelected,
   chainId,
-  provider,
+  w_tokens,
 }: TokenSelect) => {
   // const [tokens, setTokens] = useState(getD);
   const [sTokens, setSTokens] = useState<any[]>([]);
   const [query, setQuery] = useState<string>("");
-  const { loading, error, results } = useTokenFetch(query, chainId, provider);
+  const { loading, error, results } = useTokenFetch(query, chainId, w_tokens);
 
   const handleSearch = (e: any) => {
     const val = e.target.value;

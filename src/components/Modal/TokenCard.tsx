@@ -1,6 +1,8 @@
 import React from "react";
 import { Flex, Text } from "..";
 import styled, { css } from "styled-components";
+import { toHumanReadable } from "@/utils/BigNumber";
+import { toEther } from "@/helpers";
 
 const Container = styled(Flex)`
   gap: 13px;
@@ -25,12 +27,18 @@ const Avatar = styled.div`
   }
 `;
 const Details = styled.div``;
+const Balance = styled.div`
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.7);
+`;
 
 interface IToken {
   symbol: string;
   name?: string;
   icon?: string;
   address: string;
+  balance?: any;
+  decimal_place?: any;
   callback: (arg: string) => void;
 }
 {
@@ -40,25 +48,44 @@ interface IToken {
   /* name == fullTitle  */
 }
 
-const TokenCard = ({ symbol, name, icon, address, callback }: IToken) => {
+const TokenCard = ({
+  symbol,
+  name,
+  icon,
+  address,
+  balance,
+  decimal_place,
+  callback,
+}: IToken) => {
   return (
-    <Container align="center" onClick={() => callback(address)}>
-      <Avatar>
-        <img
-          src={icon}
-          onError={(e: any) => (e.target.src = "/no-token.png")}
-          alt="Logo"
-        />
-      </Avatar>
-      <Details>
-        <Text size="s1" weight="400" color="#170728">
-          {symbol}
-        </Text>
-        <Text size="tiny" weight="400" color="#453953">
-          {name}
-        </Text>
-      </Details>
-    </Container>
+    <Flex
+      justify="space-between"
+      align="center"
+      onClick={() => callback(address)}
+    >
+      <Container align="center">
+        <Avatar>
+          {icon ? (
+            <img
+              src={icon}
+              onError={(e: any) => (e.target.src = "/no-token.png")}
+              alt="Logo"
+            />
+          ) : (
+            <img src={"/no-token.png"} alt="Logo" />
+          )}
+        </Avatar>
+        <Details>
+          <Text size="s1" weight="400" color="#170728">
+            {symbol}
+          </Text>
+          <Text size="tiny" weight="400" color="#453953">
+            {name}
+          </Text>
+        </Details>
+      </Container>
+      {balance && <Balance>{toEther(balance, decimal_place)}</Balance>}
+    </Flex>
   );
 };
 

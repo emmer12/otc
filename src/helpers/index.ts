@@ -132,3 +132,6 @@ export const getDailyVolume = () => {
 export const computeUsdPrice = (usd: any, amount: number) => {
   return (usd * amount).toFixed(5);
 };
+
+export const toEther = (weiAmount: string, decimal_place: any) =>
+  ethers.utils.formatUnits(weiAmount, decimal_place);

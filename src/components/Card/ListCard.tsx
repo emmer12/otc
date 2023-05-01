@@ -35,6 +35,7 @@ import { ConnectContext, ConnectContextType } from "@/context/ConnectContext";
 import Toggle from "../Toggle";
 import { parseError } from "@/utils";
 import { getChainContract, getDefaultTokens, computeUsdPrice } from "@/helpers";
+import { useGetWalletTokens } from "@/hooks/customHooks";
 
 // import { hooks, metaMask } from "@/connector/metaMask";
 
@@ -102,7 +103,7 @@ const ListCard = () => {
   const [hasDeadline, setHasDeadline] = useState<boolean>(false);
   const { account, chainId, library } = useWeb3React<Web3Provider>();
   const { connect } = useContext(ConnectContext) as ConnectContextType;
-
+  const w_tokens = useGetWalletTokens(account, chainId);
   const navigate = useNavigate();
 
   const handleSelect = (action: "giving" | "getting") => {
@@ -366,9 +367,9 @@ const ListCard = () => {
         show={open}
         handleClose={() => setOpen(false)}
         chainId={chainId}
-        provider={library}
+        provider={account}
+        w_tokens={w_tokens}
       />
-
       <Settings show={openS} handleClose={() => setOpenS(false)} />
 
       <ConnectModal

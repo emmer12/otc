@@ -50,7 +50,7 @@ const TokenBadge = ({
           <ImgWrap>
             <img
               onError={(e: any) => (e.target.src = "/no-token.png")}
-              src={token.icon}
+              src={token.icon || "/no-token.png"}
               alt="Logo"
             />
           </ImgWrap>
