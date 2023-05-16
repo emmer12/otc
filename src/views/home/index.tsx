@@ -123,11 +123,13 @@ const HomePage = () => {
         </HomeHeader>
         <HomeBody>
           {!loading && (
-            <Flex style={{ marginBottom: "24px" }} align="center">
+            <Flex wrap style={{ marginBottom: "24px" }} align="center">
               <Text as="h3" size="h3">
-                Otc Pairs
+                Market orders
               </Text>
-              <Volume>24H volume: ${volume.toFixed(6)}</Volume>
+              <Volume>24H volume: ${volume.hour.toFixed(2)}</Volume>
+              <Volume>Weekly volume: ${volume.weekly.toFixed(2)}</Volume>
+              <Volume>Month volume: ${volume.monthly.toFixed(2)}</Volume>
             </Flex>
           )}
 

@@ -6,6 +6,7 @@ import { getDefaultTokens, getLocalTokens, isAddress } from "@/helpers";
 import { BASE_URL } from "@/helpers/apiHelper";
 import { chains } from "@/data";
 import Moralis from "moralis";
+
 function useThrottle<T>(value: T, interval = 500): T {
   const [throttledValue, setThrottledValue] = useState<T>(value);
   const lastExecuted = useRef<number>(Date.now());
@@ -31,7 +32,15 @@ export const useListFetch = (curChain = "eth") => {
   const [loading, setStatus] = useState(true);
   const [query, setQuery] = useState("");
   const [data, setData] = useState<ListI[]>([]);
-  const [volume, setVolume] = useState<number>(0);
+  const [volume, setVolume] = useState<{
+    hour: number;
+    weekly: number;
+    monthly: number;
+  }>({
+    hour: 0,
+    weekly: 0,
+    monthly: 0,
+  });
 
   const chain = chains.find((chain) => chain.name.toLowerCase() == curChain);
   useEffect(() => {
@@ -45,9 +54,18 @@ export const useListFetch = (curChain = "eth") => {
         cancelToken: source.token,
       })
       .then((response) => {
-        const { listings: data, volume } = response.data;
+        const {
+          listings: data,
+          volume,
+          weeklyVolume,
+          monthlyVolume,
+        } = response.data;
         setData(data);
-        setVolume(volume);
+        setVolume({
+          hour: volume,
+          weekly: weeklyVolume,
+          monthly: monthlyVolume,
+        });
       })
       .catch((error: any) => {
         if (axios.isCancel(error)) {

@@ -190,7 +190,11 @@ const Trans = () => {
       parseSuccess("Swap Successful");
     } catch (err: any) {
       console.log(err);
-      parseError(err.reason || err.message);
+      if (error.status && error.status == 401) {
+        setStatus(3);
+      } else {
+        parseError(err.reason || err.message);
+      }
     } finally {
       setApproving(false);
     }

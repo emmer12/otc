@@ -84,7 +84,9 @@ const TokenCard = ({
           </Text>
         </Details>
       </Container>
-      {balance && <Balance>{toEther(balance, decimal_place)}</Balance>}
+      {balance && (
+        <Balance>{Number(toEther(balance, decimal_place)).toFixed(2)}</Balance>
+      )}
     </Flex>
   );
 };
