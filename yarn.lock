@@ -2166,6 +2166,17 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.3.tgz#781d360c282436494b32fe7d9f7f8e64b3118aa3"
   integrity sha512-fbF6oTd4sGGy0xjHPKAt+eS2CrxJ3+6gQ3FGcBoIJR2TLAyCkCyI8JqZNy+FeON0AhVgNJoUumVoZQjBFUqHkw==
 
+"@vetme/widgets@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@vetme/widgets/-/widgets-1.0.4.tgz#66574e7d2542731498fda8ca0e6fdfa8659052e4"
+  integrity sha512-lmFpgVHTxOkct6U0dmqmZJTzPfUzbSdmgakMzipJy30QdYFpB7uO2S/9gimYqt8byIe75wRgZNj8I60WGaMLSg==
+  dependencies:
+    ethers "5.7.2"
+    react "^16.8.0 || 17.x"
+    react-dom "^16.8.0 || 17.x"
+    react-popper "^2.3.0"
+    styled-components "^5.3.10"
+
 "@vitejs/plugin-react@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-react/-/plugin-react-2.2.0.tgz#1b9f63b8b6bc3f56258d20cd19b33f5cc761ce6e"

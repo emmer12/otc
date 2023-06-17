@@ -738,12 +738,12 @@ export const ErrorMsg = styled.div`
 `;
 
 export const KWidgetWrapper = styled.div`
-  button{
-    svg{
-      stroke:#fff !important;
+  button {
+    svg {
+      /* stroke:#fff !important; */
     }
   }
-  .close{
+  /* .close{
    transform:translateX(calc(100% + 20px)) !important;
-  }
-`
+  } */
+`;

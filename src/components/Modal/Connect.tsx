@@ -134,6 +134,13 @@ const Connect = ({ connect, handleClose, show }: IConnect) => {
                 onClick={() => connect(ConnectorNames["Injected"])}
               >
                 <img src="/images/icons/metamask.png" />
+                <Spacer width={4} />
+                <img
+                  height="20"
+                  width="20"
+                  src="/images/icons/okx_wallet_icon_100.png"
+                />
+                <Spacer width={6} />
                 Injected
               </ConnectButton>
               <ConnectButton

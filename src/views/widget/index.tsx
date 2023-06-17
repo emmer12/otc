@@ -1,5 +1,5 @@
 import React from "react";
-import { Widget } from "widgets10";
+import { Widget } from "@vetme/widgets";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { Flex, KWidgetWrapper } from "@/components";
