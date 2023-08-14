@@ -55,7 +55,7 @@ const TokenBadge = ({
             />
           </ImgWrap>
           <Spacer width={6} />
-          <Text size="s2" uppercase weight="400">
+          <Text size="s2" weight="400">
             {token.symbol}
           </Text>
           <Spacer width={6} />
@@ -63,7 +63,7 @@ const TokenBadge = ({
         </>
       ) : (
         <>
-          <Text size="s2" uppercase weight="400">
+          <Text size="s2" weight="400">
             Select Token
           </Text>
           <Spacer width={6} />

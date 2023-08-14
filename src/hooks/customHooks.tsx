@@ -36,10 +36,12 @@ export const useListFetch = (curChain = "eth") => {
     hour: number;
     weekly: number;
     monthly: number;
+    allTime: number;
   }>({
     hour: 0,
     weekly: 0,
     monthly: 0,
+    allTime: 0,
   });
 
   const chain = chains.find((chain) => chain.name.toLowerCase() == curChain);
@@ -59,12 +61,14 @@ export const useListFetch = (curChain = "eth") => {
           volume,
           weeklyVolume,
           monthlyVolume,
+          allTimeVolume,
         } = response.data;
         setData(data);
         setVolume({
           hour: volume,
           weekly: weeklyVolume,
           monthly: monthlyVolume,
+          allTime: allTimeVolume,
         });
       })
       .catch((error: any) => {

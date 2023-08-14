@@ -117,3 +117,19 @@ export const getDecimal = (decimal: number | undefined) => {
       break;
   }
 };
+
+export const getScanLink = (chainId: any, hash: string) => {
+  switch (chainId) {
+    case 1:
+      return `https://etherscan.io/tx/${hash}`;
+    case 5:
+      return `https://goerli.etherscan.io/tx/${hash}`;
+    case 56:
+      return `https://bscscan.com/tx/${hash}`;
+    case 137:
+      return `https://polygonscan.com/tx/${hash}`;
+    default:
+      return `https://etherscan.io/tx/${hash}`;
+      break;
+  }
+};

@@ -176,20 +176,35 @@ const Trans = () => {
         account
       );
 
-      const data = {
-        buyerSignature: signature,
-        sellerSignature: listing?.signature,
-        id: listing?._id,
-        account,
-        transactionHash: response.transactionHash,
-        amount: listing?.is_friction ? form.amount_in : listing?.amount_out,
-      };
+      let hash;
 
-      await Api.upDateListComp(data);
-      setStatus(3);
-      parseSuccess("Swap Successful");
+      const interval = setInterval(async () => {
+        const { data } = await Api.checkRelayStatus(response.taskId);
+
+        if (data.task.taskState == "ExecSuccess") {
+          hash = data.task.transactionHash;
+
+          const datas = {
+            buyerSignature: signature,
+            sellerSignature: listing?.signature,
+            id: listing?._id,
+            account,
+            transactionHash: hash,
+            amount: listing?.is_friction ? form.amount_in : listing?.amount_out,
+          };
+
+          await Api.upDateListComp(datas);
+          setStatus(3);
+          parseSuccess("Swap Successful");
+          clearInterval(interval);
+        } else if (data.task.taskState == "Cancelled") {
+          clearInterval(interval);
+          parseError("Swap Not successful. Please try again or contact us");
+        }
+      }, 5000);
+
+      // transactionHash: response.transactionHash || response.taskId,
     } catch (err: any) {
-      console.log(err);
       if (error.status && error.status == 401) {
         setStatus(3);
       } else {

@@ -130,6 +130,7 @@ const HomePage = () => {
               <Volume>24H volume: ${volume.hour.toFixed(2)}</Volume>
               <Volume>Weekly volume: ${volume.weekly.toFixed(2)}</Volume>
               <Volume>Month volume: ${volume.monthly.toFixed(2)}</Volume>
+              <Volume>All time volume: ${volume.allTime.toFixed(2)}</Volume>
             </Flex>
           )}
 
