@@ -7,6 +7,7 @@ import {
   polygonTokens,
   bnbTokens,
   ethereumTokens,
+  arbitrumTokens,
 } from "@/constansts/tokens";
 
 export const truncate = (
@@ -49,11 +50,14 @@ export const getDefaultTokens = (chainId = 5) => {
       return bnbTokens;
     case 137:
       return polygonTokens;
+    case 42161:
+      return arbitrumTokens;
     default:
       return ethereumTokens;
       break;
   }
 };
+
 export const getLocalTokens = () => {
   return JSON.parse(localStorage.getItem("localTokens") as string);
 };
@@ -79,6 +83,8 @@ export const getChainContract = (chainId: number | undefined) => {
   switch (chainId) {
     case 43113:
       return import.meta.env.VITE_CONTRACT_ADDRESS_FUJI;
+    case 42161:
+      return import.meta.env.VITE_CONTRACT_ADDRESS_ARBITRUM;
     case 1:
       return import.meta.env.VITE_CONTRACT_ADDRESS_ETH_MAINNET;
     case 5:

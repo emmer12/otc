@@ -269,4 +269,10 @@ export const chains = [
     name: "Goerli",
     logoUrl: "/images/blockchains/ethereum.png",
   },
+  {
+    chainId: 42161,
+    chainIdHEx: "0xA4B1",
+    name: "Arbitrum",
+    logoUrl: "/images/blockchains/arbitrum.png",
+  },
 ];

@@ -232,11 +232,12 @@ export const Transaction = styled.div`
       }
     }
   }
-
-  td {
-    &.right {
-      text-align: end;
-    } */
+*/
+    td {
+      &.right {
+        text-align: end;
+      }
+    }
   }
 `;
 
