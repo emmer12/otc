@@ -242,7 +242,10 @@ const Navigation = ({
               </Notify>
               <Bar
                 className={open ? "opened" : ""}
-                onClick={() => setOpen(!open)}
+                onClick={() => {
+                  setOpen(!open);
+                  setCMenu(false);
+                }}
               >
                 <div></div>
               </Bar>
@@ -282,17 +285,44 @@ const Navigation = ({
                   )}
                 </Center>
                 <Spacer height={12} />
+                <Button
+                  onClick={() =>
+                    setCMenu((prev) => {
+                      setOpen(false);
+                      return !prev;
+                    })
+                  }
+                  className="secondary"
+                  style={{ margin: "auto" }}
+                >
+                  {currentChain()}
+                  <AngleDown />
+                </Button>
+                <Spacer height={12} />
 
-                <Center>
+                {/* <Center>
                   <ActionBtn>
                     Visit App{" "}
                     <div>
                       <ArrowRight />
                     </div>
                   </ActionBtn>
-                </Center>
+                </Center> */}
               </MMenuInner>
             </MobileMenu>
+            <DropDownCon
+              style={{ top: "80px" }}
+              className={cMenu ? "active" : ""}
+            >
+              {allChains.map((chain, i) => (
+                <ListItem key={i} onClick={() => handleSetChain(chain)}>
+                  <div className="icon">
+                    <img src={chain.logoUrl} />
+                  </div>
+                  {chain.name}
+                </ListItem>
+              ))}
+            </DropDownCon>
           </NavWrapper>
         </div>
         {open && <Overlay />}

@@ -179,6 +179,7 @@ const Trans = () => {
       let hash;
 
       const interval = setInterval(async () => {
+        setApproving(true);
         const { data } = await Api.checkRelayStatus(response.taskId);
 
         if (data.task.taskState == "ExecSuccess") {
@@ -196,8 +197,11 @@ const Trans = () => {
           await Api.upDateListComp(datas);
           setStatus(3);
           parseSuccess("Swap Successful");
+          setApproving(false);
+
           clearInterval(interval);
         } else if (data.task.taskState == "Cancelled") {
+          setApproving(false);
           clearInterval(interval);
           parseError("Swap Not successful. Please try again or contact us");
         }
@@ -211,7 +215,7 @@ const Trans = () => {
         parseError(err.reason || err.message);
       }
     } finally {
-      setApproving(false);
+      // setApproving(false);
     }
   };
 
