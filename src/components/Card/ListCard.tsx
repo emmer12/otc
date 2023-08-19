@@ -70,6 +70,17 @@ const Body = styled.div`
 const IconWrap = styled.div``;
 const SwapCon = styled.div`
   margin-left: 38px;
+  cursor: pointer;
+
+  svg {
+    transition: 0.4s;
+  }
+
+  &:hover {
+    svg {
+      fill: #befecd;
+    }
+  }
 `;
 
 const UsdVal = styled.span`
@@ -132,6 +143,18 @@ const ListCard = () => {
   const getByAddress = (address: string) => {
     const tokens = getDefaultTokens(chainId);
     // return tokens && tokens.find((token: any) => token?.address === address);
+  };
+
+  const handleSwap = () => {
+    setForm((init: any) => {
+      return {
+        ...init,
+        amount_in: init.amount_out,
+        amount_out: init.amount_in,
+      };
+    });
+    setGive(get);
+    setGet(give);
   };
 
   const handleChange = (e: any) => {
@@ -197,7 +220,7 @@ const ListCard = () => {
     const dGive =
       tokens && tokens.find((token: any) => token.symbol === "WETH");
     const dGet =
-      tokens && tokens.find((token: any) => token.symbol === "VETME");
+      tokens && tokens.find((token: any) => token.symbol === "VetMe");
 
     setGive(dGive);
     setGet(dGet);
@@ -264,10 +287,10 @@ const ListCard = () => {
 
           <Flex align="center" justify="space-between">
             <div />
-            <SwapCon>
+            <SwapCon onClick={handleSwap}>
               <Swap />
             </SwapCon>
-            <div onClick={() => setOpenS(true)}>
+            <div onClick={() => setOpenS(true)} style={{ cursor: "pointer" }}>
               <SettingsIcon2 />
             </div>
           </Flex>

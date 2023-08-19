@@ -312,7 +312,7 @@ const Navigation = ({
             </MobileMenu>
             <DropDownCon
               style={{ top: "80px" }}
-              className={cMenu ? "active" : ""}
+              className={cMenu ? "active mobile" : "mobile"}
             >
               {allChains.map((chain, i) => (
                 <ListItem key={i} onClick={() => handleSetChain(chain)}>

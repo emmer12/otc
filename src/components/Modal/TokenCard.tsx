@@ -8,6 +8,7 @@ const Container = styled(Flex)`
   gap: 13px;
   margin: 15px 0px;
   cursor: pointer;
+  flex: 1;
 `;
 
 const Avatar = styled.div`
