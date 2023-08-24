@@ -350,9 +350,14 @@ const SwapGrid = ({
 
                 {(list.status as number) < 3 && (
                   <Action2>
-                    <ActionBtn className="sm" onClick={() => setEditOpen(true)}>
-                      Edit
-                    </ActionBtn>
+                    <Flex justify="space-between">
+                      <ActionBtn
+                        className="sm"
+                        onClick={() => setEditOpen(true)}
+                      >
+                        Edit
+                      </ActionBtn>
+                    </Flex>
                   </Action2>
                 )}
               </Flex>

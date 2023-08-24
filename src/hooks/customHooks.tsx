@@ -5,6 +5,7 @@ import { parseError } from "@/utils";
 import { getDefaultTokens, getLocalTokens, isAddress } from "@/helpers";
 import { BASE_URL } from "@/helpers/apiHelper";
 import { chains } from "@/data";
+import Moralis from "moralis";
 
 function useThrottle<T>(value: T, interval = 500): T {
   const [throttledValue, setThrottledValue] = useState<T>(value);
@@ -31,7 +32,17 @@ export const useListFetch = (curChain = "eth") => {
   const [loading, setStatus] = useState(true);
   const [query, setQuery] = useState("");
   const [data, setData] = useState<ListI[]>([]);
-  const [volume, setVolume] = useState<number>(0);
+  const [volume, setVolume] = useState<{
+    hour: number;
+    weekly: number;
+    monthly: number;
+    allTime: number;
+  }>({
+    hour: 0,
+    weekly: 0,
+    monthly: 0,
+    allTime: 0,
+  });
 
   const chain = chains.find((chain) => chain.name.toLowerCase() == curChain);
   useEffect(() => {
@@ -45,9 +56,20 @@ export const useListFetch = (curChain = "eth") => {
         cancelToken: source.token,
       })
       .then((response) => {
-        const { listings: data, volume } = response.data;
+        const {
+          listings: data,
+          volume,
+          weeklyVolume,
+          monthlyVolume,
+          allTimeVolume,
+        } = response.data;
         setData(data);
-        setVolume(volume);
+        setVolume({
+          hour: volume,
+          weekly: weeklyVolume,
+          monthly: monthlyVolume,
+          allTime: allTimeVolume,
+        });
       })
       .catch((error: any) => {
         if (axios.isCancel(error)) {
@@ -70,12 +92,31 @@ export const useListFetch = (curChain = "eth") => {
   return { loading, data, query, setQuery, volume };
 };
 
-export const useTokenFetch = (query: string, chainId = 1) => {
-  const tokens = getDefaultTokens(chainId) as any[];
-  const [results, setResults] = useState(tokens);
+export const useTokenFetch = (query: string, chainId = 1, w_tokens: any) => {
+  let tokens = w_tokens.concat(getDefaultTokens(chainId)) as any[];
+  tokens = tokens.reduce((acc, curr) => {
+    if (!acc.find((item: any) => item.address == curr.address)) {
+      acc.push(curr);
+    }
+    return acc;
+  }, []);
+  const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const throttledTerm = useThrottle(query, 100);
+
+  useEffect(() => {
+    setResults(tokens);
+  }, [w_tokens]);
+
+  // const walletTokens = async () => {
+  //   const tokenAddresses = await provider.send("eth_accounts", []);
+  //   const signer = provider.getSigner();
+  //   const address = await signer.getAddress();
+  //   console.log(tokenAddresses);
+  // };
+
+  // walletTokens();
 
   let res = useMemo(() => {
     let rs = tokens.filter((token: any) =>
@@ -120,6 +161,50 @@ export const useTokenFetch = (query: string, chainId = 1) => {
     loading,
     error,
   };
+};
+
+export const useGetWalletTokens = (
+  address: any,
+  chainId: number | undefined
+) => {
+  const [tokens, setTokens] = useState<any>([]);
+
+  useEffect(() => {
+    async function fetchTokens() {
+      if (address) {
+        try {
+          if (!Moralis.Core.isStarted) {
+            await Moralis.start({
+              apiKey: import.meta.env.VITE_MORALIS_API_KEY,
+            });
+          }
+          const response = await Moralis.EvmApi.token.getWalletTokenBalances({
+            chain: chainId,
+            tokenAddresses: [],
+            address: address,
+          });
+
+          let tokenRes = response.raw.map((token) => {
+            return {
+              chainId: chainId,
+              address: token.token_address,
+              symbol: token.symbol,
+              name: token.name,
+              decimal_place: token.decimals,
+              icon: token.logo,
+              balance: token.balance,
+            };
+          });
+          setTokens(tokenRes);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+    fetchTokens();
+  }, [address]);
+
+  return tokens;
 };
 
 const getDecimal = (chainId: any, details: any) => {

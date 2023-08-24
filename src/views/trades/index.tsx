@@ -34,7 +34,7 @@ import {
 } from "./styles";
 import { useParams, useNavigate } from "react-router-dom";
 import { ListI } from "@/types";
-import { truncate } from "@/helpers";
+import { checkRelay, truncate } from "@/helpers";
 import {
   approveToken,
   getTokenAllowance,
@@ -176,23 +176,64 @@ const Trans = () => {
         account
       );
 
-      const data = {
-        buyerSignature: signature,
-        sellerSignature: listing?.signature,
-        id: listing?._id,
-        account,
-        transactionHash: response.transactionHash,
-        amount: listing?.is_friction ? form.amount_in : listing?.amount_out,
-      };
+      let hash;
+      const hasRelay = checkRelay(chainId);
 
-      await Api.upDateListComp(data);
-      setStatus(3);
-      parseSuccess("Swap Successful");
+      if (hasRelay) {
+        const interval = setInterval(async () => {
+          setApproving(true);
+          const { data } = await Api.checkRelayStatus(response.taskId);
+
+          if (data.task.taskState == "ExecSuccess") {
+            hash = data.task.transactionHash;
+
+            const datas = {
+              buyerSignature: signature,
+              sellerSignature: listing?.signature,
+              id: listing?._id,
+              account,
+              transactionHash: hash,
+              amount: listing?.is_friction
+                ? form.amount_in
+                : listing?.amount_out,
+            };
+
+            await Api.upDateListComp(datas);
+            setStatus(3);
+            parseSuccess("Swap Successful");
+            setApproving(false);
+
+            clearInterval(interval);
+          } else if (data.task.taskState == "Cancelled") {
+            setApproving(false);
+            clearInterval(interval);
+            parseError("Swap Not successful. Please try again or contact us");
+          }
+        }, 5000);
+      } else {
+        hash = response.transactionHash;
+        const datas = {
+          buyerSignature: signature,
+          sellerSignature: listing?.signature,
+          id: listing?._id,
+          account,
+          transactionHash: hash,
+          amount: listing?.is_friction ? form.amount_in : listing?.amount_out,
+        };
+
+        await Api.upDateListComp(datas);
+        setApproving(false);
+      }
+
+      // transactionHash: response.transactionHash || response.taskId,
     } catch (err: any) {
-      console.log(err);
-      parseError(err.reason || err.message);
+      if (error.status && error.status == 401) {
+        setStatus(3);
+      } else {
+        parseError(err.reason || err.message);
+      }
     } finally {
-      setApproving(false);
+      // setApproving(false);
     }
   };
 

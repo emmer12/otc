@@ -1,7 +1,7 @@
 import { Blockchain } from "@/types";
 import { readOnlyProvider } from "@/utils/ethersService";
 import { Web3Provider } from "@ethersproject/providers";
-import { Contract, ContractInterface } from "ethers";
+import { Contract, ContractInterface, ethers } from "ethers";
 import EscrowOtcAbi from "../contracts/escrowOtcApi.json";
 import ERC20Abi from "../contracts/erc20Abi.json";
 import WethAbi from "../contracts/wethAbi.json";
@@ -14,9 +14,11 @@ import { getDecimal, listSign, toBigNumber } from "@/utils";
 import { utils } from "ethers";
 import BigNumber from "bignumber.js";
 import Moralis from "moralis";
-import { pairs } from "@/data";
+import { chains, pairs } from "@/data";
 import axios from "axios";
-import { getChainContract } from ".";
+import { checkRelay, getChainContract } from ".";
+import { GelatoRelay } from "@gelatonetwork/relay-sdk";
+const relay = new GelatoRelay();
 
 const getContract = (
   abi: ContractInterface,
@@ -115,22 +117,6 @@ export const matchTokenOrder = async (
   try {
     const chain: Blockchain = get_blockchain_from_chainId(chainId);
     const tokenOut = value.token_out; // "0xe7ef051c6ea1026a70967e8f04da143c67fa4e1f";
-    // let pair;
-
-    // for (let i = 0; i < pairs.length; i++) {
-    //   pair = await getPairToken(tokenOut, pairs[i].address);
-    //   if (pair) {
-    //     break;
-    //   }
-
-    //   if (i == pairs.length - 1) {
-    //     throw new Error("Token Pairs not found");
-    //   }
-    // }
-
-    // pair =
-    // import.meta.env.VITE_WETH_ADDRESS ||
-    // "0xd00ae08403B9bbb9124bB305C09058E32C39A48c";
 
     const sellerValue = {
       signatory: value.signatory,
@@ -173,21 +159,56 @@ export const matchTokenOrder = async (
 
     const signer = contract.connect(provider?.getSigner());
 
-    // console.log(gasLimit);
+    // value.nonce_friction,
 
     // return Promise.reject("error");
+    const hasRelay = checkRelay(chainId)
 
-    const trxn = await signer.matchSupportFraction(
-      sell.order,
-      sell.signature,
-      buy.order,
-      buy.signature
-      // {
-      //   gasLimit: 200000,
-      // }
-    );
-    const transaction = await trxn.wait();
-    return Promise.resolve(transaction);
+    if (hasRelay) {
+      const { data } = await contract.populateTransaction.matchSupportFraction(
+        sell.order,
+        sell.signature,
+        buy.order,
+        buy.signature
+      );
+      // Populate a relay request
+      const request: any = {
+        chainId: provider.network.chainId,
+        target: getChainContract(chainId),
+        data: data,
+        user: account,
+        // userNonce: ethers.BigNumber.from(5),
+      };
+      const relayResponse = await relay.sponsoredCallERC2771(
+        request,
+        provider,
+        [5, 97, 43113].includes(chainId as number)
+          ? import.meta.env.VITE_GELATO_RELAY_API_KEY_TESTNET
+          : import.meta.env.VITE_GELATO_RELAY_API_KEY_MAINNET
+      );
+      // const transaction = await request;
+      return Promise.resolve(relayResponse)
+    } else {
+      const trxn = await signer.matchSupportFraction(
+        sell.order,
+        sell.signature,
+        buy.order,
+        buy.signature
+      );
+      const transaction = await trxn.wait();
+
+      console.log(transaction)
+
+      return transaction;
+
+    }
+
+
+    // {
+    //   gasLimit: 200000,
+    // }
+
+    ;
   } catch (error) {
     return Promise.reject(error);
   }
@@ -252,7 +273,7 @@ export const claimGeorli = async (provider: any, address: any) => {
 };
 
 Moralis.start({
-  apiKey: "3WYBbAgRqvuDvm55bFeWbzkTmM6RG40Z7qtiL2ZQFnelRUSM6UqBUEjwsfLnZsQ7",
+  apiKey: import.meta.env.VITE_MORALIS_API_KEY,
 });
 const getPairToken = async (tokenOut: string, nToken: string) => {
   try {

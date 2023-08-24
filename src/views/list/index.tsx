@@ -104,7 +104,7 @@ const Trans = () => {
       account
     );
     setAllowance(fromBigNumber(allowance.toString()));
-    if (+fromBigNumber(allowance.toString()) as number >= form.amount_out) {
+    if ((+fromBigNumber(allowance.toString()) as number) >= form.amount_out) {
       if (status == 3) return;
       setStatus(2);
     }
@@ -292,7 +292,7 @@ const Trans = () => {
               <OnlyMobile>
                 {status < 3 ? (
                   <Flex>
-                    {Number(allowance) as number < form.amount_out ? (
+                    {(Number(allowance) as number) < form.amount_out ? (
                       <CustomButton
                         loading={loading || approving}
                         disabled={loading || approving}
@@ -337,7 +337,7 @@ const Trans = () => {
               <OnlyDesktop>
                 {status < 3 ? (
                   <Flex>
-                    {Number(allowance) as number < form.amount_out ? (
+                    {(Number(allowance) as number) < form.amount_out ? (
                       <CustomButton
                         loading={loading || approving}
                         disabled={loading || approving}

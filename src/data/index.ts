@@ -250,23 +250,35 @@ export const chains = [
     chainIdHEx: "0x1",
     name: "Eth",
     logoUrl: "/images/blockchains/ethereum.png",
+    relay: false,
   },
   {
     chainId: 56,
     chainIdHEx: "0x38",
     name: "Bsc",
     logoUrl: "/images/blockchains/bsc.png",
+    relay: true,
   },
   {
     chainId: 137,
     chainIdHEx: "0x89",
     name: "Polygon",
     logoUrl: "/images/blockchains/polygon.png",
+    relay: true,
+
   },
   {
     chainId: 5,
     chainIdHEx: "0x5",
     name: "Goerli",
     logoUrl: "/images/blockchains/ethereum.png",
+    relay: false,
+  },
+  {
+    chainId: 42161,
+    chainIdHEx: "0xA4B1",
+    name: "Arbitrum",
+    logoUrl: "/images/blockchains/arbitrum.png",
+    relay: true,
   },
 ];

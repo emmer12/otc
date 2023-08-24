@@ -1,13 +1,14 @@
 import axios from "axios";
-import {
-  fuji_test_tokens,
-  eth_tokens,
-  goeily_tokens,
-  bsc_tokens,
-  polygon_tokens,
-} from "@/data";
+import { chains, fuji_test_tokens } from "@/data";
 import { ethers } from "ethers";
 import { Blockchain } from "@/types";
+import {
+  goerliTokens,
+  polygonTokens,
+  bnbTokens,
+  ethereumTokens,
+  arbitrumTokens,
+} from "@/constansts/tokens";
 
 export const truncate = (
   fullStr: string,
@@ -27,8 +28,8 @@ export const truncate = (
     position === "end"
       ? fullStr?.substr(0, frontChars) + separator
       : fullStr?.substr(0, frontChars) +
-        separator +
-        fullStr?.substr(fullStr?.length - backChars);
+      separator +
+      fullStr?.substr(fullStr?.length - backChars);
 
   return result;
 };
@@ -42,18 +43,21 @@ export const getDefaultTokens = (chainId = 5) => {
     case 43113:
       return fuji_test_tokens;
     case 1:
-      return eth_tokens;
+      return ethereumTokens;
     case 5:
-      return goeily_tokens;
+      return goerliTokens;
     case 56:
-      return bsc_tokens;
+      return bnbTokens;
     case 137:
-      return polygon_tokens;
+      return polygonTokens;
+    case 42161:
+      return arbitrumTokens;
     default:
-      return eth_tokens;
+      return ethereumTokens;
       break;
   }
 };
+
 export const getLocalTokens = () => {
   return JSON.parse(localStorage.getItem("localTokens") as string);
 };
@@ -79,6 +83,8 @@ export const getChainContract = (chainId: number | undefined) => {
   switch (chainId) {
     case 43113:
       return import.meta.env.VITE_CONTRACT_ADDRESS_FUJI;
+    case 42161:
+      return import.meta.env.VITE_CONTRACT_ADDRESS_ARBITRUM;
     case 1:
       return import.meta.env.VITE_CONTRACT_ADDRESS_ETH_MAINNET;
     case 5:
@@ -132,3 +138,9 @@ export const getDailyVolume = () => {
 export const computeUsdPrice = (usd: any, amount: number) => {
   return (usd * amount).toFixed(5);
 };
+
+export const toEther = (weiAmount: string, decimal_place: any) =>
+  ethers.utils.formatUnits(weiAmount, decimal_place);
+
+
+export const checkRelay = (chainId: number | undefined) => !!chains.find((chain) => chain.chainId == chainId)?.relay

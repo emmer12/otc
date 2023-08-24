@@ -431,6 +431,16 @@ export const DropDownCon = styled.div`
     opacity: 1;
     pointer-events: inherit;
   }
+
+  &.mobile{
+    display:none;
+
+
+    @media (max-width:620px){
+    display:block;
+
+    }
+  }
 `;
 export const Notify = styled.div`
   margin-left: 8px;

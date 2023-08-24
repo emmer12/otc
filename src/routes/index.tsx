@@ -16,6 +16,7 @@ import {
   P2p,
   HowTo,
   KybarSwap,
+  Widget,
 } from "../views";
 import MainLayout from "../views/layouts/main";
 import Dashboard from "../views/layouts/dashboard";
@@ -32,6 +33,7 @@ const AnimatedRouter = () => {
         <Route path="/p2p" element={<P2p />} />
         <Route path="/how-to" element={<HowTo />} />
         <Route path="/swap" element={<KybarSwap />} />
+        <Route path="/widget" element={<Widget />} />
         <Route path="/test-tokens" element={<Claim />} />
         <Route path="doc" element={<Escrow />} />
         <Route path="/trades/:id" element={<Trades />} />

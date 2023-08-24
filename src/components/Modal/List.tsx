@@ -121,14 +121,18 @@ const ListModal = ({ show, handleClose, list }: IListEdit) => {
       receivingWallet: list.receiving_wallet,
       tokenIn: list.token_in,
       tokenOut: list.token_out,
-      amountOut: BigNumber(form.amount_out).times(1e18).toString(10),
-      amountIn: BigNumber(form.amount_in).times(1e18).toString(10),
+      amountOut: new BigNumber(list.amount_out)
+        .shiftedBy(list.token_out_metadata.decimal_place)
+        .toString(),
+      amountIn: new BigNumber(list.amount_in)
+        .shiftedBy(list.token_in_metadata.decimal_place)
+        .toString(),
       deadline: list.deadline,
       nonce: list.nonce,
     };
 
     const signer = library?.getSigner();
-    const { signature } = await listSign(signer, signatureData);
+    const { signature } = await listSign(signer, signatureData, list.chain);
     data.signature = signature;
     data.id = list._id;
 

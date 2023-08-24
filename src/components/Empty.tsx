@@ -11,12 +11,12 @@ const EmptyCon = styled.div`
   width: 100%;
 `;
 
-const Empty = () => {
+const Empty = ({ msg, subMsg }: { msg?: string; subMsg?: string }) => {
   return (
     <EmptyCon>
-      <Text>No Listing yet</Text>
+      <Text>{msg || "No Listing yet"}</Text>
       <Text size="s4" sizeM="12px">
-        Be the first to list
+        {subMsg || "Be the first to list"}
       </Text>
     </EmptyCon>
   );

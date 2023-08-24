@@ -152,6 +152,8 @@ interface TokenSelect {
   handleSelected: (arg: TokenI) => void;
   show: boolean;
   chainId: number | undefined;
+  provider: any;
+  w_tokens: any[];
 }
 
 const TokenSelect = ({
@@ -159,11 +161,12 @@ const TokenSelect = ({
   handleClose,
   handleSelected,
   chainId,
+  w_tokens,
 }: TokenSelect) => {
   // const [tokens, setTokens] = useState(getD);
   const [sTokens, setSTokens] = useState<any[]>([]);
   const [query, setQuery] = useState<string>("");
-  const { loading, error, results } = useTokenFetch(query, chainId);
+  const { loading, error, results } = useTokenFetch(query, chainId, w_tokens);
 
   const handleSearch = (e: any) => {
     const val = e.target.value;
@@ -172,6 +175,7 @@ const TokenSelect = ({
 
   const callback = async (address: string) => {
     let token = results.find((token) => token.address === address);
+    setQuery("");
     if (!token.usd) {
       try {
         const { data } = await axios.get(

@@ -2,6 +2,7 @@ import { Flex } from "@/components";
 import styled from "styled-components";
 
 export const List = styled.div``;
+
 export const TradeWrapper = styled.div`
   background-image: url(/images/bg/list-3.png);
   background-repeat: no-repeat;
@@ -160,4 +161,87 @@ export const Step = styled.div<{ leftMsg?: string; rightMsg?: string }>`
       font-size: 12px;
     }
   }
+`;
+
+export const Transaction = styled.div`
+  padding: 10px;
+  margin-top: 30px;
+
+  table {
+    border: 1px solid #170728;
+    border-radius: 18px;
+    padding: 10px;
+    width: 100%;
+
+    th {
+      text-align: inherit;
+
+      &.right {
+        text-align: end;
+      }
+    }
+
+    tr {
+      height: 60px;
+
+      small {
+        color: #170728b5;
+      }
+
+      td {
+        min-width: 150px;
+      }
+    }
+
+    /* @media screen and (max-width: 600px) {
+      border: 0;
+
+      thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+      }
+
+      tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: 0.625em;
+      }
+
+      td {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: 0.8em;
+        text-align: right;
+      }
+
+      td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      td:last-child {
+        border-bottom: 0;
+      }
+    }
+  }
+*/
+    td {
+      &.right {
+        text-align: end;
+      }
+    }
+  }
+`;
+
+export const THeader = styled.div`
+  font-size: 16px;
+  margin: 20px 0px;
 `;

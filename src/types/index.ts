@@ -5,6 +5,9 @@ export declare type TokenI = {
   icon?: string;
   name?: string;
   usd?: number;
+  chainId: number;
+  _scan?: string;
+  decimals: number;
 };
 
 type statusT = 1 | 2 | 3 | 4 | 5;

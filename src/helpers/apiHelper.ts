@@ -27,4 +27,7 @@ export default {
     axios.get(`${BASE_URL}/lists/counter/${account}`),
   markAsViewed: (account: string | null | undefined) =>
     axios.post(`${BASE_URL}/list/counter/viewed/${account}`),
+
+  checkRelayStatus: (orderId: string) =>
+    axios.get(`https://api.gelato.digital/tasks/status/${orderId}`),
 };
