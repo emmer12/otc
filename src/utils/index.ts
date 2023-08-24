@@ -1,6 +1,4 @@
 import { toDefaultDecimal } from "./BigNumber";
-import { getSigner } from "./ethersService";
-import { CancelToken } from "axios";
 import { utils } from "ethers";
 import { toast } from "react-toastify";
 import moment from "moment";
@@ -128,6 +126,8 @@ export const getScanLink = (chainId: any, hash: string) => {
       return `https://bscscan.com/tx/${hash}`;
     case 137:
       return `https://polygonscan.com/tx/${hash}`;
+    case 42161:
+      return `https://arbiscan.io/tx/${hash}`;
     default:
       return `https://etherscan.io/tx/${hash}`;
       break;
