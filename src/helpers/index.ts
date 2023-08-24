@@ -1,5 +1,5 @@
 import axios from "axios";
-import { fuji_test_tokens } from "@/data";
+import { chains, fuji_test_tokens } from "@/data";
 import { ethers } from "ethers";
 import { Blockchain } from "@/types";
 import {
@@ -28,8 +28,8 @@ export const truncate = (
     position === "end"
       ? fullStr?.substr(0, frontChars) + separator
       : fullStr?.substr(0, frontChars) +
-        separator +
-        fullStr?.substr(fullStr?.length - backChars);
+      separator +
+      fullStr?.substr(fullStr?.length - backChars);
 
   return result;
 };
@@ -141,3 +141,6 @@ export const computeUsdPrice = (usd: any, amount: number) => {
 
 export const toEther = (weiAmount: string, decimal_place: any) =>
   ethers.utils.formatUnits(weiAmount, decimal_place);
+
+
+export const checkRelay = (chainId: number | undefined) => !!chains.find((chain) => chain.chainId == chainId)?.relay

@@ -14,9 +14,9 @@ import { getDecimal, listSign, toBigNumber } from "@/utils";
 import { utils } from "ethers";
 import BigNumber from "bignumber.js";
 import Moralis from "moralis";
-import { pairs } from "@/data";
+import { chains, pairs } from "@/data";
 import axios from "axios";
-import { getChainContract } from ".";
+import { checkRelay, getChainContract } from ".";
 import { GelatoRelay } from "@gelatonetwork/relay-sdk";
 const relay = new GelatoRelay();
 
@@ -158,43 +158,57 @@ export const matchTokenOrder = async (
     );
 
     const signer = contract.connect(provider?.getSigner());
-    const { data } = await contract.populateTransaction.matchSupportFraction(
-      sell.order,
-      sell.signature,
-      buy.order,
-      buy.signature
-    );
-    // Populate a relay request
-    const request: any = {
-      chainId: provider.network.chainId,
-      target: getChainContract(chainId),
-      data: data,
-      user: account,
-      // userNonce: ethers.BigNumber.from(5),
-    };
+
     // value.nonce_friction,
 
     // return Promise.reject("error");
+    const hasRelay = checkRelay(chainId)
 
-    // const trxn = await signer.matchSupportFraction(
-    //   sell.order,
-    //   sell.signature,
-    //   buy.order,
-    //   buy.signature
-    //   );
+    if (hasRelay) {
+      const { data } = await contract.populateTransaction.matchSupportFraction(
+        sell.order,
+        sell.signature,
+        buy.order,
+        buy.signature
+      );
+      // Populate a relay request
+      const request: any = {
+        chainId: provider.network.chainId,
+        target: getChainContract(chainId),
+        data: data,
+        user: account,
+        // userNonce: ethers.BigNumber.from(5),
+      };
+      const relayResponse = await relay.sponsoredCallERC2771(
+        request,
+        provider,
+        [5, 97, 43113].includes(chainId as number)
+          ? import.meta.env.VITE_GELATO_RELAY_API_KEY_TESTNET
+          : import.meta.env.VITE_GELATO_RELAY_API_KEY_MAINNET
+      );
+      // const transaction = await request;
+      return Promise.resolve(relayResponse)
+    } else {
+      const trxn = await signer.matchSupportFraction(
+        sell.order,
+        sell.signature,
+        buy.order,
+        buy.signature
+      );
+      const transaction = await trxn.wait();
+
+      console.log(transaction)
+
+      return transaction;
+
+    }
+
+
     // {
     //   gasLimit: 200000,
     // }
-    // const transaction = await trxn.wait();
-    const relayResponse = await relay.sponsoredCallERC2771(
-      request,
-      provider,
-      [5, 97, 43113].includes(chainId as number)
-        ? import.meta.env.VITE_GELATO_RELAY_API_KEY_TESTNET
-        : import.meta.env.VITE_GELATO_RELAY_API_KEY_MAINNET
-    );
-    // const transaction = await request;
-    return Promise.resolve(relayResponse);
+
+    ;
   } catch (error) {
     return Promise.reject(error);
   }

@@ -34,7 +34,7 @@ import {
 } from "./styles";
 import { useParams, useNavigate } from "react-router-dom";
 import { ListI } from "@/types";
-import { truncate } from "@/helpers";
+import { checkRelay, truncate } from "@/helpers";
 import {
   approveToken,
   getTokenAllowance,
@@ -177,35 +177,53 @@ const Trans = () => {
       );
 
       let hash;
+      const hasRelay = checkRelay(chainId);
 
-      const interval = setInterval(async () => {
-        setApproving(true);
-        const { data } = await Api.checkRelayStatus(response.taskId);
+      if (hasRelay) {
+        const interval = setInterval(async () => {
+          setApproving(true);
+          const { data } = await Api.checkRelayStatus(response.taskId);
 
-        if (data.task.taskState == "ExecSuccess") {
-          hash = data.task.transactionHash;
+          if (data.task.taskState == "ExecSuccess") {
+            hash = data.task.transactionHash;
 
-          const datas = {
-            buyerSignature: signature,
-            sellerSignature: listing?.signature,
-            id: listing?._id,
-            account,
-            transactionHash: hash,
-            amount: listing?.is_friction ? form.amount_in : listing?.amount_out,
-          };
+            const datas = {
+              buyerSignature: signature,
+              sellerSignature: listing?.signature,
+              id: listing?._id,
+              account,
+              transactionHash: hash,
+              amount: listing?.is_friction
+                ? form.amount_in
+                : listing?.amount_out,
+            };
 
-          await Api.upDateListComp(datas);
-          setStatus(3);
-          parseSuccess("Swap Successful");
-          setApproving(false);
+            await Api.upDateListComp(datas);
+            setStatus(3);
+            parseSuccess("Swap Successful");
+            setApproving(false);
 
-          clearInterval(interval);
-        } else if (data.task.taskState == "Cancelled") {
-          setApproving(false);
-          clearInterval(interval);
-          parseError("Swap Not successful. Please try again or contact us");
-        }
-      }, 5000);
+            clearInterval(interval);
+          } else if (data.task.taskState == "Cancelled") {
+            setApproving(false);
+            clearInterval(interval);
+            parseError("Swap Not successful. Please try again or contact us");
+          }
+        }, 5000);
+      } else {
+        hash = response.transactionHash;
+        const datas = {
+          buyerSignature: signature,
+          sellerSignature: listing?.signature,
+          id: listing?._id,
+          account,
+          transactionHash: hash,
+          amount: listing?.is_friction ? form.amount_in : listing?.amount_out,
+        };
+
+        await Api.upDateListComp(datas);
+        setApproving(false);
+      }
 
       // transactionHash: response.transactionHash || response.taskId,
     } catch (err: any) {
