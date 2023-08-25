@@ -128,6 +128,10 @@ export const getScanLink = (chainId: any, hash: string) => {
       return `https://polygonscan.com/tx/${hash}`;
     case 42161:
       return `https://arbiscan.io/tx/${hash}`;
+    case 5000:
+      return `https://explorer.mantle.xyz/tx/${hash}`;
+    case 8453:
+      return `https://basescan.org/tx/${hash}`;
     default:
       return `https://etherscan.io/tx/${hash}`;
       break;

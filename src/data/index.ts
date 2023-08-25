@@ -281,4 +281,18 @@ export const chains = [
     logoUrl: "/images/blockchains/arbitrum.png",
     relay: true,
   },
+  // {
+  //   chainId: 5000,
+  //   chainIdHEx: "0x1388",
+  //   name: "Mantle",
+  //   logoUrl: "/images/blockchains/rsz_mantle.jpg",
+  //   relay: false,
+  // },
+  {
+    chainId: 8453,
+    chainIdHEx: "0x2105",
+    name: "Base",
+    logoUrl: "/images/blockchains/rsz_base.jpg",
+    relay: false,
+  },
 ];

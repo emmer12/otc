@@ -52,6 +52,8 @@ export const getDefaultTokens = (chainId = 5) => {
       return polygonTokens;
     case 42161:
       return arbitrumTokens;
+    case 5000:
+      return [];
     default:
       return ethereumTokens;
       break;
@@ -93,6 +95,10 @@ export const getChainContract = (chainId: number | undefined) => {
       return import.meta.env.VITE_CONTRACT_ADDRESS_BSC_MAINNET;
     case 137:
       return import.meta.env.VITE_CONTRACT_POLYGON_MAINNET;
+    case 5000:
+      return import.meta.env.VITE_CONTRACT_ADDRESS_MANTLE;
+    case 8453:
+      return import.meta.env.VITE_CONTRACT_ADDRESS_BASE;
     default:
       import.meta.env.VITE_CONTRACT_ADDRESS_ETH_MAINNET;
       break;
