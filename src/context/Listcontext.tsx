@@ -11,7 +11,6 @@ import {
   parseError,
   parseSuccess,
   getForever,
-  getDecimal,
 } from "@/utils";
 import BigNumber from "bignumber.js";
 import { List } from "@/views";
@@ -54,8 +53,7 @@ const ListProvider: React.FC<Props> = ({ children }) => {
   const list_data = JSON.parse(localStorage.getItem("list_data") as string);
   const [form, setForm] = React.useState<ListI>(list_data || initList);
   const [privateLink, setPrivateLink] = React.useState<string>("");
-  const { account, connector, activate, chainId, library } =
-    useWeb3React<Web3Provider>();
+  const { chainId, library } = useWeb3React<Web3Provider>();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
@@ -82,7 +80,6 @@ const ListProvider: React.FC<Props> = ({ children }) => {
         deadline: data.deadline,
         nonce: form.nonce,
       };
-      console.log(data);
       const signer = library?.getSigner();
       const { signature } = await listSign(signer, signatureData, chainId);
       data.signature = signature;

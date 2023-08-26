@@ -2,7 +2,13 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import axios from "axios";
 import { ListI } from "@/types";
 import { parseError } from "@/utils";
-import { getDefaultTokens, getLocalTokens, isAddress } from "@/helpers";
+import {
+  getBlockName,
+  getChainDecimal,
+  getDefaultTokens,
+  getLocalTokens,
+  isAddress,
+} from "@/helpers";
 import { BASE_URL } from "@/helpers/apiHelper";
 import { chains } from "@/data";
 import Moralis from "moralis";
@@ -143,7 +149,7 @@ export const useTokenFetch = (query: string, chainId = 1, w_tokens: any) => {
               name: data.name,
               icon: data?.image?.small,
               address: data?.contract_address,
-              decimal_place: getDecimal(chainId, data?.detail_platforms),
+              decimal_place: getChainDecimal(chainId, data?.detail_platforms),
               usd: data?.market_data?.current_price?.usd,
             },
           ];
@@ -205,38 +211,4 @@ export const useGetWalletTokens = (
   }, [address]);
 
   return tokens;
-};
-
-const getDecimal = (chainId: any, details: any) => {
-  switch (chainId) {
-    case 1:
-      return details.ethereum.decimal_place;
-      break;
-    case 137:
-      return details["polygon-pos"].decimal_place;
-      break;
-    case 56:
-      return details["binance-smart-chain"].decimal_place;
-      break;
-    default:
-      return details.ethereum.decimal_place;
-      break;
-  }
-};
-
-export const getBlockName = (chainId: any) => {
-  switch (chainId) {
-    case 1:
-      return "ethereum";
-      break;
-    case 137:
-      return "polygon-pos";
-      break;
-    case 56:
-      return "binance-smart-chain";
-      break;
-    default:
-      return "ethereum";
-      break;
-  }
 };

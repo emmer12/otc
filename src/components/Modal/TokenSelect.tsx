@@ -10,8 +10,8 @@ import { useQuery } from "@apollo/react-hooks";
 import { DAI_QUERY, ETH_PRICE_QUERY, ETH_TOKEN_QUERY } from "@/apollo";
 import { TokenI } from "@/types";
 import { ActionSwitch, InputWrapper, SwitchItem2 } from "@/views/home/styles";
-import { getBlockName, useTokenFetch } from "@/hooks/customHooks";
-import { setLocalToken } from "@/helpers";
+import { useTokenFetch } from "@/hooks/customHooks";
+import { getBlockName, setLocalToken } from "@/helpers";
 import axios from "axios";
 
 const SwapContainer = styled.div`

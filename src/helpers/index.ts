@@ -105,6 +105,59 @@ export const getChainContract = (chainId: number | undefined) => {
   }
 };
 
+
+export const getChainDecimal = (chainId: any, details: any) => {
+  switch (chainId) {
+    case 1:
+      return details.ethereum.decimal_place;
+      break;
+    case 137:
+      return details["polygon-pos"].decimal_place;
+      break;
+    case 56:
+      return details["binance-smart-chain"].decimal_place;
+      break;
+    case 42161:
+      return details["arbitrum-one"].decimal_place;
+      break;
+    case 8453:
+      return details["base"].decimal_place;
+      break;
+    case 5000:
+      return details["mantle"].decimal_place;
+      break;
+    default:
+      return details.ethereum.decimal_place;
+      break;
+  }
+};
+
+export const getBlockName = (chainId: any) => {
+  switch (chainId) {
+    case 1:
+      return "ethereum";
+      break;
+    case 137:
+      return "polygon-pos";
+      break;
+    case 56:
+      return "binance-smart-chain";
+      break;
+    case 8453:
+      return "base";
+      break;
+    case 42161:
+      return "arbitrum-one";
+      break;
+    case 5000:
+      return "mantle";
+      break;
+    default:
+      return "ethereum";
+      break;
+  }
+};
+
 export const getDailyVolume = () => {
   const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS_ETH_MAINNET;
   const API_KEY = import.meta.env.VITE_ETHERSCAN_API_KEY;
