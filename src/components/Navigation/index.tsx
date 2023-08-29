@@ -22,32 +22,14 @@ import {
 } from "./styles";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  Center,
-  Flex,
-  Text,
-  CustomLink,
-  Spacer,
-  ActionBtn,
-  Overlay,
-  BodyTab,
-} from "../";
+import { Center, Flex, Spacer, Overlay } from "../";
 import { Button } from "@/components/Button";
 import { Connect } from "../Modal";
 import { truncate } from "@/helpers";
-import { ConnectorNames, SupportBlockchain, SupportedChainIds } from "@/types";
-import {
-  ArrowRight,
-  Decor,
-  LogoSVG,
-  Wallet,
-  Logout,
-  Bell,
-  AngleDown,
-} from "../Icons";
+import { ConnectorNames, SupportedChainIds } from "@/types";
+import { Decor, LogoSVG, Wallet, Logout, Bell, AngleDown } from "../Icons";
 import { BASE_URL } from "@/helpers/apiHelper";
 import { chains } from "@/data";
-import { InputChainId } from "@moralisweb3/common-evm-utils";
 import { parseError } from "@/utils";
 // import { hooks, metaMask } from "@/connector/metaMask";
 

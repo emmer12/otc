@@ -60,4 +60,4 @@ export enum ConnectorNames {
   WalletConnect = "WalletConnect",
 }
 
-export type SupportedChainIds = 1 | 56 | 137 | 5;
+export type SupportedChainIds = 1 | 56 | 137 | 5 | 5000 | 8453 | 42161;
