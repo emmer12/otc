@@ -54,6 +54,8 @@ export const getDefaultTokens = (chainId = 5) => {
       return arbitrumTokens;
     case 5000:
       return [];
+    case 8453:
+      return [];
     default:
       return ethereumTokens;
       break;

@@ -290,7 +290,7 @@ export const MMenuItem = styled(NavLink)`
 export const ListItem = styled.div`
   text-align: center;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 33px;
   /* margin: 12px 0px; */
   display: block;
@@ -302,8 +302,8 @@ export const ListItem = styled.div`
   border-radius: 20px;
   transition: 0.3s;
   .icon {
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
     border-radius: 20px;
     margin-right: 8px;
 
