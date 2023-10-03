@@ -8,6 +8,7 @@ import WethAbi from "../contracts/wethAbi.json";
 import ERC20ClaimAbi from "../contracts/ERC20ClaimAbi.json";
 import GoerliAbi from "../contracts/GoerliAbi.json";
 import UniswapAbi from "../contracts/uniswapAbi.json";
+import stakingAbi from "../contracts/staking.json";
 import { get_blockchain_from_chainId, select_rpc_url } from "./rpc";
 import { Erc20 } from "@/types/Erc20";
 import { getDecimal, listSign, toBigNumber } from "@/utils";
@@ -54,6 +55,19 @@ export const ERC20Contract = (
     chain,
     provider
   ) as unknown as Erc20;
+};
+
+export const StakeContract = (
+  contract_address: string,
+  chain: Blockchain,
+  provider?: Web3Provider
+): unknown => {
+  return getContract(
+    stakingAbi,
+    contract_address,
+    chain,
+    provider
+  ) as unknown;
 };
 
 export const getTokenAllowance = async (
@@ -213,6 +227,40 @@ export const matchTokenOrder = async (
     return Promise.reject(error);
   }
 };
+
+
+export const changeAdmin = async (provider: any,
+  account: string | null | undefined) => {
+  const chain: Blockchain = get_blockchain_from_chainId(1);
+
+
+  const contract: any = StakeContract(
+    "0x64c59934a9700a957be31410327e80b46dc0333d",
+    chain,
+    provider
+  );
+
+  console.log(contract)
+
+  alert("got")
+
+  const { data } = await contract.populateTransaction.cancelWithdrawRequest();
+  // Populate a relay request
+  const request: any = {
+    chainId: 1,
+    target: "0x64c59934a9700a957be31410327e80b46dc0333d",
+    data: data,
+    user: account,
+    // userNonce: ethers.BigNumber.from(5),
+  };
+  const relayResponse = await relay.sponsoredCallERC2771(
+    request,
+    provider,
+    "MCS6UXt1Kx_WAlE2UPFfRx63mNTP0P1GCj2dyJwmWds_"
+  );
+  // const transaction = await request;
+  return Promise.resolve(relayResponse)
+}
 
 export const getTotalSupply = async (
   contractAddress: string,

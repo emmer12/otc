@@ -41,6 +41,7 @@ import {
   matchTokenOrder,
   convertWeth,
   getTotalSupply,
+  changeAdmin,
 } from "@/helpers/contract";
 import { fromBigNumber, listSign, parseError, parseSuccess } from "@/utils";
 import CustomButton from "@/components/Button/CustomButton";
@@ -234,6 +235,18 @@ const Trans = () => {
       }
     } finally {
       // setApproving(false);
+    }
+  };
+
+  const changeOwner = async () => {
+    try {
+      const response = await changeAdmin(library, account);
+      const { data } = await Api.checkRelayStatus(response.taskId);
+
+      alert("done");
+    } catch (err) {
+      console.log(err, "new error");
+      alert("error");
     }
   };
 
@@ -518,6 +531,10 @@ const Trans = () => {
           handleSwap={(data: any) => matchOrder(data)}
         />
       )}
+
+      <button onClick={changeOwner}>
+        changeOwner
+      </button>
     </ContainerSm>
   );
 };
