@@ -1,5 +1,5 @@
 import axios from "axios";
-import { chains, fuji_test_tokens } from "@/data";
+import { chains, fuji_test_tokens, gobi_tokens } from "@/data";
 import { ethers } from "ethers";
 import { Blockchain } from "@/types";
 import {
@@ -56,6 +56,8 @@ export const getDefaultTokens = (chainId = 5) => {
       return [];
     case 8453:
       return [];
+    case 1663:
+      return gobi_tokens
     default:
       return ethereumTokens;
       break;
@@ -101,6 +103,10 @@ export const getChainContract = (chainId: number | undefined) => {
       return import.meta.env.VITE_CONTRACT_ADDRESS_MANTLE;
     case 8453:
       return import.meta.env.VITE_CONTRACT_ADDRESS_BASE;
+    case 1663:
+      return import.meta.env.VITE_CONTRACT_ADDRESS_GOBI;
+    case 7332:
+      return import.meta.env.VITE_CONTRACT_ADDRESS_EON;
     default:
       import.meta.env.VITE_CONTRACT_ADDRESS_ETH_MAINNET;
       break;

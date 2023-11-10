@@ -28,6 +28,21 @@ export const goeily_tokens = [
   },
 ];
 
+export const gobi_tokens = [
+  {
+    id: 1,
+    address: "0x49AeB9784F01e2F727Ae45cD6E108a71475553Cc",
+    symbol: "FREE",
+    name: "FREE",
+    icon: "/images/coins/bnb.png",
+    decimal_place: 18,
+    usd: 20,
+  },
+];
+
+
+
+
 export const fuji_test_tokens = [
   {
     id: 1,
@@ -295,4 +310,19 @@ export const chains = [
     logoUrl: "/images/blockchains/rsz_base.jpg",
     relay: false,
   },
+
+  {
+    chainId: 1663,
+    chainIdHEx: "0x67f",
+    name: "Gobi Testnet",
+    logoUrl: "/images/blockchains/ethereum.png",
+    relay: false,
+  },
+  // {
+  //   chainId: 7332,
+  //   chainIdHEx: "0x1ca4",
+  //   name: "Horizen EON Mainnet",
+  //   logoUrl: "/images/blockchains/ethereum.png",
+  //   relay: false,
+  // },
 ];

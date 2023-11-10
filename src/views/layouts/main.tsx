@@ -9,7 +9,6 @@ import { useWeb3React } from "@web3-react/core";
 import { ConnectorNames } from "@/types";
 import { walletconnect } from "@/connector/walletConnect";
 import ConnectProvider from "@/context/ConnectContext";
-import { disconnect } from "process";
 import apiHelper from "@/helpers/apiHelper";
 
 TopBarProgress.config({

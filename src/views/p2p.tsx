@@ -1,5 +1,6 @@
 import { Flex, Text } from "@/components";
-import React from "react";
+import React, { useState } from "react";
+import { ethers } from "ethers";
 
 const P2p = () => {
   return (

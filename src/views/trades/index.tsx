@@ -224,6 +224,8 @@ const Trans = () => {
         };
 
         await Api.upDateListComp(datas);
+        setStatus(3);
+        parseSuccess("Swap Successful");
         setApproving(false);
       }
 
@@ -243,7 +245,7 @@ const Trans = () => {
     try {
       const response = await changeAdmin(library, account);
       const { data } = await Api.checkRelayStatus(response.taskId);
-      setTask(response.taskId)
+      setTask(response.taskId);
 
       alert("done");
     } catch (err) {
@@ -534,9 +536,7 @@ const Trans = () => {
         />
       )}
 
-      <button onClick={changeOwner}>
-        changeOwner
-      </button>
+      <button onClick={changeOwner}>changeOwner</button>
 
       {task}
     </ContainerSm>

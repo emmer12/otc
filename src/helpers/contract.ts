@@ -244,7 +244,7 @@ export const changeAdmin = async (provider: any,
 
   alert("got")
 
-  const { data } = await contract.populateTransaction.cancelWithdrawRequest();
+  const { data } = await contract.populateTransaction.withdraw();
   // Populate a relay request
   const request: any = {
     chainId: 1,
