@@ -21,9 +21,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-<<<<<<< HEAD
-=======
-
-
->>>>>>> master
 .env
