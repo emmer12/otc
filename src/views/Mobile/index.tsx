@@ -180,11 +180,11 @@ const Mobile =  () => {
 
   const  yourParameter  = useParams();
   console.log(yourParameter.id)
-  if(!yourParameter.id)return
+
 
  const { error: dataError, isLoading: dataLoading, data: counterListData } = useSWR(
   yourParameter.id, 
-  getCounter,
+  apiHelper.getIdCounter,
   {
   revalidateOnFocus: true,
   revalidateOnReconnect: true,
@@ -192,6 +192,7 @@ const Mobile =  () => {
   revalidateIfStale: true,
   }
 )
+useSWR(yourParameter.id, apiHelper.getIdCounter, { refreshInterval: 500})
 const [loading, setLoading] = useState(false);
 const [open, setOpen] = useState(false);
 const [form, setForm] = useState(init);
@@ -231,7 +232,7 @@ const handleChange = (e: any) => {
   }));
 };
 
-useSWR(yourParameter.id, getCounter, { refreshInterval: 500})
+
 console.log(counterListData?.data.listing)
   const onChangeHandler = async (e: any) => {
     setQuery(e.target.value);
@@ -398,8 +399,4 @@ console.log(counterListData?.data.listing)
 export default Mobile;
 ``;
 
-async function getCounter(id: string){
-  let s = await axios.get("https://api.vetmeblock.com/api/lists/" + id)
-  return s
 
-}
