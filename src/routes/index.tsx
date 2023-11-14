@@ -20,6 +20,7 @@ import {
 } from "../views";
 import MainLayout from "../views/layouts/main";
 import Dashboard from "../views/layouts/dashboard";
+import Mobile from "@/views/Mobile";
 
 const HomeLazy = React.lazy(() => import("../views/home"));
 const CreateListLazy = React.lazy(() => import("../views/list/create"));
@@ -32,6 +33,7 @@ const AnimatedRouter = () => {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
+        <Route path="/mobile/:id" element={<Mobile />} />
         <Route path="/trades" element={<Trades />} />
         <Route path="/list/create" element={<CreateList />} />
         <Route path="/list" element={<List />} />
