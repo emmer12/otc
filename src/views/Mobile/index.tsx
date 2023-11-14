@@ -47,7 +47,7 @@ import { ListI } from "@/types";
 import Empty from "@/components/Empty";
 import axios from "axios";
 import styled from "styled-components";
-import apiHelper from "@/helpers/apiHelper";
+import apiHelper, {getIdCounter} from "@/helpers/apiHelper";
 
 const SwapContainer = styled.div`
   width: 431px;
@@ -399,4 +399,8 @@ console.log(counterListData?.data.listing)
 export default Mobile;
 ``;
 
+async function getCounter(id: string){
+  let s = await axios.get("https://api.vetmeblock.com/api/lists/" + id)
+  return s
 
+}
