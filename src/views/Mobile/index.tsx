@@ -184,7 +184,7 @@ const Mobile =  () => {
 
  const { error: dataError, isLoading: dataLoading, data: counterListData } = useSWR(
   yourParameter.id, 
-  apiHelper.getIdCounter,
+  getCounter,
   {
   revalidateOnFocus: true,
   revalidateOnReconnect: true,
@@ -192,7 +192,7 @@ const Mobile =  () => {
   revalidateIfStale: true,
   }
 )
-useSWR(yourParameter.id, apiHelper.getIdCounter, { refreshInterval: 500})
+useSWR(yourParameter.id, getCounter, { refreshInterval: 500})
 const [loading, setLoading] = useState(false);
 const [open, setOpen] = useState(false);
 const [form, setForm] = useState(init);
