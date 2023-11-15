@@ -11,3 +11,4 @@ export { default as auroraTokens } from "./aurora";
 export { default as oasisTokens } from "./oasis";
 export { default as optimismTokens } from "./optimism";
 export { default as goerliTokens } from "./goerli";
+export { default as horizonTokens } from "./horizon";

@@ -183,7 +183,10 @@ const TokenSelect = ({
             chainId
           )}/contract/${token.address}`
         );
-        token.usd = data?.market_data?.current_price?.usd;
+        console.log(data.market_data, "This is the marketData");
+        token.usd = data.market_data
+          ? data?.market_data?.current_price?.usd
+          : 0;
       } catch (err) {
         console.log(err);
       }

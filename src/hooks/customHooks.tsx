@@ -111,7 +111,6 @@ export const useTokenFetch = (query: string, chainId = 1, w_tokens: any) => {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  // const chainTokens = useToken(query);
   const throttledTerm = useThrottle(query, 100);
 
   useEffect(() => {
@@ -163,6 +162,8 @@ export const useTokenFetch = (query: string, chainId = 1, w_tokens: any) => {
   }
 
   // if (results.length < 1) {
+  //   const chainTokens = useToken(query);
+
   //   tokens = [chainTokens];
   // }
 

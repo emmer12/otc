@@ -8,6 +8,8 @@ import {
   bnbTokens,
   ethereumTokens,
   arbitrumTokens,
+  horizonTokens
+
 } from "@/constansts/tokens";
 
 export const truncate = (
@@ -57,7 +59,7 @@ export const getDefaultTokens = (chainId = 5) => {
     case 8453:
       return [];
     case 7332:
-      return []
+      return horizonTokens
     case 1663:
       return gobi_tokens
     default:
