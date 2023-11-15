@@ -12,6 +12,7 @@ import {
 import { BASE_URL } from "@/helpers/apiHelper";
 import { chains } from "@/data";
 import Moralis from "moralis";
+import { useToken } from "./useToken";
 
 function useThrottle<T>(value: T, interval = 500): T {
   const [throttledValue, setThrottledValue] = useState<T>(value);
@@ -106,9 +107,11 @@ export const useTokenFetch = (query: string, chainId = 1, w_tokens: any) => {
     }
     return acc;
   }, []);
+
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // const chainTokens = useToken(query);
   const throttledTerm = useThrottle(query, 100);
 
   useEffect(() => {
@@ -158,6 +161,10 @@ export const useTokenFetch = (query: string, chainId = 1, w_tokens: any) => {
         });
     }
   }
+
+  // if (results.length < 1) {
+  //   tokens = [chainTokens];
+  // }
 
   // const localTokens = getLocalTokens();
   // results = localTokens ? [...localTokens].concat(results) : results;

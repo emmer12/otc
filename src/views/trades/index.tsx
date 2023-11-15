@@ -71,7 +71,6 @@ const Trans = () => {
 
   let { id } = useParams();
   const navigate = useNavigate();
-
   const { account, chainId, library } = useWeb3React<Web3Provider>();
 
   useEffect(() => {

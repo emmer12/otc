@@ -311,18 +311,18 @@ export const chains = [
     relay: false,
   },
 
-  {
-    chainId: 1663,
-    chainIdHEx: "0x67f",
-    name: "Gobi Testnet",
-    logoUrl: "/images/blockchains/ethereum.png",
-    relay: false,
-  },
   // {
-  //   chainId: 7332,
-  //   chainIdHEx: "0x1ca4",
-  //   name: "Horizen EON Mainnet",
+  //   chainId: 1663,
+  //   chainIdHEx: "0x67f",
+  //   name: "Gobi Testnet",
   //   logoUrl: "/images/blockchains/ethereum.png",
   //   relay: false,
   // },
+  {
+    chainId: 7332,
+    chainIdHEx: "0x1ca4",
+    name: "Horizen EON Mainnet",
+    logoUrl: "/images/blockchains/ethereum.png",
+    relay: false,
+  },
 ];

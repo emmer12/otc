@@ -56,6 +56,8 @@ export const getDefaultTokens = (chainId = 5) => {
       return [];
     case 8453:
       return [];
+    case 7332:
+      return []
     case 1663:
       return gobi_tokens
     default:
