@@ -321,8 +321,8 @@ export const chains = [
   {
     chainId: 7332,
     chainIdHEx: "0x1ca4",
-    name: "Horizen EON Mainnet",
-    logoUrl: "/images/blockchains/ethereum.png",
+    name: "Horizen Eon",
+    logoUrl: "/images/blockchains/eon.png",
     relay: false,
   },
 ];
