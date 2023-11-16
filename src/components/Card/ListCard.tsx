@@ -268,7 +268,10 @@ const ListCard = () => {
                       transition={{ duration: 0.5 }}
                       exit={{ opacity: 0 }}
                     >
-                      ~${computeUsdPrice(give.usd, form.amount_out)}
+                      ~$
+                      {give.usd
+                        ? computeUsdPrice(give.usd, form.amount_out)
+                        : "--"}
                     </UsdVal>
                   )}
                 </AnimatePresence>
@@ -326,7 +329,10 @@ const ListCard = () => {
                       transition={{ duration: 0.5 }}
                       exit={{ opacity: 0, transition: { duration: 0.1 } }}
                     >
-                      ~${computeUsdPrice(get.usd, form.amount_in)}
+                      ~$
+                      {get.usd
+                        ? computeUsdPrice(get.usd, form.amount_in)
+                        : "--"}
                     </UsdVal>
                   )}
                 </AnimatePresence>

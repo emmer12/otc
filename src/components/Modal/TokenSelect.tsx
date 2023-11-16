@@ -184,9 +184,7 @@ const TokenSelect = ({
           )}/contract/${token.address}`
         );
         console.log(data.market_data, "This is the marketData");
-        token.usd = data.market_data
-          ? data?.market_data?.current_price?.usd
-          : 0;
+        token.usd = data?.market_data?.current_price?.usd;
       } catch (err) {
         console.log(err);
       }
