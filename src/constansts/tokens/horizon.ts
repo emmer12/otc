@@ -1,6 +1,14 @@
 const horizonTokens = [
   {
     chainId: 7332,
+    symbol: "WZEN",
+    name: "Wrapped ZEN",
+    address: "0xF5cB8652a84329A2016A386206761f455bCEDab6",
+    icon: "/images/coins/usdt.webp",
+    decimal_place: 18,
+  },
+  {
+    chainId: 7332,
     symbol: "WETH",
     name: "WETH",
     address: "0x2c2E0B0c643aB9ad03adBe9140627A645E99E054",
