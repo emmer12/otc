@@ -1,5 +1,5 @@
 const ethereumTokens = [
-   {
+  {
     chainId: 1,
     symbol: "VetMe",
     name: "VetMe",
@@ -23,6 +23,15 @@ const ethereumTokens = [
     decimal_place: 18,
     icon: "",
   },
+  {
+    chainId: 1,
+    address: "0x590f820444fa3638e022776752c5eef34e2f89a6",
+    symbol: "ALPH",
+    name: "Alephium (AlphBridge)",
+    decimal_place: 18,
+    icon: "https://etherscan.io/token/images/alephium_32.png?v=2",
+  },
+
   {
     chainId: 1,
     address: "0x196f4727526eA7FB1e17b2071B3d8eAA38486988",
