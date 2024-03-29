@@ -58,6 +58,8 @@ export const getDefaultTokens = (chainId = 5) => {
       return [];
     case 8453:
       return [];
+    case 81457:
+      return [];
     case 7332:
       return horizonTokens
     case 1663:
@@ -107,6 +109,8 @@ export const getChainContract = (chainId: number | undefined) => {
       return import.meta.env.VITE_CONTRACT_ADDRESS_MANTLE;
     case 8453:
       return import.meta.env.VITE_CONTRACT_ADDRESS_BASE;
+    case 81457:
+      return import.meta.env.VITE_CONTRACT_ADDRESS_BLAST;
     case 1663:
       return import.meta.env.VITE_CONTRACT_ADDRESS_GOBI;
     case 7332:
@@ -135,6 +139,9 @@ export const getChainDecimal = (chainId: any, details: any) => {
     case 8453:
       return details["base"].decimal_place;
       break;
+    case 81457:
+      return details["blast"].decimal_place;
+      break;
     case 5000:
       return details["mantle"].decimal_place;
       break;
@@ -157,6 +164,9 @@ export const getBlockName = (chainId: any) => {
       break;
     case 8453:
       return "base";
+      break;
+    case 81457:
+      return "blast";
       break;
     case 42161:
       return "arbitrum-one";

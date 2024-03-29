@@ -102,6 +102,10 @@ export const NavWrapper = styled.div`
   /* width: calc(100% - 50px); */
 `;
 export const NavItems = styled.div`
+  gap:24px;
+  display:flex;
+  align-items:center;
+
   @media (max-width: 640px) {
     display: none;
   }
@@ -109,22 +113,18 @@ export const NavItems = styled.div`
 export const Item = styled(NavLink)`
   font-size: 16px;
   font-weight: 300;
-  padding: 0px 20px;
+  padding: 8px 12px;
   color: #170728;
   position: relative;
   transition: transform 0.5s ease;
+  border: 1px solid transparent;
 
-  &:after,
-  &.active {
-    transition: transform 0.5s ease;
-    transform: scaleX(0);
-  }
 
   &:hover,
   &.active {
-    span {
-      border-bottom: 1px solid ${PRIMARY_COLOR};
-    }
+    background: ${SECONDARY_COLOR};
+    border: 1px solid ${PRIMARY_COLOR};
+    border-radius:200px;
   }
 `;
 export const Logo = styled(NavLink)`
@@ -290,15 +290,15 @@ export const MMenuItem = styled(NavLink)`
 export const ListItem = styled.div`
   text-align: center;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 33px;
   /* margin: 12px 0px; */
   display: block;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 10px;
+  padding:4px 6px;
   border-radius: 20px;
   transition: 0.3s;
   .icon {

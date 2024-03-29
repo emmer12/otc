@@ -37,8 +37,8 @@ export const GlobalStyles = createGlobalStyle`
 } */
 
   body {
-  font-family: 'Space Grotesk', sans-serif;
-    background:#ffffff;
+   background:#f5f4f6;
+   font-family: 'Space Grotesk', sans-serif;
     a{
       color:#000000;
       text-decoration:none;

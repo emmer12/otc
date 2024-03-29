@@ -310,6 +310,13 @@ export const chains = [
     logoUrl: "/images/blockchains/rsz_base.jpg",
     relay: false,
   },
+  {
+    chainId: 81457,
+    chainIdHEx: "0x13e31",
+    name: "Blast",
+    logoUrl: "/images/blockchains/ethereum.png",
+    relay: false,
+  },
 
   // {
   //   chainId: 1663,

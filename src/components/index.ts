@@ -70,30 +70,30 @@ export const Avatar = styled.div<{
     size === "xs"
       ? "20px"
       : size === "sm"
-      ? "32px"
-      : size === "md"
-      ? "46px"
-      : size === "60px"
-      ? "60px"
-      : size === "72px"
-      ? "72px"
-      : size === "lg"
-      ? "128px"
-      : "80px"};
+        ? "32px"
+        : size === "md"
+          ? "46px"
+          : size === "60px"
+            ? "60px"
+            : size === "72px"
+              ? "72px"
+              : size === "lg"
+                ? "128px"
+                : "80px"};
   width: ${({ size }) =>
     size === "xs"
       ? "20px"
       : size === "sm"
-      ? "32px"
-      : size === "md"
-      ? "46px"
-      : size === "60px"
-      ? "60px"
-      : size === "72px"
-      ? "72px"
-      : size === "lg"
-      ? "128px"
-      : "80px"};
+        ? "32px"
+        : size === "md"
+          ? "46px"
+          : size === "60px"
+            ? "60px"
+            : size === "72px"
+              ? "72px"
+              : size === "lg"
+                ? "128px"
+                : "80px"};
   border-radius: 50%;
 
   img {
@@ -118,11 +118,11 @@ export const Flex = styled.div<{
   align?: string;
   gap?: number;
   justify?:
-    | "space-between"
-    | "space-evenly"
-    | "space-around"
-    | "center"
-    | "flex-end";
+  | "space-between"
+  | "space-evenly"
+  | "space-around"
+  | "center"
+  | "flex-end";
   directionM?: string;
   margin?: string;
   wrap?: boolean;
@@ -168,19 +168,19 @@ export const Colorize = styled.span<{
 export const Text = styled.span<{
   weight?: string;
   size?:
-    | "h1"
-    | "h2"
-    | "h3"
-    | "h4"
-    | "h5"
-    | "big"
-    | "normal"
-    | "small"
-    | "tiny"
-    | "s1"
-    | "s2"
-    | "s3"
-    | "s4";
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "big"
+  | "normal"
+  | "small"
+  | "tiny"
+  | "s1"
+  | "s2"
+  | "s3"
+  | "s4";
   color?: string;
   sizeM?: string;
   padding?: string;
@@ -192,31 +192,31 @@ export const Text = styled.span<{
     size == "h1"
       ? "56px"
       : size == "h2"
-      ? "40px"
-      : size == "h3"
-      ? "26px"
-      : size == "h4"
-      ? "18px"
-      : size == "h5"
-      ? "14px"
-      : size == "big"
-      ? "20px"
-      : size == "normal"
-      ? "18px"
-      : size == "small"
-      ? "16px"
-      : size == "tiny"
-      ? "14px"
-      : size == "s1"
-      ? "18px"
-      : size == "s2"
-      ? "16px"
-      : size == "s3"
-      ? "14px"
-      : size == "s4"
-      ? "14px"
-      : "18px"};
-  line-height: 150%;
+        ? "40px"
+        : size == "h3"
+          ? "26px"
+          : size == "h4"
+            ? "18px"
+            : size == "h5"
+              ? "14px"
+              : size == "big"
+                ? "20px"
+                : size == "normal"
+                  ? "18px"
+                  : size == "small"
+                    ? "16px"
+                    : size == "tiny"
+                      ? "12px"
+                      : size == "s1"
+                        ? "18px"
+                        : size == "s2"
+                          ? "16px"
+                          : size == "s3"
+                            ? "14px"
+                            : size == "s4"
+                              ? "14px"
+                              : "18px"};
+  line-height: 25.52px;
   color: ${({ color }) => color};
 
   letter-spacing: 0.02em;
@@ -231,35 +231,35 @@ export const Text = styled.span<{
   }
   @media (max-width: 640px) {
     font-size: ${({ sizeM }) =>
-      sizeM == "h1"
-        ? "56px"
-        : sizeM == "h2"
+    sizeM == "h1"
+      ? "56px"
+      : sizeM == "h2"
         ? "40px"
         : sizeM == "h3"
-        ? "26px"
-        : sizeM == "h4"
-        ? "18px"
-        : sizeM == "h5"
-        ? "14px"
-        : sizeM == "big"
-        ? "20px"
-        : sizeM == "normal"
-        ? "18px"
-        : sizeM == "small"
-        ? "16px"
-        : sizeM == "tiny"
-        ? "14px"
-        : sizeM == "tiny-2"
-        ? "10px"
-        : sizeM == "s1"
-        ? "18px"
-        : sizeM == "s2"
-        ? "16px"
-        : sizeM == "s3"
-        ? "14px"
-        : sizeM == "s4"
-        ? "14px"
-        : "14px"};
+          ? "26px"
+          : sizeM == "h4"
+            ? "18px"
+            : sizeM == "h5"
+              ? "14px"
+              : sizeM == "big"
+                ? "20px"
+                : sizeM == "normal"
+                  ? "18px"
+                  : sizeM == "small"
+                    ? "16px"
+                    : sizeM == "tiny"
+                      ? "14px"
+                      : sizeM == "tiny-2"
+                        ? "10px"
+                        : sizeM == "s1"
+                          ? "18px"
+                          : sizeM == "s2"
+                            ? "16px"
+                            : sizeM == "s3"
+                              ? "14px"
+                              : sizeM == "s4"
+                                ? "14px"
+                                : "14px"};
   }
 `;
 
@@ -399,7 +399,7 @@ export const Center = styled.div`
 export const Divider = styled.div`
   border: 1px solid
     ${({ theme }) =>
-      theme.name === "Dark" ? "rgba(255, 255, 255, 0.1)" : "#F1F1F3"};
+    theme.name === "Dark" ? "rgba(255, 255, 255, 0.1)" : "#F1F1F3"};
   height: 0px;
   width: 100%;
 `;
@@ -746,4 +746,23 @@ export const KWidgetWrapper = styled.div`
   /* .close{
    transform:translateX(calc(100% + 20px)) !important;
   } */
+`;
+
+
+export const ImgWrap = styled.div<{
+  height: number;
+  width: number;
+}>`
+  height: ${({ height }) => height ? height + 'px' : '20px'};
+  width:  ${({ width }) => width ? width + 'px' : '20px'};
+  background: #f6f6f7;
+  flex-shrink: 0;
+  border-radius: 50%;
+
+  img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: contain;
+  }
 `;

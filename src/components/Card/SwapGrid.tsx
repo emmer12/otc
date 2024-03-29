@@ -1,21 +1,12 @@
-// import { tokens } from "@/data";
-import { truncate } from "@/helpers";
-import apiHelper from "@/helpers/apiHelper";
 import { ListI } from "@/types";
-import {
-  formatDateTime,
-  formatSecTime,
-  getForever,
-  parseError,
-  parseSuccess,
-} from "@/utils";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { ActionBtn, Divider, Flex, Spacer, Text, TokenBadge } from "..";
-import CustomButton from "../Button/CustomButton";
-import { Delete, Send, Swap, VToken, VUser } from "../Icons";
-import { Chart, Counter, ListModal } from "../Modal";
+import { Flex, ImgWrap, Spacer, Text } from "..";
+import { Chart, ListModal } from "../Modal";
+import Progress from "../Progress";
+import { anim, grid_item_trans } from "@/utils/transitions";
+import { motion } from "framer-motion";
 
 const common = css`
   position: absolute;
@@ -25,13 +16,16 @@ const common = css`
 const SwapContainer = styled.div`
   width: 540px;
   max-width: 100%;
-  margin-bottom: 27px;
   height: 234px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 
-  background-image: url(/images/bg/c1.png);
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: 100% 100%;
+  border: 1px solid #2e203e;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
 
   &.completed {
     filter: blur(0.8px);
@@ -198,6 +192,32 @@ const Price = styled.div`
   position: relative;
 `;
 
+const TokenLogoWrap = styled.div`
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  border: 1px solid #170728;
+  display: grid;
+  place-content: center;
+
+  img {
+    height: 24px;
+    width: 24px;
+    object-fit: cover;
+  }
+`;
+
+const FillType = styled.div`
+  padding: 8px;
+  border-radius: 4px;
+  background: #eff1ea;
+  font-size: 12px;
+  color: #000;
+  align-self: start;
+  line-height: 19px;
+  text-transform: uppercase;
+`;
+
 const SwapGrid = ({
   list,
   state,
@@ -233,145 +253,117 @@ const SwapGrid = ({
 
   return (
     <>
-      <SwapContainer className={state == "auth" ? "auth" : "guest"}>
-        <Header>
-          <TopFLeft>
-            <Text style={{ fontSize: "12px" }} uppercase>
-              {list.token_out_metadata?.symbol}/{list.token_in_metadata?.symbol}
+      <SwapContainer
+        as={motion.div}
+        {...anim(grid_item_trans)}
+        className={state == "auth" ? "auth" : "guest"}
+      >
+        <Flex justify="space-between">
+          <Flex align="center" gap={10}>
+            <TokenLogoWrap>
+              <img
+                onError={(e: any) => (e.target.src = "/no-token.png")}
+                src={list.token_out_metadata.icon || "/no-token.png"}
+                alt="Logo"
+              />
+            </TokenLogoWrap>
+            <Text color="#000" size="big" weight="500">
+              {list.token_out_metadata.symbol}
             </Text>
-          </TopFLeft>
-          <TopFRight className={state == "auth" ? "auth" : "guest"}>
-            {!list.verified && <VUser />}
-            <Text size="s3">{truncate(list.receiving_wallet, 9, "***")}</Text>
-          </TopFRight>
-        </Header>
+          </Flex>
+
+          <FillType>
+            {list.is_friction ? "Partial Fill" : "Fixed Fill"}
+          </FillType>
+        </Flex>
+
         <Body>
-          <DetailWrapperT>
-            <Flex align="center">
-              <TokenBadge
-                token={list.token_out_metadata}
-                handleClick={() => handleChart(list.token_out_metadata)}
-                hasChart={true}
-              />
-              <Spacer width={15} widthM={10} />
-              <Text
-                uppercase
-                weight="400"
-                sizeM="10px"
-                size="s3"
-                color="#453953"
-              >
-                Give
-              </Text>
-            </Flex>
-            <Swap />
-            <Flex align="center">
-              <Text
-                uppercase
-                weight="400"
-                size="s3"
-                sizeM="10px"
-                color="#453953"
-              >
-                Get
-              </Text>
-              <Spacer width={15} widthM={10} />
-              <TokenBadge
-                token={list.token_in_metadata}
-                handleClick={() => handleChart(list.token_in_metadata)}
-                hasChart={true}
-              />
-            </Flex>
-          </DetailWrapperT>
-          <Price>
-            <Text
-              style={{ whiteSpace: "nowrap" }}
-              uppercase
-              size="s1"
-              color=" #170728"
-            >
-              {Number(list.amount_out).toFixed(4)} &nbsp;
-              {list.token_out_metadata?.symbol}
+          <Flex align="center" justify="space-between">
+            <Text weight="400" size="s3" color="#8B8394">
+              Offer
             </Text>
 
-            <Text
-              uppercase
-              size="s1"
-              color=" #170728"
-              style={{ whiteSpace: "nowrap" }}
-            >
-              {Number(list.amount_in).toFixed(4)} &nbsp;
-              {list.token_in_metadata?.symbol}
+            <Text weight="400" size="s3" color="#8B8394">
+              For
             </Text>
-          </Price>
-
-          <DetailWrapper>
-            <BottomFLeft>
-              <Text size="s3" sizeM="tiny-2">
-                Fee 0.25%
-              </Text>
-            </BottomFLeft>
-            <Details>
-              <Text size="s3" color="#5D5169 " uppercase>
-                Published : {formatDateTime(list.createdAt)}
-              </Text>
-              <Text as="div" size="s3" color="#5D5169" uppercase>
-                Gain relative to Chart Prices::{" "}
+          </Flex>
+          <Spacer height={4} />
+          <Flex align="center" justify="space-between">
+            <Flex gap={4} align="center">
+              <Flex gap={4}>
                 <Text
-                  style={{ display: "inline-block" }}
-                  color={true ? "#12B347" : "#B31212"}
+                  style={{ whiteSpace: "nowrap" }}
+                  size="big"
+                  weight="500"
+                  color=" #000000"
                 >
                   {" "}
-                  --
-                  {/* +10%{" "} */}
+                  {Number(list.amount_out).toFixed(2)}
                 </Text>
-              </Text>
-              {/* {Number(list.amount_in).toFixed(2)} &nbsp;
-              {list.token_in_metadata?.symbol} */}
-
-              <Text size="s3" color="#5D5169" uppercase>
-                Expiry Time :{" "}
-                {list.deadline == getForever
-                  ? "Forever"
-                  : formatSecTime(list.deadline)}
-              </Text>
-            </Details>
-
-            {state == "auth" ? (
-              <Flex gap={16} style={{ marginTop: 10 }}>
-                <ActionIcon>
-                  <ActionBtn
-                    className="sm secondary icon"
-                    onClick={() => handleRemove && handleRemove(list)}
-                  >
-                    <Delete />
-                  </ActionBtn>
-                </ActionIcon>
-
-                {(list.status as number) < 3 && (
-                  <Action2>
-                    <Flex justify="space-between">
-                      <ActionBtn
-                        className="sm"
-                        onClick={() => setEditOpen(true)}
-                      >
-                        Edit
-                      </ActionBtn>
-                    </Flex>
-                  </Action2>
-                )}
+                <Text
+                  style={{ lineHeight: "20.31px", alignSelf: "flex-end" }}
+                  as="span"
+                  size="tiny"
+                >
+                  {" "}
+                  {list.token_out_metadata?.symbol}
+                </Text>
               </Flex>
-            ) : (
-              <Actions>
-                <ActionBtn className="sm" onClick={() => handleTrade(list)}>
-                  Trade
-                </ActionBtn>
-              </Actions>
-            )}
-          </DetailWrapper>
+              <ImgWrap height={16} width={16}>
+                <img
+                  onError={(e: any) => (e.target.src = "/no-token.png")}
+                  src={list.token_out_metadata.icon || "/no-token.png"}
+                  alt="Logo"
+                />
+              </ImgWrap>
+            </Flex>
 
-          <ListType>{list.is_friction ? "Frictional" : "Fixed"}</ListType>
+            <Flex gap={4} align="center">
+              <Flex gap={4}>
+                <Text
+                  style={{ whiteSpace: "nowrap" }}
+                  size="big"
+                  weight="500"
+                  color=" #000000"
+                >
+                  {" "}
+                  {Number(list.amount_in).toFixed(2)}
+                </Text>
+                <Text
+                  style={{ lineHeight: "20.31px", alignSelf: "flex-end" }}
+                  as="span"
+                  size="tiny"
+                >
+                  {" "}
+                  {list.token_in_metadata?.symbol}
+                </Text>
+              </Flex>
+              <ImgWrap height={16} width={16}>
+                <img
+                  onError={(e: any) => (e.target.src = "/no-token.png")}
+                  src={list.token_in_metadata.icon || "/no-token.png"}
+                  alt="Logo"
+                />
+              </ImgWrap>
+            </Flex>
+          </Flex>
+          <Spacer height={2} />
+          <Flex align="center" justify="space-between">
+            {" "}
+            <Flex gap={4}>
+              <Text weight="400" size="s3" color="#8B8394">
+                $0.034/Token
+              </Text>
+              <Text weight="400" size="s3" color="#8B8394">
+                (~$203k)
+              </Text>
+            </Flex>
+            <Text weight="400" size="s3" color="#8B8394">
+              $203
+            </Text>
+          </Flex>
         </Body>
+        <Progress value={40} />
       </SwapContainer>
       {token && (
         <Chart show={open} handleClose={() => setOpen(false)} token={token} />

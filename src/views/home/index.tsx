@@ -1,29 +1,18 @@
-import { ContainerSm, Flex, Text } from "@/components";
+import { ContainerSm, Flex } from "@/components";
 import { ListCard, SwapGrid, MobileList } from "@/components/Card";
-import {
-  Filter,
-  FilterCircle,
-  Grid,
-  Linear,
-  List,
-  ListGrid,
-  LSearch,
-  Search,
-} from "@/components/Icons";
+import { FilterHome, Linear, ListGrid, LSearch } from "@/components/Icons";
 import { useState } from "react";
 import CustomButton from "@/components/Button/CustomButton";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
 import classNames from "classnames";
+import { motion } from "framer-motion";
 
 import {
   Wrapper,
-  ActionSwitch,
   HomeHeader,
   LayoutSwitch,
   SearchContainer,
   SwitchItem,
-  SwitchItem2,
   InputWrapper,
   LeftSide,
   HomeBody,
@@ -36,14 +25,17 @@ import {
   ListCol,
   List as ListCon,
   Swap,
-  Volume,
+  Switch,
+  SItem,
+  FItem,
 } from "./styles";
 import { useListFetch } from "@/hooks/customHooks";
-import { getDailyVolume, truncate } from "@/helpers";
+import { truncate } from "@/helpers";
 import { formatDateTime, formatSecTime, getForever } from "@/utils";
-import { Chart, Counter, CounterOffer, Message } from "@/components/Modal";
+import { Counter, CounterOffer, Message } from "@/components/Modal";
 import { ListI } from "@/types";
 import Empty from "@/components/Empty";
+import { anim, grid_trans } from "@/utils/transitions";
 
 const HomePage = () => {
   const [display, setDisplay] = useState<"grid" | "list">("grid");
@@ -82,32 +74,24 @@ const HomePage = () => {
     <ContainerSm>
       <Wrapper>
         <HomeHeader>
-          <LeftSide>
-            <LayoutSwitch className={classNames({ hidden: mode == "list" })}>
-              <SwitchItem
-                onClick={() => setDisplay("grid")}
-                className={display === "grid" ? "active" : ""}
-              >
-                <Linear />
-              </SwitchItem>
-              {/* onClick={() => setDisplay("list")} */}
-              <SwitchItem
-                className={display === "list" ? "active list" : "list"}
-              >
-                <ListGrid />
-              </SwitchItem>
-            </LayoutSwitch>
-          </LeftSide>
+          <div style={{ flex: 1 }}>
+            <Switch>
+              <SItem onClick={() => navigate("/")} className="active">
+                Tokens
+              </SItem>
+              <SItem onClick={() => navigate("/list/create")}>Nfts</SItem>
+            </Switch>
+          </div>
 
-          <Flex justify="space-between" align="center" style={{ flex: 1 }}>
-            <ActionSwitch>
+          <Flex align="center" gap={16}>
+            {/* <ActionSwitch>
               <SwitchItem2 onClick={() => navigate("/")} className="active">
                 Swap
               </SwitchItem2>
               <SwitchItem2 onClick={() => navigate("/list/create")}>
                 List
               </SwitchItem2>
-            </ActionSwitch>
+            </ActionSwitch> */}
             <SearchContainer className={classNames({ hidden: mode == "list" })}>
               <InputWrapper>
                 <LSearch />
@@ -116,63 +100,55 @@ const HomePage = () => {
                   value={query}
                   onChange={(e) => onChangeHandler(e)}
                 />
-                <FilterCircle />
               </InputWrapper>
             </SearchContainer>
+
+            <FItem>
+              <FilterHome />
+              <span>Filter</span>
+            </FItem>
+
+            <LeftSide>
+              <LayoutSwitch className={classNames({ hidden: mode == "list" })}>
+                <SwitchItem
+                  onClick={() => setDisplay("grid")}
+                  className={display === "grid" ? "active" : ""}
+                >
+                  <Linear />
+                </SwitchItem>
+                <SwitchItem
+                  className={display === "list" ? "active list" : "list"}
+                >
+                  <ListGrid />
+                </SwitchItem>
+              </LayoutSwitch>
+            </LeftSide>
           </Flex>
         </HomeHeader>
         <HomeBody>
-          {!loading && (
-            <Flex wrap style={{ marginBottom: "24px" }} align="center">
-              <Text as="h3" size="h3">
-                Market orders
-              </Text>
-              <Volume>
-                24H volume: $
-                {volume.hour.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}
-              </Volume>
-              <Volume>
-                Weekly volume: $
-                {volume.weekly.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}
-              </Volume>
-              <Volume>
-                Month volume: $
-                {volume.monthly.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}
-              </Volume>
-              <Volume>
-                All time volume: $
-                {volume.allTime.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}
-              </Volume>
-            </Flex>
-          )}
+          {/* <VolumeSection loading={loading} volume={volume} /> */}
 
           {mode == "swap" ? (
             <Swap>
               {display === "grid" ? (
-                <GridWrapper>
+                <>
                   {loading ? (
                     <span>loading...</span>
                   ) : data.length < 1 ? (
                     <Empty />
                   ) : (
-                    data.map((list: any, i: number) => (
-                      <SwapGrid
-                        confirmFriction={(list) => handleFriction(list)}
-                        list={list}
-                        key={i}
-                        state="guest"
-                      />
-                    ))
+                    <GridWrapper as={motion.div} {...anim(grid_trans)}>
+                      {data.map((list: any, i: number) => (
+                        <SwapGrid
+                          confirmFriction={(list) => handleFriction(list)}
+                          list={list}
+                          key={i}
+                          state="guest"
+                        />
+                      ))}
+                    </GridWrapper>
                   )}
-                </GridWrapper>
+                </>
               ) : (
                 <>
                   <ListWrapper className="desktop">

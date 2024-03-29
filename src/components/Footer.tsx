@@ -73,7 +73,7 @@ const Footer = () => {
           </Flex>
           <CurvyBox>
             <Text uppercase size="s3">
-              vetme ©2022
+              vetme ©2024
             </Text>
           </CurvyBox>
         </FooterWrapper>

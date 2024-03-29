@@ -156,14 +156,14 @@ const Navigation = ({
               {/* <Item to="swap">
                 <span>Swap</span>
               </Item> */}
-              <a
-                className="item"
+              <Item
+                as="a"
                 download
                 target="_blank"
                 href="https://vetmeblock.com/assets/whitepaper.pdf"
               >
                 <span>White Paper</span>
-              </a>
+              </Item>
               <Item to="/how-to">How to</Item>
             </NavItems>
             <Action>

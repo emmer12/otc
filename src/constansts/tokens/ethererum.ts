@@ -23,6 +23,15 @@ const ethereumTokens = [
     decimal_place: 18,
     icon: "",
   },
+ {
+    chainId: 1,
+    address: "0x922D8563631B03C2c4cf817f4d18f6883AbA0109",
+    symbol: "LOCK",
+    name: "Houdini Swap",
+    decimal_place: 18,
+    icon: "https://assets.coingecko.com/coins/images/35132/large/LOCK_Logo.png?1707443455",
+  },
+
   {
     chainId: 1,
     address: "0x590f820444fa3638e022776752c5eef34e2f89a6",
