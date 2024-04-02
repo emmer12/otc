@@ -14,3 +14,4 @@ export { default as P2p } from "./p2p";
 export { default as HowTo } from "./how-to";
 export { default as KybarSwap } from "./kybar";
 export { default as Widget } from "./widget";
+export { default as ListDetails } from "./list/details";

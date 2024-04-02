@@ -31,20 +31,16 @@ function getLibrary(provider: any): Web3Provider {
   return library;
 }
 
-setTimeout(() => {
-  return ReactDOM.createRoot(
-    document.getElementById("root") as HTMLElement
-  ).render(
-    <React.StrictMode>
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <MetamaskProvider>
-          <BrowserRouter>
-            <ListProvider>
-              <App />
-            </ListProvider>
-          </BrowserRouter>
-        </MetamaskProvider>
-      </Web3ReactProvider>
-    </React.StrictMode>
-  );
-}, 5000);
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <MetamaskProvider>
+        <BrowserRouter>
+          <ListProvider>
+            <App />
+          </ListProvider>
+        </BrowserRouter>
+      </MetamaskProvider>
+    </Web3ReactProvider>
+  </React.StrictMode>
+);

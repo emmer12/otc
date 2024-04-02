@@ -1,3 +1,5 @@
+import { SVGProps } from "react";
+
 export const Grid = () => (
   <svg
     width="34"
@@ -953,12 +955,7 @@ export const ScanLogo = () => (
 );
 
 export const FilterHome = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={24}
-    height={25}
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={25} fill="none">
     <path
       stroke="#BEFECD"
       strokeLinecap="round"
@@ -967,4 +964,89 @@ export const FilterHome = () => (
       d="M2 5.1c0-.56 0-.84.109-1.054a1 1 0 0 1 .437-.437C2.76 3.5 3.04 3.5 3.6 3.5h16.8c.56 0 .84 0 1.054.109a1 1 0 0 1 .437.437C22 4.26 22 4.54 22 5.1v.67c0 .268 0 .403-.033.528-.029.11-.077.215-.141.31-.073.106-.175.194-.378.37l-6.396 5.543c-.203.176-.305.265-.377.371-.065.095-.113.2-.142.31-.033.125-.033.26-.033.529v5.227c0 .196 0 .294-.031.378a.5.5 0 0 1-.133.196c-.066.06-.157.096-.339.17l-3.4 1.36c-.367.146-.551.22-.699.189a.5.5 0 0 1-.315-.213c-.083-.126-.083-.324-.083-.72v-6.587c0-.27 0-.404-.033-.529a1.001 1.001 0 0 0-.141-.31c-.073-.106-.175-.194-.378-.37L2.552 6.978c-.203-.177-.305-.265-.378-.371a1 1 0 0 1-.141-.31C2 6.173 2 6.038 2 5.769V5.1Z"
     />
   </svg>
-) 
+);
+
+export const BackArrow = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={20}
+    height={20}
+    fill="none"
+    {...props}
+  >
+    <path
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M15.833 10H4.167m0 0L10 15.833M4.167 10 10 4.167"
+    />
+  </svg>
+);
+
+export const CopyIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={12}
+    height={13}
+    fill="none"
+    {...props}
+  >
+    <path
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M4 4.5V3.1c0-.56 0-.84.109-1.054a1 1 0 0 1 .437-.437C4.76 1.5 5.04 1.5 5.6 1.5h3.8c.56 0 .84 0 1.054.109a1 1 0 0 1 .437.437C11 2.26 11 2.54 11 3.1v3.8c0 .56 0 .84-.109 1.054a1 1 0 0 1-.437.437C10.24 8.5 9.96 8.5 9.4 8.5H8m-5.4 3h3.8c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C8 10.74 8 10.46 8 9.9V6.1c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437C7.24 4.5 6.96 4.5 6.4 4.5H2.6c-.56 0-.84 0-1.054.109a1 1 0 0 0-.437.437C1 5.26 1 5.54 1 6.1v3.8c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437c.214.109.494.109 1.054.109Z"
+    />
+  </svg>
+);
+
+export const ArrowUpward = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={16}
+    height={16}
+    fill="none"
+    {...props}
+  >
+    <path
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="m4.667 11.333 6.666-6.666m0 0H4.667m6.666 0v6.666"
+    />
+  </svg>
+);
+
+export const Info = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={12}
+    height={13}
+    fill="none"
+    {...props}
+  >
+    <path
+      stroke="#746A7E"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M6 8.5v-2m0-2h.005M11 6.5a5 5 0 1 1-10 0 5 5 0 0 1 10 0Z"
+    />
+  </svg>
+);
+
+export const GainIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={props.width || 12}
+    height={props.height || 10}
+    fill="none"
+    {...props}
+  >
+    <path
+      fill="#009F34"
+      d="M4.345.884c.824-1.179 2.486-1.179 3.31 0l3.935 5.625C12.6 7.952 11.63 10 9.935 10h-7.87C.37 10-.6 7.952.41 6.51L4.345.883Z"
+    />
+  </svg>
+)

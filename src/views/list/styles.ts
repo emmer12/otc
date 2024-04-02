@@ -245,3 +245,93 @@ export const THeader = styled.div`
   font-size: 16px;
   margin: 20px 0px;
 `;
+
+
+// Details page style
+
+export const DWrapper = styled.div`
+  padding:0px 164px;
+`
+
+export const BackArrowWrapper = styled.div`
+  transform:  translateX(-64px);
+`
+
+export const TokenLogoWrap = styled.div`
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+  border: 1px solid #170728;
+  display: grid;
+  place-content: center;
+
+  img {
+    height: 32px;
+    width: 32px;
+    object-fit: cover;
+  }
+`;
+
+export const AddCopy = styled.div`
+  display:flex;
+  gap:5px;
+  align-items:center;
+  font-size:12px;
+  color:#5D5169;
+  background:#E8E6EA;
+  padding:4px 6px;
+  border-radius:4px;
+
+  span{
+    line-height:19px;
+  }
+`
+export const TextCus = styled.h3`
+  color:#B9B5BF;
+  font-size:32px;
+  font-weight:40.1px;
+  font-weight:500;
+`
+
+export const Range = styled.div`
+  input{
+    accent-color:#170728;
+
+    &::-webkit-slider-thumb{ 
+   -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #ff4500;
+  cursor: ew-resize;
+  box-shadow: 0 0 2px 0 #555;
+  transition: background .3s ease-in-out;
+}
+
+&::-webkit-slider-runnable-track  {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+  }
+
+`
+
+export const TableHead = styled.thead`
+  background:#F5F4F6;
+  padding:12px 16px;
+
+  th{
+    text-align:start;
+    padding:0px 4px;
+  }
+`
+
+export const TableBody = styled.thead`
+
+  tr{
+    border-bottom:1px solid red;
+    height:40px;
+  }
+`

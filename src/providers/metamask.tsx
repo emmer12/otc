@@ -31,9 +31,9 @@ function MetamaskProvider({ children }: { children: any }) {
   return (
     <MetaLoading>
       <div>
-        <Text color="#170728">Connecting your Web3 provider</Text>
+        {/* <Text color="#170728">Connecting your Web3 provider</Text> */}
         <Spacer height={20} />
-        <Loading2 />
+        {/* <Loading2 /> */}
       </div>
     </MetaLoading>
   );

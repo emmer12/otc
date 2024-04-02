@@ -15,7 +15,7 @@ export const Button = styled.button.attrs((props) => ({
   opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   justify-content: center;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 24px;
   padding: 9px 26px;
   white-space: nowrap;
@@ -29,7 +29,7 @@ export const Button = styled.button.attrs((props) => ({
   position: relative;
   display: flex;
   align-items: center;
-  text-transform: uppercase;
+  text-transform: capitalize;
 
   &:hover,
   &:target,
@@ -156,7 +156,13 @@ export const Button = styled.button.attrs((props) => ({
     min-width: 167px;
     font-size: 20px;
   }
-
+  &.xs {
+    height: 39px;
+    min-width: 42px;
+    font-size: 14px;
+    padding: 4px 8px;
+    line-height: 20.73px;
+  }
   & svg,
   i {
     margin-right: 10px;

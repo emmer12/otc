@@ -257,6 +257,7 @@ const SwapGrid = ({
         as={motion.div}
         {...anim(grid_item_trans)}
         className={state == "auth" ? "auth" : "guest"}
+        onClick={() => navigate(`list/${list._id}`)}
       >
         <Flex justify="space-between">
           <Flex align="center" gap={10}>

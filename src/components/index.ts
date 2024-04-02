@@ -62,7 +62,7 @@ export const ContainerSm = styled.div.attrs(() => ({
 // `;
 
 export const Avatar = styled.div<{
-  size?: "xs" | "sm" | "md" | "lg" | "60px" | "72px";
+  size?: "xs" | "sm" | "md" | "lg" | "60px" | "72px" | "tiny";
   sizeM?: string;
 }>`
   position: relative;
@@ -71,29 +71,33 @@ export const Avatar = styled.div<{
       ? "20px"
       : size === "sm"
         ? "32px"
-        : size === "md"
-          ? "46px"
-          : size === "60px"
-            ? "60px"
-            : size === "72px"
-              ? "72px"
-              : size === "lg"
-                ? "128px"
-                : "80px"};
+        : size === "tiny"
+          ? "16px"
+          : size === "md"
+            ? "46px"
+            : size === "60px"
+              ? "60px"
+              : size === "72px"
+                ? "72px"
+                : size === "lg"
+                  ? "128px"
+                  : "80px"};
   width: ${({ size }) =>
     size === "xs"
       ? "20px"
       : size === "sm"
         ? "32px"
-        : size === "md"
-          ? "46px"
-          : size === "60px"
-            ? "60px"
-            : size === "72px"
-              ? "72px"
-              : size === "lg"
-                ? "128px"
-                : "80px"};
+        : size === "tiny"
+          ? "16px"
+          : size === "md"
+            ? "46px"
+            : size === "60px"
+              ? "60px"
+              : size === "72px"
+                ? "72px"
+                : size === "lg"
+                  ? "128px"
+                  : "80px"};
   border-radius: 50%;
 
   img {
@@ -571,10 +575,10 @@ export const CustomLink = styled.a`
   }
 `;
 
-export const ActionBtn = styled.button`
+export const ActionBtn = styled.button<{ size: string }>`
   all: unset;
   background: ${SECONDARY_COLOR_GREEN};
-  height: 83px;
+  height: ${({ size }) => size ? size : '83px'} ;
   width: 100%;
   border: 1px solid #2e203e;
   border-radius: 12px;
@@ -583,7 +587,7 @@ export const ActionBtn = styled.button`
   font-size: 18px;
   /* Blue/Main (900) */
   position: relative;
-  line-height: 83px;
+  line-height: 102%;
   color: #170728;
   cursor: pointer;
   text-align: center;
@@ -766,3 +770,27 @@ export const ImgWrap = styled.div<{
     object-fit: contain;
   }
 `;
+
+export const Card = styled.div`
+  padding:24px;
+  border-radius:12px;
+  border:1px solid #2E203E;
+  background:#fff;
+  width:100%;
+`
+export const CardGray = styled.div`
+  padding:12px;
+  border-radius:8px;
+  border:1px solid #453953;
+  background:#F5F4F6;
+`
+
+
+
+export const BgWrapper = styled.div`
+   svg{
+       position:absolute;
+       inset:0;
+       z-index:-1;
+   }
+`
