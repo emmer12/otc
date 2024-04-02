@@ -16,6 +16,42 @@ export const grid_item_trans = {
     visible: { opacity: 1, y: 0 }
 };
 
+export const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            duration: 0.3,
+        },
+    },
+    exit: {
+        opacity: 0,
+        transition: {
+            delay: 1,
+        },
+    },
+};
+
+
+export const slideInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.3,
+            delay: 0.2,
+        },
+    },
+    exit: {
+        opacity: 0,
+        y: 20,
+        transition: {
+            delay: 1,
+        },
+    },
+};
+
 export const anim = (variants: Variants) => {
     return {
         initial: "hidden",

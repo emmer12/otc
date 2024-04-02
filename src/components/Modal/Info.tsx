@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { CSSTransition } from "react-transition-group";
-import { useNavigate } from "react-router-dom";
 import { InfoBg } from "../bgs";
 import { BgWrapper, Flex, IconWrapper, Spacer, Text } from "..";
 import { AddCopy, TokenLogoWrap } from "@/views/list/styles";
 import { ArrowUpward, CopyIcon, GainIcon } from "../Icons";
+import { motion, AnimatePresence } from "framer-motion";
+import { anim, fadeIn, slideInUp } from "@/utils/transitions";
 
 const Container = styled.div`
   position: fixed;
@@ -23,11 +23,9 @@ const Inner = styled.div`
   background-repeat: no-repeat;
   background-position: top center;
   background-size: 100% 100%;
-
-  left: 50%;
   top: 10%;
   position: relative;
-  transform: translate(-50%, 0%);
+  margin: auto;
   padding: 40px 0px;
   position: relative;
   z-index: 99999;
@@ -103,18 +101,15 @@ interface IProps {
 }
 
 const InformationModal = ({ show, handleClose }: IProps) => {
-  const navigate = useNavigate();
-
   return (
-    <>
-      <CSSTransition
-        in={show}
-        timeout={400}
-        classNames={"alert-zoom"}
-        unmountOnExit
-      >
-        <Container onClick={handleClose}>
-          <Inner onClick={(e) => e.stopPropagation()}>
+    <AnimatePresence>
+      {show && (
+        <Container as={motion.div} {...anim(fadeIn)} onClick={handleClose}>
+          <Inner
+            as={motion.div}
+            {...anim(slideInUp)}
+            onClick={(e) => e.stopPropagation()}
+          >
             <Close onClick={handleClose}>
               <svg
                 width="19"
@@ -274,8 +269,8 @@ const InformationModal = ({ show, handleClose }: IProps) => {
             </BgWrapper>
           </Inner>
         </Container>
-      </CSSTransition>
-    </>
+      )}
+    </AnimatePresence>
   );
 };
 
