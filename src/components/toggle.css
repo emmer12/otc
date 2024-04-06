@@ -30,7 +30,7 @@ label {
   float: left;
   overflow: hidden;
   position: relative;
-  width: 54px;
+  width: 40px;
 }
 
 .switch-wrapper.large {
@@ -56,14 +56,14 @@ label {
   height: 20px;
   left: 50%;
   position: relative;
-  top: 3px;
+  top: 4px;
   width: 20px;
   z-index: 3;
 }
 
 .switch-wrapper.large>.switch>.switch-handle {
-  height: 30px;
-  width: 30px;
+  height: 24px;
+  width: 40px;
 }
 
 .switch-label {
@@ -78,7 +78,7 @@ label {
 }
 
 .btn-off {
-  background: linear-gradient(180deg, #E8EAEA 0%, #E8EAEA 100%);
+  background: linear-gradient(180deg, #B9B5BF 0%, #B9B5BF 100%);
   /* background: var(--bg); */
 
 }

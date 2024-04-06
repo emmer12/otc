@@ -3,17 +3,26 @@ import styled from "styled-components";
 
 export const List = styled.div``;
 
+
+export const TradeCon = styled.div`
+   position: relative;
+   z-index:1;
+ `
+
 export const TradeWrapper = styled.div`
-  background-image: url(/images/bg/list-3.png);
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: cover;
+  /* background-image: url(/images/bg/list-3.png); */
+  /* background-repeat: no-repeat; */
+  /* background-position: top center; */
+  /* background-size: cover; */
   border-radius: 10px;
   position: relative;
+  width:644px;
+  overflow:hidden;
+  
 
   .header {
     position: absolute;
-    top: 10px;
+    top: -18px;
     left: 50%;
     transform: translate(-50%, -50%);
     white-space: nowrap;
@@ -334,4 +343,28 @@ export const TableBody = styled.thead`
     border-bottom:1px solid red;
     height:40px;
   }
+`
+export const TradeInfo = styled.div`
+  width:270px;
+  border:1px solid #453953;
+  border-radius:12px;
+  padding:24px;
+  background:#fff;
+`
+
+export const VisibleWrap = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom:20px;
+
+button{
+  background:#F7E0FE;
+  padding:8px 12px;
+
+  &:hover{
+  background:#F7E0FE;
+
+  }
+}
+  
 `

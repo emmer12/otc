@@ -16,6 +16,7 @@ const Container = styled.div`
   z-index: 99999;
   background: rgba(23, 7, 40, 0.6);
 `;
+
 const Inner = styled.div`
   width: 418px;
   max-width: 95%;
@@ -64,7 +65,7 @@ const Contain = styled.div`
 const Title = styled.div`
   position: absolute;
   top: 0px;
-  left: 40px;
+  left: 46px;
   color: #ffffff;
   text-transform: uppercase;
   font-size: 14px;

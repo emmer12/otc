@@ -204,7 +204,7 @@ export const SearchContainer = styled.div`
   }
 `;
 export const InputWrapper = styled.div`
-  height: 56px;
+  height: 48px;
   display: flex;
   align-items: center;
   background: #ffffff;
@@ -216,7 +216,7 @@ export const InputWrapper = styled.div`
 
   color: #170728;
 
-  border: 1px solid #2e203e;
+  border: 1px solid #170728;
   border-radius: 12px;
 
   svg {
@@ -224,7 +224,7 @@ export const InputWrapper = styled.div`
   }
 
   input {
-    height: 50px;
+    height: 44px;
     outline: none;
     border: none;
     font-size: 18px;

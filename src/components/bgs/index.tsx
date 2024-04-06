@@ -28,3 +28,117 @@ export const InfoBg = (props: SVGProps<SVGSVGElement>) => (
     />
   </svg>
 );
+
+export const TokenInputBgUp = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={368}
+    height={109}
+    fill="none"
+    {...props}
+  >
+    <mask id="a" fill="#fff">
+      <path
+        fillRule="evenodd"
+        d="M368 8a8 8 0 0 0-8-8H8a8 8 0 0 0-8 8v93a8 8 0 0 0 8 8h145a8 8 0 0 0 8-8v-1c0-6.627 5.373-12 12-12h22c6.627 0 12 5.373 12 12v1a8 8 0 0 0 8 8h145a8 8 0 0 0 8-8V8Z"
+        clipRule="evenodd"
+      />
+    </mask>
+    <path
+      fill="#fff"
+      fillRule="evenodd"
+      d="M368 8a8 8 0 0 0-8-8H8a8 8 0 0 0-8 8v93a8 8 0 0 0 8 8h145a8 8 0 0 0 8-8v-1c0-6.627 5.373-12 12-12h22c6.627 0 12 5.373 12 12v1a8 8 0 0 0 8 8h145a8 8 0 0 0 8-8V8Z"
+      clipRule="evenodd"
+    />
+    <path
+      fill="#453953"
+      d="M8 1h352v-2H8v2ZM1 101V8h-2v93h2Zm152 7H8v2h145v-2Zm9-7v-1h-2v1h2Zm0-1c0-6.075 4.925-11 11-11v-2c-7.18 0-13 5.82-13 13h2Zm11-11h22v-2h-22v2Zm22 0c6.075 0 11 4.925 11 11h2c0-7.18-5.82-13-13-13v2Zm11 11v1h2v-1h-2Zm154 8H215v2h145v-2Zm7-100v93h2V8h-2Zm-7 102a9 9 0 0 0 9-9h-2a7 7 0 0 1-7 7v2Zm-154-9a9 9 0 0 0 9 9v-2a7 7 0 0 1-7-7h-2Zm-53 9a9 9 0 0 0 9-9h-2a7 7 0 0 1-7 7v2Zm-154-9a9 9 0 0 0 9 9v-2a7 7 0 0 1-7-7h-2ZM360 1a7 7 0 0 1 7 7h2a9 9 0 0 0-9-9v2ZM8-1a9 9 0 0 0-9 9h2a7 7 0 0 1 7-7v-2Z"
+      mask="url(#a)"
+    />
+  </svg>
+);
+export const TokenInputBgDown = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={368}
+    height={109}
+    fill="none"
+    {...props}
+  >
+    <mask id="ab" fill="#fff">
+      <path
+        fillRule="evenodd"
+        d="M0 101a8 8 0 0 0 8 8h352a8 8 0 0 0 8-8V8a8 8 0 0 0-8-8H214a7 7 0 0 0-7 7c0 6.627-5.373 12-12 12h-22c-6.627 0-12-5.373-12-12a7 7 0 0 0-7-7H8a8 8 0 0 0-8 8v93Z"
+        clipRule="evenodd"
+      />
+    </mask>
+    <path
+      fill="#fff"
+      fillRule="evenodd"
+      d="M0 101a8 8 0 0 0 8 8h352a8 8 0 0 0 8-8V8a8 8 0 0 0-8-8H214a7 7 0 0 0-7 7c0 6.627-5.373 12-12 12h-22c-6.627 0-12-5.373-12-12a7 7 0 0 0-7-7H8a8 8 0 0 0-8 8v93Z"
+      clipRule="evenodd"
+    />
+    <path
+      fill="#453953"
+      d="M360 108H8v2h352v-2Zm7-100v93h2V8h-2ZM214 1h146v-2H214v2Zm-8 6c0 6.075-4.925 11-11 11v2c7.18 0 13-5.82 13-13h-2Zm-11 11h-22v2h22v-2Zm-22 0c-6.075 0-11-4.925-11-11h-2c0 7.18 5.82 13 13 13v-2ZM8 1h146v-2H8v2ZM1 101V8h-2v93h2ZM8-1a9 9 0 0 0-9 9h2a7 7 0 0 1 7-7v-2Zm154 8a8 8 0 0 0-8-8v2a6 6 0 0 1 6 6h2Zm52-8a8 8 0 0 0-8 8h2a6 6 0 0 1 6-6v-2Zm155 9a9 9 0 0 0-9-9v2a7 7 0 0 1 7 7h2ZM8 108a7 7 0 0 1-7-7h-2a9 9 0 0 0 9 9v-2Zm352 2a9 9 0 0 0 9-9h-2a7 7 0 0 1-7 7v2Z"
+      mask="url(#ab)"
+    />
+  </svg>
+);
+
+export const TokenSelectBg = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={418}
+    height={461}
+    fill="none"
+    {...props}
+  >
+    <mask id="a" fill="#fff">
+      <path
+        fillRule="evenodd"
+        d="M206.67 6.585A12 12 0 0 1 217.379 0H352c6.627 0 12 5.373 12 12v30c0 6.627 5.373 12 12 12h30c6.627 0 12 5.373 12 12v383c0 6.627-5.373 12-12 12H12c-6.627 0-12-5.373-12-12V11.146C0 4.99 4.99 0 11.146 0c4.204 0 8.05 2.365 9.947 6.116l6.725 13.3A12 12 0 0 0 38.527 26h150.946a12 12 0 0 0 10.709-6.585l6.488-12.83Z"
+        clipRule="evenodd"
+      />
+    </mask>
+    <path
+      fill="#fff"
+      fillRule="evenodd"
+      d="M206.67 6.585A12 12 0 0 1 217.379 0H352c6.627 0 12 5.373 12 12v30c0 6.627 5.373 12 12 12h30c6.627 0 12 5.373 12 12v383c0 6.627-5.373 12-12 12H12c-6.627 0-12-5.373-12-12V11.146C0 4.99 4.99 0 11.146 0c4.204 0 8.05 2.365 9.947 6.116l6.725 13.3A12 12 0 0 0 38.527 26h150.946a12 12 0 0 0 10.709-6.585l6.488-12.83Z"
+      clipRule="evenodd"
+    />
+    <path
+      fill="#5D5169"
+      d="m200.182 19.415-.893-.451.893.451Zm-172.364 0-.892.452.892-.452ZM206.67 6.585l.893.45-.893-.45ZM352-1H217.379v2H352v-2Zm13 43V12h-2v30h2Zm41 11h-30v2h30v-2Zm13 396V66h-2v383h2ZM12 462h394v-2H12v2ZM-1 11.146V449h2V11.146h-2Zm29.71 7.818-6.725-13.3-1.784.903 6.725 13.3 1.785-.903ZM189.474 25H38.527v2h150.946v-2Zm16.305-18.867-6.489 12.831 1.785.903 6.489-12.831-1.785-.903ZM189.473 27a13 13 0 0 0 11.601-7.133l-1.785-.903A10.999 10.999 0 0 1 189.473 25v2ZM26.926 19.867A13 13 0 0 0 38.526 27v-2a11 11 0 0 1-9.815-6.036l-1.785.903ZM11.146 1c3.827 0 7.328 2.153 9.055 5.567l1.784-.902A12.146 12.146 0 0 0 11.146-1v2ZM1 11.146C1 5.543 5.543 1 11.146 1v-2C4.438-1-1 4.438-1 11.146h2ZM12 460c-6.075 0-11-4.925-11-11h-2c0 7.18 5.82 13 13 13v-2Zm405-11c0 6.075-4.925 11-11 11v2c7.18 0 13-5.82 13-13h-2ZM406 55c6.075 0 11 4.925 11 11h2c0-7.18-5.82-13-13-13v2Zm-43-13c0 7.18 5.82 13 13 13v-2c-6.075 0-11-4.925-11-11h-2ZM217.379-1a13 13 0 0 0-11.601 7.133l1.785.903A10.999 10.999 0 0 1 217.379 1v-2ZM352 1c6.075 0 11 4.925 11 11h2c0-7.18-5.82-13-13-13v2Z"
+      mask="url(#a)"
+    />
+  </svg>
+);
+
+export const ListDetailsBg = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={644}
+    height={575}
+    fill="none"
+    style={{ position: "absolute", inset: 0, zIndex: 0 }}
+    {...props}
+  >
+    <path
+      fill="url(#a)"
+      d="M12 0C5.373 0 0 5.373 0 12v551c0 6.627 5.373 12 12 12h620c6.627 0 12-5.373 12-12V12c0-6.627-5.373-12-12-12H442.5a12 12 0 0 0-11.077 7.385l-4.872 11.692A8 8 0 0 1 419.167 24H225.333a8 8 0 0 1-7.384-4.923l-4.872-11.692A12 12 0 0 0 202 0H12Z"
+    />
+    <defs>
+      <radialGradient
+        id="a"
+        cx={0}
+        cy={0}
+        r={1}
+        gradientTransform="matrix(0 385.25 -791.184 0 539 410.75)"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop offset={1} stopColor="#170728" />
+      </radialGradient>
+    </defs>
+  </svg>
+);

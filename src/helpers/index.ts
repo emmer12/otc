@@ -1,5 +1,5 @@
 import axios from "axios";
-import { chains, fuji_test_tokens, gobi_tokens } from "@/data";
+import { chains, fuji_test_tokens, gobi_tokens, sepolia_tokens } from "@/data";
 import { ethers } from "ethers";
 import { Blockchain } from "@/types";
 import {
@@ -64,6 +64,8 @@ export const getDefaultTokens = (chainId = 5) => {
       return horizonTokens
     case 1663:
       return gobi_tokens
+    case 11155111:
+      return sepolia_tokens
     default:
       return ethereumTokens;
       break;
@@ -115,6 +117,8 @@ export const getChainContract = (chainId: number | undefined) => {
       return import.meta.env.VITE_CONTRACT_ADDRESS_GOBI;
     case 7332:
       return import.meta.env.VITE_CONTRACT_ADDRESS_EON;
+    case 11155111:
+      return import.meta.env.VITE_CONTRACT_ADDRESS_BSC_MAINNET;
     default:
       import.meta.env.VITE_CONTRACT_ADDRESS_ETH_MAINNET;
       break;
@@ -217,7 +221,7 @@ export const getDailyVolume = () => {
 };
 
 export const computeUsdPrice = (usd: any, amount: number) => {
-  return (usd * amount).toFixed(5);
+  return (usd * amount).toFixed(2);
 };
 
 export const toEther = (weiAmount: string, decimal_place: any) =>
@@ -225,3 +229,12 @@ export const toEther = (weiAmount: string, decimal_place: any) =>
 
 
 export const checkRelay = (chainId: number | undefined) => !!chains.find((chain) => chain.chainId == chainId)?.relay
+
+
+export const removeDuplicates = (arr: any, prop: string) => {
+  return arr.filter((obj: any, index: number, self: any) =>
+    index === self.findIndex((item: any) => (
+      item[prop].toLowerCase() === obj[prop].toLowerCase()
+    ))
+  );
+}

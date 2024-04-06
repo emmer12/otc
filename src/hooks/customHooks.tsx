@@ -8,6 +8,7 @@ import {
   getDefaultTokens,
   getLocalTokens,
   isAddress,
+  removeDuplicates,
 } from "@/helpers";
 import { BASE_URL } from "@/helpers/apiHelper";
 import { chains } from "@/data";
@@ -101,12 +102,8 @@ export const useListFetch = (curChain = "eth") => {
 
 export const useTokenFetch = (query: string, chainId = 1, w_tokens: any) => {
   let tokens = w_tokens.concat(getDefaultTokens(chainId)) as any[];
-  tokens = tokens.reduce((acc, curr) => {
-    if (!acc.find((item: any) => item.address == curr.address)) {
-      acc.push(curr);
-    }
-    return acc;
-  }, []);
+
+  tokens = removeDuplicates(tokens, "address");
 
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -116,15 +113,6 @@ export const useTokenFetch = (query: string, chainId = 1, w_tokens: any) => {
   useEffect(() => {
     setResults(tokens);
   }, [w_tokens]);
-
-  // const walletTokens = async () => {
-  //   const tokenAddresses = await provider.send("eth_accounts", []);
-  //   const signer = provider.getSigner();
-  //   const address = await signer.getAddress();
-  //   console.log(tokenAddresses);
-  // };
-
-  // walletTokens();
 
   let res = useMemo(() => {
     let rs = tokens.filter((token: any) =>

@@ -1,52 +1,58 @@
-import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
-import { Divider, Flex, IconWrapper, Spacer, Text, TokenBadge } from "..";
-import { Button } from "../Button";
-import { LSearch, Send, Swap } from "../Icons";
-import { CSSTransition } from "react-transition-group";
+import { useState } from "react";
+import styled from "styled-components";
+import { Flex, Spacer, Text } from "..";
+import { LSearch } from "../Icons";
 import TokenCard from "./TokenCard";
-// import { tokens as InitTokens, defaultToken as InitialTokens } from "@/data";
-import { useQuery } from "@apollo/react-hooks";
-import { DAI_QUERY, ETH_PRICE_QUERY, ETH_TOKEN_QUERY } from "@/apollo";
 import { TokenI } from "@/types";
-import { ActionSwitch, InputWrapper, SwitchItem2 } from "@/views/home/styles";
+import { InputWrapper } from "@/views/home/styles";
 import { useTokenFetch } from "@/hooks/customHooks";
-import { getBlockName, setLocalToken } from "@/helpers";
+import { getBlockName } from "@/helpers";
 import axios from "axios";
+import { TokenSelectBg } from "../bgs";
+import { AnimatePresence, motion } from "framer-motion";
+import { anim, fadeIn, slideInUp } from "@/utils/transitions";
 
 const SwapContainer = styled.div`
-  width: 396px;
+  width: 418px;
   max-width: 100%;
   margin-bottom: 114px;
   margin: auto;
-  background-image: url(/images/bg/list-2.png);
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: 100% 100%;
   position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 100px;
+  position: relative;
 
   .header {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 50px;
   }
 `;
-const Header = styled.div`
-  background: rgba(125, 169, 255, 0.47);
-  padding: 17px 50px;
-  border-radius: 20px 20px 0px 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+const Close = styled.div`
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  right: 0px;
+  top: 0px;
+  background: #170728;
+  border: 1px solid #453953;
+  border-radius: 12px;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  z-index: 1;
 
   @media (max-width: 640px) {
-    padding: 16px;
+    width: 50px;
+    height: 50px;
+    top: -3px;
+    right: 5px;
   }
 `;
+
 const Body = styled.div`
-  padding: 16px;
+  padding: 16px 25px;
+  z-index: 1;
+  position: relative;
 `;
 const InputCon = styled.div`
   label {
@@ -56,39 +62,7 @@ const InputCon = styled.div`
     color: #848892;
   }
 `;
-const InputBox = styled.div`
-  display: flex;
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  border-radius: 20px;
-  height: 80px;
-  align-items: center;
-  padding: 0px 26px;
 
-  @media (max-width: 640px) {
-    padding: 0px 20px;
-  }
-
-  @media (max-width: 640px) {
-    height: 58px;
-  }
-`;
-const Input = styled.input`
-  height: 100%;
-  border: none;
-  outline: none;
-  flex: 1;
-  font-weight: 700;
-  font-size: 20px;
-  width: 30%;
-  color: #8c8c8c;
-
-  @media (max-width: 640px) {
-    font-size: 18px;
-  }
-`;
-
-const IconWrap = styled.div``;
 const ModalWrapper = styled.div`
   position: fixed;
   top: 0px;
@@ -97,49 +71,17 @@ const ModalWrapper = styled.div`
   width: 100%;
   overflow-y: auto;
   z-index: 99999;
-  background: rgba(242, 255, 245, 0.7);
-  backdrop-filter: blur(5px);
+  background: rgba(23, 7, 40, 0.6);
 `;
 
 const ResultCon = styled.div`
-  background: #ffffff;
-  border: 1px solid #2e203e;
   border-radius: 10px;
-  max-height: 319px;
+  max-height: 312px;
   overflow-y: auto;
   padding: 21px 16px;
 
   @media (max-width: 640px) {
     padding: 21px 16px;
-  }
-`;
-const Tabs = styled(Flex)`
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  border-radius: 20px;
-`;
-const Tab = styled(Text)`
-  flex: 1;
-  padding: 10px;
-  text-align: center;
-  position: relative;
-  cursor: pointer;
-  &.active {
-    &:after {
-      content: "";
-      border-radius: 20px;
-      background: rgba(125, 169, 255, 0.47);
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      width: 100%;
-      /* height: 50px; */
-      height: 100%;
-    }
-  }
-
-  &:nth-child(2) {
-    cursor: not-allowed;
   }
 `;
 
@@ -176,68 +118,81 @@ const TokenSelect = ({
   const callback = async (address: string) => {
     let token = results.find((token) => token.address === address);
     setQuery("");
-    if (!token.usd) {
-      try {
-        const { data } = await axios.get(
-          `https://api.coingecko.com/api/v3/coins/${getBlockName(
-            chainId
-          )}/contract/${token.address}`
-        );
-        console.log(data.market_data, "This is the marketData");
-        token.usd = data?.market_data?.current_price?.usd;
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
     handleSelected(token);
 
     // setLocalToken(token);
   };
 
   return (
-    <CSSTransition in={show} timeout={400} classNames={"fade"} unmountOnExit>
-      <ModalWrapper onClick={handleClose}>
-        <SwapContainer onClick={(e) => e.stopPropagation()}>
-          <Text className="header" weight="400" size="s3" uppercase>
-            Select an asset
-          </Text>
-          <Spacer height={20} />
-          <Body>
-            <ActionSwitch className="list">
-              <SwitchItem2 className="active">Coin</SwitchItem2>
-              <SwitchItem2>Nft</SwitchItem2>
-            </ActionSwitch>
-            <Spacer height={27} />
-            <InputCon>
-              <InputWrapper>
-                <LSearch />
-                <input
-                  placeholder="Type a name or address"
-                  value={query}
-                  type="text"
-                  onChange={handleSearch}
+    <AnimatePresence>
+      {show && (
+        <ModalWrapper as={motion.div} {...anim(fadeIn)} onClick={handleClose}>
+          <SwapContainer
+            as={motion.div}
+            {...anim(slideInUp)}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Close onClick={handleClose}>
+              <svg
+                width="19"
+                height="19"
+                viewBox="0 0 19 19"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M8.79355 9.4998L2.42959 3.13584L3.1367 2.42873L9.50066 8.79269L15.8644 2.42893L16.5715 3.13604L10.2078 9.4998L16.5717 15.8638L15.8646 16.5709L9.50066 10.2069L3.1365 16.5711L2.42939 15.864L8.79355 9.4998Z"
+                  fill="white"
                 />
-              </InputWrapper>
-            </InputCon>
-            <Spacer height={27} />
-            {results?.length ? (
-              <ResultCon className="custom-scroll">
-                {results?.map((token: any, i: number) => (
-                  <TokenCard {...token} key={i} callback={callback} />
-                ))}
-              </ResultCon>
-            ) : (
-              <>
-                <Msg>
-                  <Text>Not Found</Text>
-                </Msg>
-              </>
-            )}
-          </Body>
-        </SwapContainer>
-      </ModalWrapper>
-    </CSSTransition>
+              </svg>
+            </Close>
+            <Text
+              className="header"
+              color="#fff"
+              weight="400"
+              size="s3"
+              uppercase
+            >
+              Select an asset
+            </Text>
+            <Spacer height={56} />
+            <Body>
+              <InputCon>
+                <InputWrapper>
+                  <LSearch />
+                  <input
+                    placeholder="Type a name or paste an address"
+                    value={query}
+                    type="text"
+                    onChange={handleSearch}
+                  />
+                </InputWrapper>
+              </InputCon>
+              <Spacer height={27} />
+              {results?.length ? (
+                <ResultCon className="custom-scroll">
+                  {results?.map((token: any, i: number) => (
+                    <TokenCard {...token} key={i} callback={callback} />
+                  ))}
+                </ResultCon>
+              ) : (
+                <>
+                  <Msg>
+                    <Text>Not Found</Text>
+                  </Msg>
+                </>
+              )}
+            </Body>
+
+            <TokenSelectBg
+              style={{ position: "absolute", inset: 0, zIndex: 0 }}
+            />
+          </SwapContainer>
+        </ModalWrapper>
+      )}
+    </AnimatePresence>
   );
 };
 

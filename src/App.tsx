@@ -6,9 +6,10 @@ import { ToastContainer } from "react-toastify";
 import { Loading } from "./components/Icons";
 import { Player } from "@lottiefiles/react-lottie-player";
 import * as animationData from "./preloader.json";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {

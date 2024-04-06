@@ -8,10 +8,9 @@ import {
 
 export const Button = styled.button.attrs((props) => ({
   className: props.className,
-}))<{ disabled?: boolean; bg?: string }>`
+}))<{ disabled?: boolean; bg?: string; not_rounded?: boolean }>`
   outline: none;
   border: 1px solid transparent;
-  border-radius: 10px;
   opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   justify-content: center;
@@ -20,7 +19,7 @@ export const Button = styled.button.attrs((props) => ({
   padding: 9px 26px;
   white-space: nowrap;
   height: 40px;
-  border-radius: 100px;
+  border-radius: ${({ not_rounded }) => (not_rounded ? "8px" : "100px")};
   /* identical to box height */
   font-size: 14px;
   letter-spacing: 0.03em;

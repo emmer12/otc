@@ -46,6 +46,7 @@ const HomePage = () => {
   const { loading, data, setQuery, query, volume } = useListFetch(
     chain || savedChainId
   );
+
   const navigate = useNavigate();
   const [openC, setOpenC] = useState<boolean>(false);
   const [openO, setOpenO] = useState<boolean>(false);
@@ -133,7 +134,18 @@ const HomePage = () => {
               {display === "grid" ? (
                 <>
                   {loading ? (
-                    <span>loading...</span>
+                    <GridWrapper as={motion.div} {...anim(grid_trans)}>
+                      {Array(6)
+                        .fill("")
+                        .map((list: any, i: number) => (
+                          <SwapGrid
+                            confirmFriction={(list) => handleFriction(list)}
+                            list={list}
+                            key={i}
+                            state="guest"
+                          />
+                        ))}
+                    </GridWrapper>
                   ) : data.length < 1 ? (
                     <Empty />
                   ) : (

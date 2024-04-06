@@ -27,6 +27,7 @@ export const defaultRPCs = {
   polygon: "https://polygon-rpc.com/",
   avax: "https://api.avax.network/ext/bc/C/rpc",
   avaxfuji: "https://rpc.ankr.com/avalanche_fuji",
+  sepolia: 'wss://sepolia.gateway.tenderly.co'
 };
 
 export function select_rpc_url(chain: Blockchain) {
@@ -49,6 +50,8 @@ export const get_blockchain_from_chainId = (chain: number | undefined) => {
       return Blockchain.Rinkeby;
     case 5:
       return Blockchain.Goerli;
+    case 11155111:
+      return Blockchain.Sepolia;
     default:
       return Blockchain.Eth;
   }

@@ -1,4 +1,6 @@
 import {
+  Avatar,
+  CardGray,
   Center,
   Container,
   ContainerSm,
@@ -16,7 +18,9 @@ import { toast } from "react-toastify";
 
 import {
   TradeWrapper,
+  TradeCon,
   LeftContent,
+  VisibleWrap,
   RightContent,
   TradeInner,
   TradeItem,
@@ -27,6 +31,7 @@ import {
   Stepper,
   Step,
   RTop,
+  TradeInfo,
 } from "./styles";
 import { ListContext, ListContextType } from "@/context/Listcontext";
 import { truncate } from "@/helpers";
@@ -37,12 +42,20 @@ import {
 } from "@/helpers/contract";
 import CustomButton from "@/components/Button/CustomButton";
 import { fromBigNumber, getTradeLink, parseSuccess } from "@/utils";
-import { BrandBlock, Copy, PCircle, StepHLine } from "@/components/Icons";
+import {
+  BrandBlock,
+  Copy,
+  Info,
+  PCircle,
+  StepHLine,
+  Lock,
+} from "@/components/Icons";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import Api from "@/helpers/apiHelper";
 import { Message, Share } from "@/components/Modal";
 import { ActionSwitch, SwitchItem2 } from "../home/styles";
+import { ListDetailsBg } from "@/components/bgs";
 
 const Trans = () => {
   const [status, setStatus] = useState<number>(1);
@@ -65,12 +78,12 @@ const Trans = () => {
   };
 
   const setPrivacy = (value: boolean) => {
-    setForm((prev: any) => ({
-      ...prev,
-      is_private: value,
-      receiving_wallet: account,
-      signatory: account,
-    }));
+    // setForm((prev: any) => ({
+    //   ...prev,
+    //   is_private: value,
+    //   receiving_wallet: account,
+    //   signatory: account,
+    // }));
   };
   useEffect(() => {
     getAllowance();
@@ -153,259 +166,270 @@ const Trans = () => {
   };
   return (
     <ContainerSm>
-      <OnlyMobile>
-        <Center>
-          <ActionSwitch style={{ margin: "auto" }}>
-            <SwitchItem2
-              className={form.is_private ? "active" : ""}
-              onClick={() => setPrivacy(true)}
-            >
-              Private
-            </SwitchItem2>
-            <SwitchItem2
-              onClick={() => setPrivacy(false)}
-              className={form.is_private ? "" : "active"}
-            >
-              Public
-            </SwitchItem2>
-          </ActionSwitch>
-        </Center>
-        <Spacer height={40} />
-      </OnlyMobile>
-      <TradeWrapper>
-        <Text className="header" as="h2" size="s3" uppercase>
-          List Transaction Queue
-        </Text>
-        <Spacer height={20} />
-        <TradeItem style={{ textAlign: "center" }}>
-          <Text color="#fff" size="s3">
-            {truncate(account || "", 9, "***")}
-          </Text>
-          <Text color="#fff" size="s1">
-            Wallet Id
-          </Text>
-        </TradeItem>
-        <Spacer height={28} />
-        <TradeInner justify="space-between">
-          <LeftContent direction="column" justify="space-between">
-            <LTop>
-              <TradeItem>
-                <Text color="#fff" size="s3">
-                  You give
-                </Text>
-                <Text color="#fff" size="s1">
-                  {form.amount_out} {form.token_out_metadata.symbol}
-                </Text>
-                <Spacer height={8} />
-                <Text size="tiny" color=" #E8E6EA">
-                  (Escrow fee : 0.125%)
-                </Text>
-              </TradeItem>
-            </LTop>
-          </LeftContent>
-          <OnlyDesktop>
-            <ActionSwitch style={{ margin: "auto" }}>
-              <SwitchItem2
-                className={form.is_private ? "active" : ""}
-                onClick={() => setPrivacy(true)}
-              >
-                Private
-              </SwitchItem2>
-              <SwitchItem2
-                onClick={() => setPrivacy(false)}
-                className={form.is_private ? "" : "active"}
-              >
-                Public
-              </SwitchItem2>
-            </ActionSwitch>
-          </OnlyDesktop>
-          <RightContent
-            direction="column"
-            justify="space-between"
-            align="flex-end"
-          >
-            <RTop>
-              <TradeItem>
-                <Text color="#fff" size="s3">
-                  You get
-                </Text>
-                <Text color="#fff" size="s1">
-                  {form.amount_in} {form.token_in_metadata.symbol}
-                </Text>
-                <Spacer height={8} />
-                <Text size="tiny" color=" #E8E6EA">
-                  (Escrow fee :0.125%)
-                </Text>
-              </TradeItem>
-            </RTop>
-          </RightContent>
-        </TradeInner>
-        <Spacer height={20} />
-        {buildStepper(status)}
-        <Spacer height={20} />
-
-        <Center style={{ flexDirection: "column" }}>
-          <OnlyDesktop>
-            <Spacer height={52} />
-            <TradeItem>
-              <Text as="div" color="#E8E6EA" size="s1" uppercase>
-                NB:{" "}
-                <div
-                  onClick={() => setOpen(true)}
-                  style={{
-                    textDecoration: "underline",
-                    display: "inline-block",
-                  }}
-                >
-                  Escrow
-                </div>{" "}
-                Fee Applies
+      <Flex gap={35}>
+        <TradeInfo>
+          <Flex gap={24} direction="column">
+            <div>
+              <Text color="#746A7E" size="s3">
+                Offer
               </Text>
-            </TradeItem>
-          </OnlyDesktop>
-
-          {privateLink ? (
-            <>
-              <Spacer height={24} />
-              <Flex>
-                <Text as="div" size="s1" color="#E8E6EA" uppercase>
-                  {" "}
-                  <span>
-                    Private link:{" "}
-                    {truncate(privateLink || "", 50, "...", "end")}
-                  </span>
+              <Flex gap={4} align="center">
+                <Text size="big" color="#000000" weight="500">
+                  {form.amount_out}
                 </Text>
-                <Spacer width={5} />
-                <Wrapper style={{ cursor: "pointer" }} onClick={copyLink}>
-                  <Copy />
-                </Wrapper>
+                <Text
+                  color="#5D5169"
+                  weight="500"
+                  size="tiny"
+                  style={{ lineHeight: "15.31px" }}
+                >
+                  {form.token_out_metadata.symbol}
+                </Text>
+                <Avatar size="tiny">
+                  <img
+                    onError={(e: any) => (e.target.src = "/no-token.png")}
+                    src={form.token_out_metadata.icon || "/no-token.png"}
+                    alt="Logo"
+                  />
+                </Avatar>
               </Flex>
-              <Spacer height={20}></Spacer>
-
-              <Button className="primary m-sm" onClick={handleCancel}>
-                Ok
-              </Button>
-            </>
-          ) : (
-            <>
-              <Spacer height={24} />
-              <OnlyMobile>
-                {status < 3 ? (
-                  <Flex>
-                    {(Number(allowance) as number) < form.amount_out ? (
-                      <CustomButton
-                        loading={loading || approving}
-                        disabled={loading || approving}
-                        classNames="secondary"
-                        onClick={() => approve()}
-                        text="Approve"
-                      />
-                    ) : (
-                      // <Button className="primary md" onClick={() => listToken()}>
-                      //   List Token
-                      // </Button>
-                      <CustomButton
-                        classNames="secondary"
-                        text="List Token"
-                        onClick={() => listToken()}
-                        loading={loading || approving}
-                        disabled={loading || approving}
-                      />
-                    )}
-                    <Spacer width={41} />
-                    <Button className="" onClick={handleCancel}>
-                      Cancel
-                    </Button>
-                  </Flex>
-                ) : (
-                  <Flex>
-                    <CustomButton
-                      classNames="secondary semi-rounded lg"
-                      onClick={() => setOpenS(true)}
-                      text="Share your Offer"
-                    />
-                    <Spacer width={8} />
-                    <Button
-                      onClick={() => navigate(`/`)}
-                      className="semi-rounded lg"
+            </div>
+            <div>
+              <Text color="#746A7E" size="s3">
+                Offer
+              </Text>
+              <Flex gap={4} align="center">
+                <Text size="big" color="#000000" weight="500">
+                  {form.amount_in}
+                </Text>
+                <Text
+                  color="#5D5169"
+                  weight="500"
+                  size="tiny"
+                  style={{ lineHeight: "15.31px" }}
+                >
+                  {form.token_in_metadata.symbol}
+                </Text>
+                <Avatar size="tiny">
+                  <img
+                    onError={(e: any) => (e.target.src = "/no-token.png")}
+                    src={form.token_in_metadata.icon || "/no-token.png"}
+                    alt="Logo"
+                  />
+                </Avatar>
+              </Flex>
+            </div>
+            <CardGray>
+              <Flex direction="column">
+                <Flex align="center" gap={4}>
+                  <Text color="#746A7E" size="s3">
+                    Escrow Fee (1%)
+                  </Text>
+                  <Info />
+                </Flex>
+                <Flex gap={4} align="center">
+                  <Text
+                    color="#2E203E"
+                    weight="500"
+                    size="tiny"
+                    style={{ lineHeight: "17.88px" }}
+                  >
+                    32.23 USDT
+                    <Text
+                      style={{ display: "inline" }}
+                      color="#746A7E"
+                      size="s3"
                     >
-                      View Listed Coin
-                    </Button>
-                  </Flex>
-                )}
-              </OnlyMobile>
-              <OnlyDesktop>
-                {status < 3 ? (
-                  <Flex>
-                    {(Number(allowance) as number) < form.amount_out ? (
-                      <CustomButton
-                        loading={loading || approving}
-                        disabled={loading || approving}
-                        classNames="secondary"
-                        onClick={() => approve()}
-                        text="Approve"
-                      />
-                    ) : (
-                      // <Button className="primary md" onClick={() => listToken()}>
-                      //   List Token
-                      // </Button>
-                      <CustomButton
-                        classNames="secondary"
-                        text="List Token"
-                        onClick={() => listToken()}
-                        loading={loading || approving}
-                        disabled={loading || approving}
-                      />
-                    )}
-
-                    <Spacer width={41} />
-                    <Button className="" onClick={handleCancel}>
-                      Cancel
-                    </Button>
-                  </Flex>
-                ) : (
-                  <Flex>
-                    <CustomButton
-                      classNames="secondary semi-rounded lg"
-                      onClick={() => setOpenS(true)}
-                      text="Share your Offer"
-                    />
-                    <Spacer width={8} />
-                    <Button
-                      onClick={() => navigate(`/`)}
-                      className="semi-rounded lg"
-                    >
-                      View Listed Coin
-                    </Button>
-                  </Flex>
-                )}
-              </OnlyDesktop>
-            </>
-          )}
-        </Center>
-        <Spacer height={35} />
-        <Spacer height={24} />
-        <Footer>
-          <Flex align="end" justify="center">
-            <BrandBlock />
-            <Spacer width={24} />
-            <Text
-              style={{ top: "-12px", position: "relative" }}
-              size="s1"
-              uppercase
-              color="#FFFFFF"
-            >
-              Thanks for trading with us
-            </Text>
+                      ($23k)
+                    </Text>
+                  </Text>
+                </Flex>
+              </Flex>
+            </CardGray>
           </Flex>
-          <Spacer height={47} />
-          <Center style={{ flexDirection: "column" }}>
-            <Text size="s2" weight="300" color="#E8E6EA">
-              Your money is safe in our Escrow
+        </TradeInfo>
+
+        <TradeWrapper>
+          <TradeCon>
+            <Text className="header" as="h2" size="s3" uppercase>
+              List Transaction Queue
             </Text>
-          </Center>
-        </Footer>
-      </TradeWrapper>
+            <Spacer height={20} />
+            <TradeItem style={{ textAlign: "center" }}>
+              <VisibleWrap>
+                <Button>
+                 {
+                  form.is_private ? (<><Lock /> Private </>) : "Public" 
+                 }
+                  
+                </Button>
+              </VisibleWrap>
+            </TradeItem>
+            <Spacer height={28} />
+            {buildStepper(status)}
+            <Spacer height={20} />
+
+            <div>
+              <Flex align="end" justify="center">
+                <BrandBlock />
+                <Spacer width={24} />
+                <Text
+                  style={{ top: "-12px", position: "relative" }}
+                  size="s1"
+                  uppercase
+                  color="#FFFFFF"
+                >
+                  Approve trade in your wallet
+                </Text>
+              </Flex>
+            </div>
+
+            <Spacer height={20} />
+
+            <Center style={{ flexDirection: "column" }}>
+              {privateLink ? (
+                <>
+                  <Spacer height={24} />
+                  <Flex>
+                    <Text as="div" size="s1" color="#E8E6EA" uppercase>
+                      {" "}
+                      <span>
+                        Private link:{" "}
+                        {truncate(privateLink || "", 50, "...", "end")}
+                      </span>
+                    </Text>
+                    <Spacer width={5} />
+                    <Wrapper style={{ cursor: "pointer" }} onClick={copyLink}>
+                      <Copy />
+                    </Wrapper>
+                  </Flex>
+                  <Spacer height={20}></Spacer>
+
+                  <Button
+                    not_rounded
+                    className="secondary m-sm"
+                    onClick={handleCancel}
+                  >
+                    Ok
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Spacer height={24} />
+                  <OnlyMobile>
+                    {status < 3 ? (
+                      <Flex>
+                        {(Number(allowance) as number) < form.amount_out ? (
+                          <CustomButton
+                            loading={loading || approving}
+                            disabled={loading || approving}
+                            classNames="secondary"
+                            onClick={() => approve()}
+                            text="Approve"
+                          />
+                        ) : (
+                          // <Button className="primary md" onClick={() => listToken()}>
+                          //   List Token
+                          // </Button>
+                          <CustomButton
+                            classNames="secondary"
+                            text="List Token"
+                            onClick={() => listToken()}
+                            loading={loading || approving}
+                            disabled={loading || approving}
+                            not_rounded
+                          />
+                        )}
+                        <Spacer width={41} />
+                        <Button not_rounded className="" onClick={handleCancel}>
+                          Cancel
+                        </Button>
+                      </Flex>
+                    ) : (
+                      <Flex>
+                        <CustomButton
+                          classNames="secondary semi-rounded lg"
+                          onClick={() => setOpenS(true)}
+                          text="Share your Offer"
+                          not_rounded
+                        />
+                        <Spacer width={8} />
+                        <Button
+                          onClick={() => navigate(`/`)}
+                          className="semi-rounded lg"
+                        >
+                          View Listed Coin
+                        </Button>
+                      </Flex>
+                    )}
+                  </OnlyMobile>
+                  <OnlyDesktop>
+                    {status < 3 ? (
+                      <Flex>
+                        {(Number(allowance) as number) < form.amount_out ? (
+                          <CustomButton
+                            loading={loading || approving}
+                            disabled={loading || approving}
+                            classNames="secondary"
+                            onClick={() => approve()}
+                            text="Approve"
+                            not_rounded
+                          />
+                        ) : (
+                          // <Button className="primary md" onClick={() => listToken()}>
+                          //   List Token
+                          // </Button>
+                          <CustomButton
+                            classNames="secondary"
+                            text="List Token"
+                            onClick={() => listToken()}
+                            loading={loading || approving}
+                            disabled={loading || approving}
+                            not_rounded
+                          />
+                        )}
+
+                        <Spacer width={41} />
+                        <Button not_rounded className="" onClick={handleCancel}>
+                          Cancel
+                        </Button>
+                      </Flex>
+                    ) : (
+                      <Flex>
+                        <CustomButton
+                          classNames="secondary semi-rounded lg"
+                          onClick={() => setOpenS(true)}
+                          text="Share your Offer"
+                          not_rounded
+                        />
+                        <Spacer width={8} />
+                        <Button
+                          onClick={() => navigate(`/`)}
+                          className="semi-rounded lg"
+                        >
+                          View Listed Coin
+                        </Button>
+                      </Flex>
+                    )}
+                  </OnlyDesktop>
+
+                  <Footer>
+                    <Spacer height={47} />
+                    <Center style={{ flexDirection: "column" }}>
+                      <Text size="s2" weight="300" color="#E8E6EA">
+                        Approve trade in your wallet
+                      </Text>
+                    </Center>
+                  </Footer>
+                </>
+              )}
+            </Center>
+            <Spacer height={35} />
+          </TradeCon>
+
+          <ListDetailsBg />
+        </TradeWrapper>
+      </Flex>
       <Spacer height={20} />
       <OnlyMobile>
         <Center>

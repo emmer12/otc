@@ -1,20 +1,45 @@
 import { ListContext, ListContextType } from "@/context/Listcontext";
 // import { tokens } from "@/data";
 import { TokenI } from "@/types";
-import { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { ActionBtn, Center, Flex, Spacer, Text } from "..";
-import { ArrowDown } from "../Icons";
+import styled, { css } from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ActionBtn,
+  Center,
+  Divider,
+  Flex,
+  IconWrapper,
+  Input,
+  InputBox,
+  InputCon,
+  InputInner,
+  Spacer,
+  Text,
+  TokenBadge,
+} from "..";
+import { Button } from "../Button";
+import {
+  Send,
+  Swap,
+  Add,
+  ArrowRight,
+  Settings as SettingsIcon,
+  Settings2 as SettingsIcon2,
+  ArrowDown,
+} from "../Icons";
 import { Connect as ConnectModal, Settings, TokenSelect } from "../Modal";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { ConnectContext, ConnectContextType } from "@/context/ConnectContext";
 import Toggle from "../Toggle";
 import { parseError } from "@/utils";
-import { getDefaultTokens } from "@/helpers";
+import { getChainContract, getDefaultTokens, computeUsdPrice } from "@/helpers";
 import { useGetWalletTokens } from "@/hooks/customHooks";
 import TokenInputBox from "../TokenInputBox";
+
+// import { hooks, metaMask } from "@/connector/metaMask";
 
 const SwapContainer = styled.div`
   width: 416px;
@@ -27,14 +52,6 @@ const SwapContainer = styled.div`
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-  }
-
-  .date_time {
-    height: 47px;
-    width: 100%;
-    border: 1px solid #170728;
-    border-radius: 7px;
-    padding: 11px 12px;
   }
 `;
 
@@ -62,6 +79,26 @@ const SwapCon = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+`;
+
+const UsdVal = styled.span`
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  color: #acacac;
+  position: absolute;
+  bottom: -23px;
+  left: 25px;
+`;
+
+const DurationInput = styled.div`
+  flex: 1;
+  input {
+    /* background: #ffffff; */
+    border: 1px solid rgb(23 7 40);
+    border-radius: 20px;
+    padding: 10px;
+    outline: none;
+  }
 `;
 
 const SwapSwitch = styled.div`
@@ -151,8 +188,6 @@ const ListCard = () => {
   const [show, setShow] = useState<boolean>(false);
   const [listType, setListType] = useState<"Token" | "Nft">("Token");
   const [hasDeadline, setHasDeadline] = useState<boolean>(false);
-  const [isFriction, setFriction] = useState<boolean>(false);
-  const [isPrivate, setVisibility] = useState<boolean>(false);
   const { account, chainId, library } = useWeb3React<Web3Provider>();
   const { connect } = useContext(ConnectContext) as ConnectContextType;
   const w_tokens = useGetWalletTokens(account, chainId);
@@ -238,8 +273,6 @@ const ListCard = () => {
       receiving_wallet: account,
       signatory: account,
       forever: hasDeadline ? false : true,
-      is_friction: isFriction,
-      is_private: isPrivate,
     }));
 
     localStorage.setItem(
@@ -251,8 +284,6 @@ const ListCard = () => {
         receiving_wallet: account,
         signatory: account,
         forever: hasDeadline ? false : true,
-        is_friction: isFriction,
-        is_private: isPrivate,
       })
     );
 
@@ -296,62 +327,97 @@ const ListCard = () => {
         </SwapSwitch>
         <Body>
           <Flex style={{ position: "relative" }} direction="column" gap={8}>
-            <TokenInputBox
-              type="offer"
-              handleClick={() => handleSelect("giving")}
-              data={give}
-              onChange={(e) => handleChange(e)}
-              input_val={form.amount_out}
-            />
+            <TokenInputBox type="offer" />
             <SwapCon onClick={handleSwap}>
               <ArrowDown />
             </SwapCon>
-            <TokenInputBox
-              type="receive"
-              handleClick={() => handleSelect("getting")}
-              data={get}
-              onChange={(e) => handleChange(e)}
-              input_val={form.amount_in}
-            />
+            <TokenInputBox type="receive" />
           </Flex>
+          <Flex>
+            <Text as="div">
+              1 VETME = 21 ETH <Text as="span">(~$203k)</Text>
+            </Text>
+            <Text as="div">
+              Your price is <Text as="span">12% higher</Text>
+            </Text>
+          </Flex>
+
+          <Spacer height={31} />
+
+          <Flex align="center" justify="space-between">
+            <div />
+            <SwapCon onClick={handleSwap}>
+              <Swap />
+            </SwapCon>
+            <div onClick={() => setOpenS(true)} style={{ cursor: "pointer" }}>
+              <SettingsIcon2 />
+            </div>
+          </Flex>
+
           <Spacer height={6} />
-          <Flex justify="space-between">
-            <Text as="div" size="tiny" color="#2E203E" weight="500">
-              1 VETME = 21 ETH
-              <Text
-                as="span"
-                size="tiny"
-                style={{ display: "inline" }}
-                color="#8B8394"
-              >
-                {" "}
-                (~$203k)
-              </Text>
-            </Text>
-            <Text as="div" size="tiny" color="#8B8394">
-              Your price is{" "}
-              <Text
-                size="tiny"
-                style={{ display: "inline" }}
-                as="span"
-                color="#2E203E"
-                weight="500"
-              >
-                12% higher
-              </Text>
-            </Text>
-          </Flex>
 
-          <Spacer height={28} />
-          <Flex direction="column" gap={12} style={{ width: "100%" }}>
-            <Flex
-              align="center"
-              justify="space-between"
-              style={{ width: "100%" }}
-            >
-              <Text weight="500" size="s3">
-                Set Duration
-              </Text>
+          <InputCon>
+            <InputBox>
+              <label htmlFor="">You get</label>
+              <InputInner>
+                <Input
+                  onChange={handleChange}
+                  name="amount_in"
+                  value={form.amount_in}
+                  type="number"
+                  step={0.1}
+                  placeholder="0.0"
+                  inputMode="decimal"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  pattern="^[0-9]*[.,]?[0-9]*$"
+                  minLength={1}
+                  maxLength={79}
+                  spellCheck="false"
+                />
+                <AnimatePresence>
+                  {get && form.amount_in > 0 && (
+                    <UsdVal
+                      key={form.amount_in}
+                      as={motion.span}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+                    >
+                      ~$
+                      {get.usd
+                        ? computeUsdPrice(get.usd, form.amount_in)
+                        : "--"}
+                    </UsdVal>
+                  )}
+                </AnimatePresence>
+                <div>
+                  <TokenBadge
+                    token={get}
+                    hasCaret={true}
+                    handleClick={() => handleSelect("getting")}
+                  />
+                </div>
+              </InputInner>
+            </InputBox>
+          </InputCon>
+          <Spacer height={20} />
+
+          <InputCon>
+            <label htmlFor="">Time of Contract</label>
+            <Flex align="center" style={{ height: "50px" }}>
+              <DurationInput>
+                {hasDeadline ? (
+                  <input
+                    type="datetime-local"
+                    name="deadline"
+                    onChange={handleChange}
+                  />
+                ) : (
+                  <Text weight="700">Off (Set as Forever)</Text>
+                )}
+              </DurationInput>
               <Toggle
                 checked={hasDeadline}
                 onChange={handleDChange}
@@ -359,69 +425,8 @@ const ListCard = () => {
                 onstyle="btn-on"
               />
             </Flex>
-
-            {hasDeadline && (
-              <input
-                type="datetime-local"
-                name="deadline"
-                className="date_time"
-                onChange={handleChange}
-              />
-            )}
-
-            {/* <Flex
-              align="center"
-              justify="space-between"
-              style={{ width: "100%" }}
-            >
-              <Text weight="500" size="s3">
-                Whitelist an Address
-              </Text>
-              <Toggle
-                checked={hasDeadline}
-                onChange={handleDChange}
-                offstyle="btn-off"
-                onstyle="btn-on"
-              />
-            </Flex> */}
-            <Flex
-              align="center"
-              justify="space-between"
-              style={{ width: "100%" }}
-            >
-              <Text weight="500" size="s3">
-                Crowd fill
-              </Text>
-              <Toggle
-                checked={isFriction}
-                onChange={() => setFriction((prev) => !prev)}
-                offstyle="btn-off"
-                onstyle="btn-on"
-              />
-            </Flex>
-
-            <Flex
-              align="center"
-              justify="space-between"
-              style={{ width: "100%" }}
-            >
-              <Text weight="500" size="s3">
-                Private List
-              </Text>
-              <Toggle
-                checked={isPrivate}
-                onChange={() => {
-                  setVisibility((prev) => !prev);
-                }}
-                offstyle="btn-off"
-                onstyle="btn-on"
-              />
-            </Flex>
-
-           
-          </Flex>
-
-          <Spacer height={84} />
+          </InputCon>
+          <Spacer height={30} />
 
           {account ? (
             <Center>

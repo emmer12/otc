@@ -783,6 +783,7 @@ export const CardGray = styled.div`
   border-radius:8px;
   border:1px solid #453953;
   background:#F5F4F6;
+  width:100%;
 `
 
 

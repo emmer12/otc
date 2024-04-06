@@ -240,7 +240,9 @@ export const bsc_tokens = [
   },
 ];
 
-export const polygon_tokens = [];
+export const polygon_tokens = [
+
+];
 export const pairs = [
   {
     chain: 1,
@@ -258,6 +260,24 @@ export const pairs = [
     address: "0xdac17f958d2ee523a2206206994597c13d831ec7",
   },
 ];
+
+
+export const sepolia_tokens = [
+  {
+    name: "VetMe",
+    symbol: "VETME",
+    address: "0x92B6dD0bad04CACbD563DC44580fA706F27846Ae",
+    decimal_place: 18,
+    icon: "https://assets.coingecko.com/coins/images/825/large/binance-coin-logo.png",
+  },
+  {
+    name: "Cool",
+    symbol: "COOL",
+    address: "0x886C5086C9cc1630c3B1D2D6C8993Cecb74a5D8D",
+    decimal_place: 18,
+    icon: "https://assets.coingecko.com/coins/images/825/large/binance-coin-logo.png",
+  },
+]
 
 export const chains = [
   {
@@ -283,9 +303,9 @@ export const chains = [
 
   },
   {
-    chainId: 5,
-    chainIdHEx: "0x5",
-    name: "Goerli",
+    chainId: 11155111,
+    chainIdHEx: "0xaa36a7",
+    name: "Sepolia",
     logoUrl: "/images/blockchains/ethereum.png",
     relay: false,
   },

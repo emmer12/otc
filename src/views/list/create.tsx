@@ -53,20 +53,11 @@ const CreateListing = () => {
   return (
     <Container>
       <div>
-        <ActionSwitch className="list" style={{ margin: "auto" }}>
-          <SwitchItem2 onClick={() => navigate("/")}>Swap</SwitchItem2>
-          <SwitchItem2
-            onClick={() => navigate("/list/create")}
-            className="active"
-          >
-            List
-          </SwitchItem2>
-        </ActionSwitch>
         <Spacer height={24} />
         <List>
           <ListCard />
 
-          <Transaction>
+          {/* <Transaction>
             <THeader>
               <h2>Transactions</h2>
             </THeader>
@@ -232,7 +223,7 @@ const CreateListing = () => {
                 </tfoot>
               </table>
             </div>
-          </Transaction>
+          </Transaction> */}
         </List>
       </div>
     </Container>

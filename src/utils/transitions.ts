@@ -27,7 +27,6 @@ export const fadeIn = {
     exit: {
         opacity: 0,
         transition: {
-            delay: 1,
         },
     },
 };
@@ -56,7 +55,7 @@ export const anim = (variants: Variants) => {
     return {
         initial: "hidden",
         animate: "visible",
-        // exit: "exit",
+        exit: "exit",
         variants,
     };
 };

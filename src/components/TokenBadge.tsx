@@ -2,15 +2,13 @@ import { TokenI } from "@/types";
 import React from "react";
 import styled from "styled-components";
 import { Spacer, Text } from ".";
-import { Caret, Chart, DropDown } from "./Icons";
+import { AngleDown2, Caret, Chart, DropDown } from "./Icons";
 
 const Container = styled.div`
-  background: #170728;
   border-radius: 100px;
   display: flex;
   align-items: center;
-  padding: 6px 9px;
-  color: #fff;
+  color: #170728;
   cursor: pointer;
   height: 32px;
 `;
@@ -58,17 +56,17 @@ const TokenBadge = ({
           <Text size="s2" weight="400">
             {token.symbol}
           </Text>
-          <Spacer width={6} />
+          <Spacer width={4} />
           {hasCaret && (hasChart ? <Chart /> : <DropDown />)}
         </>
       ) : (
         <>
-          <Text size="s2" weight="400">
+          <Text size="s3" weight="400">
             Select Token
           </Text>
-          <Spacer width={6} />
+          <Spacer width={4} />
 
-          <DropDown />
+          <AngleDown2 />
         </>
       )}
     </Container>

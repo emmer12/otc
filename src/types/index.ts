@@ -47,6 +47,7 @@ export enum Blockchain {
   Polygon = "polygon",
   Rinkeby = "rinkeby",
   Goerli = "goerli",
+  Sepolia = "sepolia",
 }
 
 export enum SupportBlockchain {

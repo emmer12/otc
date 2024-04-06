@@ -9,6 +9,7 @@ interface BtnI {
   loading?: boolean;
   onClick?: () => void;
   classNames?: string;
+  not_rounded?: boolean;
 }
 
 const CustomButton = ({
@@ -17,9 +18,15 @@ const CustomButton = ({
   onClick,
   loading,
   disabled,
+  not_rounded,
 }: BtnI) => {
   return (
-    <Button className={`${classNames}`} disabled={disabled} onClick={onClick}>
+    <Button
+      className={`${classNames}`}
+      not_rounded
+      disabled={disabled}
+      onClick={onClick}
+    >
       {text}
       {loading && <Loading />}
     </Button>

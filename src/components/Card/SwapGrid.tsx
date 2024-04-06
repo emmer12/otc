@@ -7,6 +7,8 @@ import { Chart, ListModal } from "../Modal";
 import Progress from "../Progress";
 import { anim, grid_item_trans } from "@/utils/transitions";
 import { motion } from "framer-motion";
+import Skeleton from "react-loading-skeleton";
+import { loader } from "@/components/styles";
 
 const common = css`
   position: absolute;
@@ -261,110 +263,161 @@ const SwapGrid = ({
       >
         <Flex justify="space-between">
           <Flex align="center" gap={10}>
-            <TokenLogoWrap>
-              <img
-                onError={(e: any) => (e.target.src = "/no-token.png")}
-                src={list.token_out_metadata.icon || "/no-token.png"}
-                alt="Logo"
-              />
-            </TokenLogoWrap>
-            <Text color="#000" size="big" weight="500">
-              {list.token_out_metadata.symbol}
-            </Text>
-          </Flex>
-
-          <FillType>
-            {list.is_friction ? "Partial Fill" : "Fixed Fill"}
-          </FillType>
-        </Flex>
-
-        <Body>
-          <Flex align="center" justify="space-between">
-            <Text weight="400" size="s3" color="#8B8394">
-              Offer
-            </Text>
-
-            <Text weight="400" size="s3" color="#8B8394">
-              For
-            </Text>
-          </Flex>
-          <Spacer height={4} />
-          <Flex align="center" justify="space-between">
-            <Flex gap={4} align="center">
-              <Flex gap={4}>
-                <Text
-                  style={{ whiteSpace: "nowrap" }}
-                  size="big"
-                  weight="500"
-                  color=" #000000"
-                >
-                  {" "}
-                  {Number(list.amount_out).toFixed(2)}
-                </Text>
-                <Text
-                  style={{ lineHeight: "20.31px", alignSelf: "flex-end" }}
-                  as="span"
-                  size="tiny"
-                >
-                  {" "}
-                  {list.token_out_metadata?.symbol}
-                </Text>
-              </Flex>
-              <ImgWrap height={16} width={16}>
+            {list ? (
+              <TokenLogoWrap>
                 <img
                   onError={(e: any) => (e.target.src = "/no-token.png")}
                   src={list.token_out_metadata.icon || "/no-token.png"}
                   alt="Logo"
                 />
-              </ImgWrap>
-            </Flex>
+              </TokenLogoWrap>
+            ) : (
+              <Skeleton style={loader.avatar} />
+            )}
+            <Text color="#000" size="big" weight="500">
+              {list?.token_out_metadata?.symbol || (
+                <Skeleton style={loader.a_title} />
+              )}
+            </Text>
+          </Flex>
 
-            <Flex gap={4} align="center">
-              <Flex gap={4}>
-                <Text
-                  style={{ whiteSpace: "nowrap" }}
-                  size="big"
-                  weight="500"
-                  color=" #000000"
-                >
-                  {" "}
-                  {Number(list.amount_in).toFixed(2)}
+          {list ? (
+            <FillType>
+              {list?.is_friction ? "Partial Fill" : "Fixed Fill"}
+            </FillType>
+          ) : (
+            <Skeleton style={loader.btn} />
+          )}
+        </Flex>
+
+        <Body>
+          <Flex align="center" justify="space-between">
+            {list ? (
+              <>
+                <Text weight="400" size="s3" color="#8B8394">
+                  Offer
                 </Text>
-                <Text
-                  style={{ lineHeight: "20.31px", alignSelf: "flex-end" }}
-                  as="span"
-                  size="tiny"
-                >
-                  {" "}
-                  {list.token_in_metadata?.symbol}
+
+                <Text weight="400" size="s3" color="#8B8394">
+                  For
                 </Text>
-              </Flex>
-              <ImgWrap height={16} width={16}>
-                <img
-                  onError={(e: any) => (e.target.src = "/no-token.png")}
-                  src={list.token_in_metadata.icon || "/no-token.png"}
-                  alt="Logo"
-                />
-              </ImgWrap>
-            </Flex>
+              </>
+            ) : (
+              <>
+                <Skeleton style={loader.hText} />
+                <Skeleton style={loader.hText} />
+              </>
+            )}
+          </Flex>
+          <Spacer height={4} />
+          <Flex align="center" justify="space-between">
+            {list ? (
+              <>
+                <Flex gap={4} align="center">
+                  <Flex gap={4}>
+                    <Text
+                      style={{ whiteSpace: "nowrap" }}
+                      size="big"
+                      weight="500"
+                      color=" #000000"
+                    >
+                      {" "}
+                      {Number(list?.amount_out).toFixed(2) || (
+                        <Skeleton style={loader.hText2} />
+                      )}
+                    </Text>
+                    <Text
+                      style={{ lineHeight: "20.31px", alignSelf: "flex-end" }}
+                      as="span"
+                      size="tiny"
+                    >
+                      {" "}
+                      {list?.token_out_metadata?.symbol}
+                    </Text>
+                  </Flex>
+                  <ImgWrap height={16} width={16}>
+                    <img
+                      onError={(e: any) => (e.target.src = "/no-token.png")}
+                      src={list?.token_out_metadata.icon || "/no-token.png"}
+                      alt="Logo"
+                    />
+                  </ImgWrap>
+                </Flex>
+
+                <Flex gap={4} align="center">
+                  <Flex gap={4}>
+                    <Text
+                      style={{ whiteSpace: "nowrap" }}
+                      size="big"
+                      weight="500"
+                      color=" #000000"
+                    >
+                      {" "}
+                      {Number(list?.amount_in).toFixed(2) || <Skeleton />}
+                    </Text>
+                    <Text
+                      style={{ lineHeight: "20.31px", alignSelf: "flex-end" }}
+                      as="span"
+                      size="tiny"
+                    >
+                      {" "}
+                      {list?.token_in_metadata?.symbol || <Skeleton />}
+                    </Text>
+                  </Flex>
+                  {list ? (
+                    <ImgWrap height={16} width={16}>
+                      <img
+                        onError={(e: any) => (e.target.src = "/no-token.png")}
+                        src={list.token_in_metadata.icon || "/no-token.png"}
+                        alt="Logo"
+                      />
+                    </ImgWrap>
+                  ) : (
+                    <Skeleton />
+                  )}
+                </Flex>
+              </>
+            ) : (
+              <>
+                <Skeleton style={loader.hText2} />
+                <Skeleton style={loader.hText2} />
+              </>
+            )}
           </Flex>
           <Spacer height={2} />
           <Flex align="center" justify="space-between">
             {" "}
-            <Flex gap={4}>
-              <Text weight="400" size="s3" color="#8B8394">
-                $0.034/Token
-              </Text>
-              <Text weight="400" size="s3" color="#8B8394">
-                (~$203k)
-              </Text>
-            </Flex>
-            <Text weight="400" size="s3" color="#8B8394">
-              $203
-            </Text>
+            {list ? (
+              <>
+                <Flex gap={4}>
+                  <Text weight="400" size="s3" color="#8B8394">
+                    $0.034/Token
+                  </Text>
+                  <Text weight="400" size="s3" color="#8B8394">
+                    (~$203k)
+                  </Text>
+                </Flex>
+                <Text weight="400" size="s3" color="#8B8394">
+                  $203
+                </Text>
+              </>
+            ) : (
+              <>
+                {" "}
+                <Skeleton style={loader.hText3} />
+                <Skeleton style={loader.hText} />
+              </>
+            )}
           </Flex>
         </Body>
-        <Progress value={40} />
+        {list ? (
+          <Progress value={40} />
+        ) : (
+          <div style={{ marginTop: "-24px" }}>
+            <Skeleton style={loader.progress} />
+            <Skeleton style={{ width: "50px", height: "20px" }} />
+          </div>
+        )}
       </SwapContainer>
       {token && (
         <Chart show={open} handleClose={() => setOpen(false)} token={token} />

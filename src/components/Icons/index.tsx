@@ -1050,3 +1050,56 @@ export const GainIcon = (props: SVGProps<SVGSVGElement>) => (
     />
   </svg>
 )
+
+export const ArrowDown = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={8}
+    height={18}
+    fill="none"
+    {...props}
+  >
+    <path
+      stroke="#170728"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M4 1v16m0 0-3-3m3 3 3-3"
+    />
+  </svg>
+)
+
+export const AngleDown2 = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={17}
+    height={17}
+    fill="none"
+    {...props}
+  >
+    <path
+      stroke="#453953"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="m4.815 6.5 4 4 4-4"
+    />
+  </svg>
+)
+
+export const Lock = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={16}
+    height={16}
+    fill="none"
+    {...props}
+  >
+    <path
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M4.734 6.667h-.067V5.333a3.333 3.333 0 1 1 6.666 0v1.334h-.067M8 9.333v1.334M12.667 10a4.667 4.667 0 1 1-9.334 0 4.667 4.667 0 0 1 9.334 0Z"
+    />
+  </svg>
+)
