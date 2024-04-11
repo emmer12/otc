@@ -40,6 +40,7 @@ export const useListFetch = (curChain = "eth") => {
   const [loading, setStatus] = useState(true);
   const [query, setQuery] = useState("");
   const [data, setData] = useState<ListI[]>([]);
+
   const [volume, setVolume] = useState<{
     hour: number;
     weekly: number;
@@ -102,7 +103,7 @@ export const useListFetch = (curChain = "eth") => {
 
 export const useTokenFetch = (query: string, chainId = 1, w_tokens: any) => {
   let tokens = w_tokens.concat(getDefaultTokens(chainId)) as any[];
-
+  const chainTokens = useToken(query);
   tokens = removeDuplicates(tokens, "address");
 
   const [results, setResults] = useState<any[]>([]);
@@ -149,14 +150,10 @@ export const useTokenFetch = (query: string, chainId = 1, w_tokens: any) => {
     }
   }
 
-  // if (results.length < 1) {
-  //   const chainTokens = useToken(query);
-
-  //   tokens = [chainTokens];
-  // }
-
-  // const localTokens = getLocalTokens();
-  // results = localTokens ? [...localTokens].concat(results) : results;
+  if (results.length < 1) {
+    tokens = [chainTokens];
+    setResults(tokens);
+  }
 
   return {
     results,

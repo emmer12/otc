@@ -209,9 +209,19 @@ export const matchTokenOrder = async (
         buy.order,
         buy.signature
       );
+
+
+      // contract.on("Matched", (eve: any) => {
+      //   console.log("Some event is emmited");
+      //   console.log(eve)
+      //   console.log("Some event is emmited");
+
+      // })
       const transaction = await trxn.wait();
 
       console.log(transaction)
+
+
 
       return transaction;
 

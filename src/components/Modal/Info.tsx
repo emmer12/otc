@@ -5,6 +5,12 @@ import { AddCopy, TokenLogoWrap } from "@/views/list/styles";
 import { ArrowUpward, CopyIcon, GainIcon } from "../Icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { anim, fadeIn, slideInUp } from "@/utils/transitions";
+import { ListI } from "@/types";
+import { useTokenDetails } from "@/hooks/useTokenDetails";
+import Skeleton from "react-loading-skeleton";
+import { loader } from "../styles";
+import { shortenNumber } from "@/utils";
+import { computeUsdPrice, truncate } from "@/helpers";
 
 const Container = styled.div`
   position: fixed;
@@ -99,9 +105,15 @@ const Rate = styled.div`
 interface IProps {
   handleClose: () => void;
   show: boolean;
+  list?: ListI;
 }
 
-const InformationModal = ({ show, handleClose }: IProps) => {
+const InformationModal = ({ show, handleClose, list }: IProps) => {
+  const { token, loading } = useTokenDetails(
+    "0xe7eF051C6EA1026A70967E8F04da143C67Fa4E1f",
+    1
+  );
+
   return (
     <AnimatePresence>
       {show && (
@@ -136,20 +148,25 @@ const InformationModal = ({ show, handleClose }: IProps) => {
                   <TokenLogoWrap>
                     <img
                       onError={(e: any) => (e.target.src = "/no-token.png")}
-                      src={"/no-token.png"}
+                      src={list?.token_out_metadata.icon || "/no-token.png"}
                       alt="Logo"
                     />
                   </TokenLogoWrap>
                   <div>
                     <Flex>
                       <Text weight="500" size="big" as="span">
-                        $OWJ
+                        {list?.token_out_metadata.symbol}
                       </Text>
                       <ArrowUpward />
                     </Flex>
                     <Spacer height={8} />
                     <AddCopy>
-                      <span>0x38...2345</span>
+                      {list && (
+                        <span>
+                          {" "}
+                          {truncate(list?.token_out_metadata.address, 9)}
+                        </span>
+                      )}
                       <CopyIcon />
                     </AddCopy>
                   </div>
@@ -188,7 +205,7 @@ const InformationModal = ({ show, handleClose }: IProps) => {
                     </Flex>
                   </Flex>
                   <Spacer height={16} />
-                  <Text size="h4">$34.90K</Text>
+                  <Text size="h4">--</Text>
                 </div>
                 <div className="market">
                   <Flex>
@@ -197,72 +214,103 @@ const InformationModal = ({ show, handleClose }: IProps) => {
                     </Text>
                   </Flex>
                   <Spacer height={16} />
-                  <Text size="h4">$34.90K</Text>
+                  <Text size="h4">
+                    ${computeUsdPrice(token?.price, list?.amount_out)}
+                  </Text>
                 </div>
               </Price>
 
               <Spacer height={8} />
 
               <Rate>
-                <Flex justify="space-between">
-                  <Text>1 OWJ</Text>
-                  <Text>100k USDT</Text>
-                </Flex>
+                {loading ? (
+                  <Flex justify="space-between">
+                    <Skeleton style={loader.a_title} />
+                    <Skeleton style={loader.a_title} />
+                  </Flex>
+                ) : (
+                  <Flex justify="space-between">
+                    <Text>1 {list?.token_out_metadata.symbol}</Text>
+                    <Text>{token?.price?.toFixed(4)} USDT</Text>
+                  </Flex>
+                )}
               </Rate>
 
               <Spacer height={16} />
-              <Flex gap={12} direction="column">
-                <Flex justify="space-between" style={{ width: "100%" }}>
-                  <Text size="s4" color="#5D5169">
-                    Total supply
-                  </Text>
-                  <Text size="s1" color="#170728">
-                    $34.90K
-                  </Text>
-                </Flex>
-                <Flex justify="space-between" style={{ width: "100%" }}>
-                  <Text size="s4" color="#5D5169">
-                    Total Market cap
-                  </Text>
-                  <Text size="s1" color="#170728">
-                    $344.90K
-                  </Text>
-                </Flex>
-                <Flex justify="space-between" style={{ width: "100%" }}>
-                  <Text size="s4" color="#5D5169">
-                    Holders
-                  </Text>
-                  <Text size="s1" color="#170728">
-                    44.90K
-                  </Text>
-                </Flex>
-                <Flex justify="space-between" style={{ width: "100%" }}>
-                  <Text size="s4" color="#5D5169">
-                    Total Transactions
-                  </Text>
-                  <Text size="s1" color="#170728">
-                    $3449.90K
-                  </Text>
-                </Flex>
 
-                <Flex justify="space-between" style={{ width: "100%" }}>
-                  <Text size="s4" color="#5D5169">
-                    Total Transactions
-                  </Text>
-                  <Text size="s1" color="#170728">
-                    49
-                  </Text>
-                </Flex>
+              {loading ? (
+                <>
+                  <Flex gap={12} direction="column">
+                    <Flex justify="space-between" style={{ width: "100%" }}>
+                      <Skeleton style={loader.a_title} />
+                      <Skeleton style={loader.a_title} />
+                    </Flex>
 
-                <Flex justify="space-between" style={{ width: "100%" }}>
-                  <Text size="s4" color="#5D5169">
-                    24H VOlume
-                  </Text>
-                  <Text size="s1" color="#170728">
-                    $34.90K
-                  </Text>
+                    <Flex justify="space-between" style={{ width: "100%" }}>
+                      <Skeleton style={loader.a_title} />
+                      <Skeleton style={loader.a_title} />
+                    </Flex>
+
+                    <Flex justify="space-between" style={{ width: "100%" }}>
+                      <Skeleton style={loader.a_title} />
+                      <Skeleton style={loader.a_title} />
+                    </Flex>
+
+                    <Flex justify="space-between" style={{ width: "100%" }}>
+                      <Skeleton style={loader.a_title} />
+                      <Skeleton style={loader.a_title} />
+                    </Flex>
+                    <Flex justify="space-between" style={{ width: "100%" }}>
+                      <Skeleton style={loader.a_title} />
+                      <Skeleton style={loader.a_title} />
+                    </Flex>
+                  </Flex>
+                </>
+              ) : (
+                <Flex gap={12} direction="column">
+                  <Flex justify="space-between" style={{ width: "100%" }}>
+                    <Text size="s4" color="#5D5169">
+                      Total supply
+                    </Text>
+                    <Text size="s1" color="#170728">
+                      {shortenNumber(token?.total_supply as number)}
+                    </Text>
+                  </Flex>
+                  <Flex justify="space-between" style={{ width: "100%" }}>
+                    <Text size="s4" color="#5D5169">
+                      Total Market cap
+                    </Text>
+                    <Text size="s1" color="#170728">
+                      {shortenNumber(token?.market_cap as number)}
+                    </Text>
+                  </Flex>
+                  <Flex justify="space-between" style={{ width: "100%" }}>
+                    <Text size="s4" color="#5D5169">
+                      Holders
+                    </Text>
+                    <Text size="s1" color="#170728">
+                      ---
+                    </Text>
+                  </Flex>
+                  <Flex justify="space-between" style={{ width: "100%" }}>
+                    <Text size="s4" color="#5D5169">
+                      Total Transactions
+                    </Text>
+                    <Text size="s1" color="#170728">
+                      --
+                    </Text>
+                  </Flex>
+
+                  <Flex justify="space-between" style={{ width: "100%" }}>
+                    <Text size="s4" color="#5D5169">
+                      24H VOlume
+                    </Text>
+                    <Text size="s1" color="#170728">
+                      {token?.volume?.toFixed(2)}
+                    </Text>
+                  </Flex>
                 </Flex>
-              </Flex>
+              )}
             </Contain>
 
             <BgWrapper>

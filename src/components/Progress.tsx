@@ -24,7 +24,7 @@ const Progress = ({ value }: ProgressType) => {
       </ProgressContainer>
       <Spacer height={4} />
       <Text size="tiny" weight="500">
-        {value}
+        {value}%
       </Text>
     </ProgressWrapper>
   );

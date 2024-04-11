@@ -238,3 +238,8 @@ export const removeDuplicates = (arr: any, prop: string) => {
     ))
   );
 }
+
+export const getPercentage = (total: number | undefined, value: number | undefined) => {
+  return value ? Math.floor((value / total) * 100) : 0
+
+}

@@ -27,8 +27,9 @@ export const defaultRPCs = {
   polygon: "https://polygon-rpc.com/",
   avax: "https://api.avax.network/ext/bc/C/rpc",
   avaxfuji: "https://rpc.ankr.com/avalanche_fuji",
-  sepolia: 'wss://sepolia.gateway.tenderly.co'
+  sepolia: 'https://eth-sepolia.api.onfinality.io/public'
 };
+// https://rpc.ankr.com/optimism_sepolia
 
 export function select_rpc_url(chain: Blockchain) {
   return defaultRPCs[chain];

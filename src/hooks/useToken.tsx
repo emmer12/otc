@@ -19,30 +19,32 @@ export interface TokenInfo {
 export const useToken = (address: string) => {
   const { account, chainId, library } = useWeb3React<Web3Provider>();
   const chain: Blockchain = get_blockchain_from_chainId(chainId);
-  const tokenContract = ERC20Contract(address, chain, library);
 
   const [tokenInfo, setTokenInfo] = useState<TokenInfo | null>(null);
 
+  const getInfo = async () => {
+    const tokenContract = await ERC20Contract(address, chain, library);
+
+    const [name, symbol, decimals] = await Promise.all([
+      tokenContract?.name(),
+      tokenContract?.symbol(),
+      tokenContract?.decimals(),
+    ]);
+
+    setTokenInfo({
+      address,
+      name,
+      symbol,
+      decimals,
+      chainId,
+      logoURI: "",
+    });
+  };
+
   useEffect(() => {
-    const getInfo = async () => {
-      const [name, symbol, decimals] = await Promise.all([
-        tokenContract?.name(),
-        tokenContract?.symbol(),
-        tokenContract?.decimals(),
-      ]);
-
-      setTokenInfo({
-        address,
-        name,
-        symbol,
-        decimals,
-        chainId,
-        logoURI: "",
-      });
-    };
-
+    if (!address) return;
     getInfo();
-  }, [tokenContract, address, chainId]);
+  }, [address, chainId]);
 
   return tokenInfo;
 };

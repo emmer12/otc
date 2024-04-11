@@ -43,7 +43,13 @@ import {
   getTotalSupply,
   changeAdmin,
 } from "@/helpers/contract";
-import { fromBigNumber, listSign, parseError, parseSuccess } from "@/utils";
+import {
+  fromBigNumber,
+  toBigNumber,
+  listSign,
+  parseError,
+  parseSuccess,
+} from "@/utils";
 import CustomButton from "@/components/Button/CustomButton";
 import BigNumber from "bignumber.js";
 import Api, { BASE_URL } from "@/helpers/apiHelper";
@@ -103,6 +109,8 @@ const Trans = () => {
       chainId,
       account
     );
+
+    console.log(allowance.toString());
     setAllowance(fromBigNumber(allowance.toString()));
     if (fromBigNumber(allowance.toString()) >= listing?.amount_in) {
       let status: any = Number(listing?.status) < 2 ? 2 : listing?.status;
@@ -534,10 +542,6 @@ const Trans = () => {
           handleSwap={(data: any) => matchOrder(data)}
         />
       )}
-
-      <button onClick={changeOwner}>changeOwner</button>
-
-      {task}
     </ContainerSm>
   );
 };

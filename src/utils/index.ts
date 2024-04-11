@@ -102,6 +102,12 @@ export const formatDateTime = (data: any) =>
 export const formatSecTime = (data: any) =>
   moment(data * 1000).format("MMM DD, YYYY (HH:mm:ss)");
 
+
+export const formatDate = (data: any) =>
+  moment(data).format('MMMM DD, YYYY');
+
+
+
 export const getForever = 25256820600;
 
 export const getDecimal = (decimal: number | undefined) => {
@@ -137,3 +143,14 @@ export const getScanLink = (chainId: any, hash: string) => {
       break;
   }
 };
+
+
+export const shortenNumber = (num: number): string => {
+  const suffixes: string[] = ["", "k", "M", "B", "T"];
+  const suffixNum: number = Math.floor(("" + num).length / 3);
+  let shortNum: number = parseFloat((suffixNum !== 0 ? (num / Math.pow(1000, suffixNum)) : num).toPrecision(2));
+  if (shortNum % 1 !== 0) {
+    shortNum = parseFloat(shortNum.toFixed(1));
+  }
+  return shortNum + suffixes[suffixNum];
+}
