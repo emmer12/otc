@@ -15,6 +15,7 @@ export const HomeHeader = styled.div`
   @media (max-width: 640px) {
     /* flex-direction: column; */
     gap: 20px;
+    flex-wrap:wrap
   }
 `;
 export const LeftSide = styled.div`
@@ -244,6 +245,12 @@ export const GridWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(250px, 1fr));
   gap:12px;
+
+
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(1, minmax(250px, 1fr));
+  
+  }
 `;
 
 export const ListWrapper = styled.div`

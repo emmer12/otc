@@ -260,10 +260,21 @@ export const THeader = styled.div`
 
 export const DWrapper = styled.div`
   padding:0px 164px;
+
+
+  @media screen and (max-width: 600px) {
+    padding:0px 16px;
+
+  }
 `
 
 export const BackArrowWrapper = styled.div`
   transform:  translateX(-64px);
+
+  @media screen and (max-width: 600px) {
+    transform:  translateX(0px);
+
+  }
 `
 
 export const TokenLogoWrap = styled.div`

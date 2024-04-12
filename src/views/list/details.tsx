@@ -238,7 +238,7 @@ const ListDetails = () => {
           </Button>
         </Flex>
         <Spacer height={24} />
-        <Flex gap={16}>
+        <Flex gap={16} wrap>
           <Flex style={{ flex: 1 }} gap={16} direction="column">
             <Card>
               <Flex align="center" justify="space-between">
@@ -390,7 +390,7 @@ const ListDetails = () => {
               {Number(allowance)}/{list?.amount_in}
               {account ? (
                 <Center>
-                  {list.balance >= 0 && (
+                  {list?.amount_out_balance >= 0 && (
                     <ActionBtn size="56px" onClick={() => handleSwap()}>
                       {Number(allowance) < list?.amount_in ? "Approve" : "Swap"}
                     </ActionBtn>
@@ -609,7 +609,7 @@ const ListDetails = () => {
               </Text>
               <Spacer height={16} />
 
-              <table style={{ width: "100%" }}>
+              {/* <table style={{ width: "100%" }}>
                 <TableHead>
                   <tr>
                     <th>Date/Time</th>
@@ -673,7 +673,7 @@ const ListDetails = () => {
                     </td>
                   </tr>
                 </TableBody>
-              </table>
+              </table> */}
             </Card>
           </Flex>
         </Flex>

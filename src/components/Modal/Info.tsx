@@ -37,10 +37,6 @@ const Inner = styled.div`
   position: relative;
   z-index: 99999;
 
-  @media (max-width: 640px) {
-    height: auto;
-    background-image: url(/images/bg/message-m.png);
-  }
 `;
 
 const Close = styled.div`
