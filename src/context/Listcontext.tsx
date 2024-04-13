@@ -91,6 +91,7 @@ const ListProvider: React.FC<Props> = ({ children }) => {
       if (list.is_private) {
         const link = getTradeLink(list._id);
         setPrivateLink(link);
+        localStorage.removeItem("list_data");
       } else {
         setLoading(false);
         setForm(list);

@@ -39,7 +39,13 @@ import {
 } from "@/helpers";
 import Slider from "react-smooth-range-input";
 import { useTokenPrice } from "@/hooks/useTokenPrice";
-import { formatDate, listSign, parseError, parseSuccess } from "@/utils";
+import {
+  formatDate,
+  listSign,
+  parseError,
+  parseSuccess,
+  showComingSoon,
+} from "@/utils";
 import { loader } from "@/components/styles";
 import Skeleton from "react-loading-skeleton";
 import { useTokenDetails } from "@/hooks/useTokenDetails";
@@ -52,11 +58,13 @@ import { Connect as ConnectModal } from "@/components/Modal";
 import BigNumber from "bignumber.js";
 import { matchTokenOrder } from "@/helpers/contract";
 import Api, { BASE_URL } from "@/helpers/apiHelper";
+import TransactionLoading from "@/components/loader/TransactionLoading";
 
 enum ModalType {
   INFO = "Information Modal",
   COUNTER = "Counter Modal",
   CONNECT = "Connect Modal",
+  LOADING = "Loading Modal",
 }
 
 const ListDetails = () => {
@@ -78,7 +86,7 @@ const ListDetails = () => {
     allowance,
     loading: allowanceLoading,
     refetch,
-  } = useAllowance(list?.token_in_metadata?.address);
+  } = useAllowance(list?.token_in_metadata?.address, amount);
 
   let { id } = useParams();
   const navigate = useNavigate();
@@ -101,15 +109,18 @@ const ListDetails = () => {
   };
 
   const handleSwap = async () => {
+    setSetShowModal(ModalType.LOADING);
     if (Number(allowance) < list?.amount_in) {
       await approve(
         list?.token_in_metadata?.address,
         amount,
         list?.token_in_metadata?.symbol
       );
+      setSetShowModal(null);
       refetch();
     } else {
       await matchOrder();
+      setSetShowModal(null);
       fetchList();
     }
   };
@@ -118,11 +129,14 @@ const ListDetails = () => {
     const amountComputed = (amount * list?.amount_out) / list?.amount_in;
 
     const aIn = list?.is_friction ? amount : list?.amount_in;
-    const aOut = list?.is_friction ? amountComputed : list?.amount_out_balance;
+    const aOut = list?.is_friction
+      ? amountComputed.toFixed(4)
+      : list?.amount_out_balance;
     let listCopy: any = { ...list };
 
     try {
       setMatchLoading(true);
+      setSetShowModal(ModalType.LOADING);
       let signatureData = {
         signatory: account,
         receivingWallet: account,
@@ -176,10 +190,12 @@ const ListDetails = () => {
             // setStatus(3);
             parseSuccess("Swap Successful");
             setMatchLoading(false);
+            setSetShowModal(null);
 
             clearInterval(interval);
           } else if (data.task.taskState == "Cancelled") {
             setMatchLoading(false);
+            setSetShowModal(null);
             clearInterval(interval);
             parseError("Swap Not successful. Please try again or contact us");
           }
@@ -198,15 +214,23 @@ const ListDetails = () => {
         await Api.upDateListComp(datas);
         parseSuccess("Swap Successful");
         setMatchLoading(false);
+        setSetShowModal(null);
       }
 
+      setAmount(0);
       // transactionHash: response.transactionHash || response.taskId,
     } catch (err: any) {
+      console.log({
+        err,
+        aIn,
+        aOut,
+      });
       if (err.status && err.status == 401) {
         // setStatus(3);
       } else {
         parseError(err.reason || err.message);
       }
+      setMatchLoading(false);
     } finally {
       // setMatchLoading(false);
     }
@@ -275,46 +299,48 @@ const ListDetails = () => {
                     Filled
                   </Text>
                   <Text weight="500" size="tiny" color="#746A7E">
-                    {list?.amount_bought} {list?.token_out_metadata.symbol} of{" "}
-                    {list?.amount_out} {list?.token_out_metadata.symbol}
+                    {list?.amount_bought?.toFixed(4)}{" "}
+                    {list?.token_out_metadata.symbol} of {list?.amount_out}{" "}
+                    {list?.token_out_metadata.symbol}
                   </Text>
                 </div>
               </Flex>
             </Card>
-            <Card>
-              <Flex gap={16} justify="space-between">
-                <div>
-                  <TextCus>{Number(amount).toFixed(2)}</TextCus>
-                  {loadingPrice ? (
-                    <>
-                      <Skeleton style={loader.hText2} />
-                    </>
-                  ) : (
-                    <Text color="#8B8394" as="span" size="tiny" weight="500">
-                      ${computeUsdPrice(price, amount)}
-                    </Text>
-                  )}
-                </div>
+            {(list?.status as number) < 3 && (
+              <Card>
+                <Flex gap={16} justify="space-between">
+                  <div>
+                    <TextCus>{Number(amount).toFixed(2)}</TextCus>
+                    {loadingPrice ? (
+                      <>
+                        <Skeleton style={loader.hText2} />
+                      </>
+                    ) : (
+                      <Text color="#8B8394" as="span" size="tiny" weight="500">
+                        ${computeUsdPrice(price, amount)}
+                      </Text>
+                    )}
+                  </div>
 
-                <Flex gap={4} align="center">
-                  <Text
-                    color="#5D5169"
-                    weight="500"
-                    style={{ lineHeight: "15.31px", fontSize: "24px" }}
-                  >
-                    {list?.token_out_metadata.symbol}
-                  </Text>
-                  <Avatar size="xs">
-                    <img
-                      onError={(e: any) => (e.target.src = "/no-token.png")}
-                      src={list?.token_out_metadata.icon || "/no-token.png"}
-                      alt="Logo"
-                    />
-                  </Avatar>
+                  <Flex gap={4} align="center">
+                    <Text
+                      color="#5D5169"
+                      weight="500"
+                      style={{ lineHeight: "15.31px", fontSize: "24px" }}
+                    >
+                      {list?.token_out_metadata.symbol}
+                    </Text>
+                    <Avatar size="xs">
+                      <img
+                        onError={(e: any) => (e.target.src = "/no-token.png")}
+                        src={list?.token_out_metadata.icon || "/no-token.png"}
+                        alt="Logo"
+                      />
+                    </Avatar>
+                  </Flex>
                 </Flex>
-              </Flex>
-              <Spacer height={12} />
-              {/* <div>
+                <Spacer height={12} />
+                {/* <div>
                 <Slider
                   value={amount}
                   min={0.01}
@@ -342,69 +368,81 @@ const ListDetails = () => {
                   )}
                 />
               </div> */}
-              {list?.is_friction && (
-                <Flex align="center" gap={12}>
-                  <Range className="field" style={{ flex: 1 }}>
-                    <input
-                      style={{ width: "100%" }}
-                      type="range"
-                      max={list?.amount_out_balance}
-                      step={0.01}
-                      onChange={(e) => setAmount(e.target.value)}
-                      value={amount}
-                    />
-                  </Range>
-                  <Text size="small" weight="500" color="#2E203E">
-                    {getPercentage(list?.amount_out_balance, amount)}%
-                  </Text>
-                  <Button
-                    className="secondary xs"
-                    onClick={(e) => setAmount(list?.amount_out_balance)}
-                  >
-                    Max
-                  </Button>
-                </Flex>
-              )}
-              <Spacer height={12} />
-              <CardGray>
-                <Flex justify="space-between" align="center">
-                  <Flex align="center" gap={4}>
-                    <Text color="#746A7E" size="s3">
-                      Price/Token
+                {list?.is_friction && (
+                  <Flex align="center" gap={12}>
+                    <Range className="field" style={{ flex: 1 }}>
+                      <input
+                        style={{ width: "100%" }}
+                        type="range"
+                        max={list?.amount_out_balance}
+                        step={0.01}
+                        onChange={(e) => setAmount(e.target.value)}
+                        value={amount}
+                      />
+                    </Range>
+                    <Text size="small" weight="500" color="#2E203E">
+                      {getPercentage(list?.amount_out_balance, amount)}%
                     </Text>
-                    <Info />
-                  </Flex>
-                  <Flex gap={4} align="center">
-                    <Text
-                      color="#2E203E"
-                      weight="500"
-                      size="tiny"
-                      style={{ lineHeight: "17.88px" }}
+                    <Button
+                      className="secondary xs"
+                      onClick={(e) => setAmount(list?.amount_out_balance)}
                     >
-                      {price == 0 ? "--" : price.toFixed(4)} USDT
-                    </Text>
+                      Max
+                    </Button>
                   </Flex>
-                </Flex>
-              </CardGray>
-              <Spacer height={40} />
-              {Number(allowance)}/{list?.amount_in}
-              {account ? (
-                <Center>
-                  {list?.amount_out_balance >= 0 && (
-                    <ActionBtn size="56px" onClick={() => handleSwap()}>
-                      {Number(allowance) < list?.amount_in ? "Approve" : "Swap"}
-                    </ActionBtn>
-                  )}
-                </Center>
-              ) : (
-                <ActionBtn
-                  size="56px"
-                  onClick={() => setSetShowModal(ModalType.CONNECT)}
-                >
-                  Connect Your wallet
-                </ActionBtn>
-              )}
-            </Card>
+                )}
+                <Spacer height={12} />
+                <CardGray>
+                  <Flex justify="space-between" align="center">
+                    <Flex align="center" gap={4}>
+                      <Text color="#746A7E" size="s3">
+                        Price/Token
+                      </Text>
+                      <Info />
+                    </Flex>
+                    <Flex gap={4} align="center">
+                      <Text
+                        color="#2E203E"
+                        weight="500"
+                        size="tiny"
+                        style={{ lineHeight: "17.88px" }}
+                      >
+                        {price == 0 ? "--" : price.toFixed(4)} USDT
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </CardGray>
+                <Spacer height={40} />
+                {/* {Number(allowance)}/{list?.amount_in} */}
+                {account ? (
+                  <Center>
+                    {list?.amount_out_balance >= 0 && (
+                      <ActionBtn
+                        disabled={
+                          matchLoading ||
+                          approvalLoading ||
+                          allowanceLoading ||
+                          amount == 0
+                        }
+                        size="56px"
+                        onClick={() => handleSwap()}
+                      >
+                        {Number(allowance) < list?.amount_in
+                          ? "Approve"
+                          : "Swap"}
+                      </ActionBtn>
+                    )}
+                  </Center>
+                ) : (
+                  <ActionBtn
+                    size="56px"
+                    onClick={() => setSetShowModal(ModalType.CONNECT)}
+                  >
+                    Connect Your wallet
+                  </ActionBtn>
+                )}
+              </Card>
+            )}
           </Flex>
           <Flex style={{ flex: 1 }} gap={16} direction="column">
             <Card>
@@ -460,7 +498,11 @@ const ListDetails = () => {
                 </Flex>
               </Flex>
               <Spacer height={16} />
-              <Button className="primary">Send Counter Offer</Button>
+              {(list?.status as number) < 3 && (
+                <Button className="primary" onClick={showComingSoon}>
+                  Send Counter Offer
+                </Button>
+              )}
             </Card>
             <Card>
               <Text as="h4" weight="500" size="big" color="#000">
@@ -678,7 +720,6 @@ const ListDetails = () => {
           </Flex>
         </Flex>
       </DWrapper>
-
       {showModal === ModalType.INFO && (
         <InformationModal
           handleClose={() => setSetShowModal(null)}
@@ -686,7 +727,6 @@ const ListDetails = () => {
           list={list}
         />
       )}
-
       {showModal === ModalType.CONNECT && (
         <ConnectModal
           show={!!showModal}
@@ -694,6 +734,13 @@ const ListDetails = () => {
             setSetShowModal(null);
             connect(connector);
           }}
+          handleClose={() => setSetShowModal(null)}
+        />
+      )}
+
+      {showModal === ModalType.LOADING && (
+        <TransactionLoading
+          show={!!showModal}
           handleClose={() => setSetShowModal(null)}
         />
       )}

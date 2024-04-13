@@ -1,15 +1,32 @@
 import styled from "styled-components";
 
 export const MyListingWrapper = styled.div`
-  margin-top: 30px;
+  /* margin-top: 30px; */
+  position:relative;
+
+  overflow: hidden;
+    border-radius: 9px;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
 
   @media (max-width: 767px) {
     margin-top: 0px;
   } ;
 `;
 
+export const Body = styled.div`
+   z-index:2;
+   position:relative;
+   padding:66px 24px 24px;
+   height: 800px;;
+  overflow: auto;
+
+
+`
+
+
 export const ListingInner = styled.div`
-  padding: 50px 8px;
+  padding: 42px 8px;
 
   @media (max-width: 767px) {
     padding: 30px 0px;

@@ -6,6 +6,7 @@ import CustomButton from "@/components/Button/CustomButton";
 import { useNavigate, useParams } from "react-router-dom";
 import classNames from "classnames";
 import { motion } from "framer-motion";
+import { Button } from "@/components/Button";
 
 import {
   Wrapper,
@@ -80,19 +81,11 @@ const HomePage = () => {
               <SItem onClick={() => navigate("/")} className="active">
                 Tokens
               </SItem>
-              <SItem onClick={() => navigate("/list/create")}>Nfts</SItem>
+              <SItem onClick={() => navigate("/nfts")}>Nfts</SItem>
             </Switch>
           </div>
 
-          <Flex align="center" gap={16}>
-            {/* <ActionSwitch>
-              <SwitchItem2 onClick={() => navigate("/")} className="active">
-                Swap
-              </SwitchItem2>
-              <SwitchItem2 onClick={() => navigate("/list/create")}>
-                List
-              </SwitchItem2>
-            </ActionSwitch> */}
+          <Flex align="center" gap={12}>
             <SearchContainer className={classNames({ hidden: mode == "list" })}>
               <InputWrapper>
                 <LSearch />
@@ -106,23 +99,15 @@ const HomePage = () => {
 
             <FItem>
               <FilterHome />
-              <span>Filter</span>
             </FItem>
 
             <LeftSide>
-              <LayoutSwitch className={classNames({ hidden: mode == "list" })}>
-                <SwitchItem
-                  onClick={() => setDisplay("grid")}
-                  className={display === "grid" ? "active" : ""}
-                >
-                  <Linear />
-                </SwitchItem>
-                <SwitchItem
-                  className={display === "list" ? "active list" : "list"}
-                >
-                  <ListGrid />
-                </SwitchItem>
-              </LayoutSwitch>
+              <Button
+                onClick={() => navigate(`/list/create`)}
+                className="secondary lg"
+              >
+                Create OTC Offer
+              </Button>
             </LeftSide>
           </Flex>
         </HomeHeader>

@@ -13,18 +13,20 @@ const ProgressInner = styled.div`
 `;
 
 type ProgressType = {
-  value?: number;
+  value: number;
 };
 
 const Progress = ({ value }: ProgressType) => {
   return (
     <ProgressWrapper>
       <ProgressContainer className="">
-        <ProgressInner style={{ width: `${value}%` }}></ProgressInner>
+        <ProgressInner
+          style={{ width: `${Math.min(value, 100)}%` }}
+        ></ProgressInner>
       </ProgressContainer>
       <Spacer height={4} />
       <Text size="tiny" weight="500">
-        {value}%
+        {Math.min(value, 100)}%
       </Text>
     </ProgressWrapper>
   );

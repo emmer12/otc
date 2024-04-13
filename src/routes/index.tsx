@@ -18,6 +18,7 @@ import {
   Trades,
   P2p,
   ListDetails,
+  NFTHome,
 } from "../views";
 import MainLayout from "../views/layouts/main";
 import Dashboard from "../views/layouts/dashboard";
@@ -45,6 +46,7 @@ const AnimatedRouter = () => {
         <Route path="doc" element={<Escrow />} />
         <Route path="/trades/:id" element={<Trades />} />
         <Route path="/list/:id" element={<ListDetails />} />
+        <Route path="/nfts" element={<NFTHome />} />
         <Route path="/dashboard" element={<Dashboard />}>
           <Route index element={<MyListings />} />
           <Route path="/dashboard/my-listings" element={<MyListings />} />

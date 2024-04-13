@@ -13,7 +13,9 @@ const DashboardLayout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!account) navigate("/");
+    setTimeout(() => {
+      if (!account) navigate("/");
+    }, 4000);
   }, []);
 
   return (

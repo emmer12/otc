@@ -150,9 +150,9 @@ const Navigation = ({
               >
                 <span>Home</span>
               </Item>
-              <Item to="p2p">
+              {/* <Item to="p2p">
                 <span>P2P Escrow</span>
-              </Item>
+              </Item> */}
               {/* <Item to="swap">
                 <span>Swap</span>
               </Item> */}
@@ -160,7 +160,7 @@ const Navigation = ({
                 as="a"
                 download
                 target="_blank"
-                href="https://vetmeblock.com/assets/whitepaper.pdf"
+                href="https://vetmeblock.com/assets/VetMe_Whitepaper.pdf"
               >
                 <span>White Paper</span>
               </Item>
@@ -170,7 +170,7 @@ const Navigation = ({
               <ChainWrapper>
                 <Button
                   onClick={() => setCMenu((prev) => !prev)}
-                  className="secondary"
+                  className="ghost"
                 >
                   {currentChain()}
                   <AngleDown />
@@ -238,7 +238,7 @@ const Navigation = ({
               </IconM>
               <MMenuInner>
                 <MMenuItem to="/">Home</MMenuItem>
-                <MMenuItem to="p2p">P2P Escrow</MMenuItem>
+                {/* <MMenuItem to="p2p">P2P Escrow</MMenuItem> */}
                 {/* <MMenuItem to="swap">Swap</MMenuItem> */}
                 {/* <MMenuItem to="test-tokens">Test Tokens</MMenuItem> */}
                 <MMenuItem

@@ -1049,7 +1049,7 @@ export const GainIcon = (props: SVGProps<SVGSVGElement>) => (
       d="M4.345.884c.824-1.179 2.486-1.179 3.31 0l3.935 5.625C12.6 7.952 11.63 10 9.935 10h-7.87C.37 10-.6 7.952.41 6.51L4.345.883Z"
     />
   </svg>
-)
+);
 
 export const ArrowDown = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -1067,7 +1067,7 @@ export const ArrowDown = (props: SVGProps<SVGSVGElement>) => (
       d="M4 1v16m0 0-3-3m3 3 3-3"
     />
   </svg>
-)
+);
 
 export const AngleDown2 = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -1085,7 +1085,7 @@ export const AngleDown2 = (props: SVGProps<SVGSVGElement>) => (
       d="m4.815 6.5 4 4 4-4"
     />
   </svg>
-)
+);
 
 export const Lock = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -1102,4 +1102,20 @@ export const Lock = (props: SVGProps<SVGSVGElement>) => (
       d="M4.734 6.667h-.067V5.333a3.333 3.333 0 1 1 6.666 0v1.334h-.067M8 9.333v1.334M12.667 10a4.667 4.667 0 1 1-9.334 0 4.667 4.667 0 0 1 9.334 0Z"
     />
   </svg>
-)
+);
+
+export const MenuGrid = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={20}
+    height={21}
+    fill="none"
+    {...props}
+  >
+    <path
+      stroke="#EFF1EA"
+      strokeWidth={1.219}
+      d="M3.25 4.813A.812.812 0 0 1 4.063 4h3.25a.812.812 0 0 1 .812.813v4.062a.812.812 0 0 1-.812.813h-3.25a.812.812 0 0 1-.813-.813V4.812Zm8.125 0A.812.812 0 0 1 12.188 4h3.25a.812.812 0 0 1 .812.813v1.625a.812.812 0 0 1-.812.812h-3.25a.812.812 0 0 1-.813-.813V4.813ZM3.25 13.75a.812.812 0 0 1 .813-.813h3.25a.812.812 0 0 1 .812.813v2.438a.812.812 0 0 1-.812.812h-3.25a.812.812 0 0 1-.813-.813V13.75Zm8.125-2.438a.812.812 0 0 1 .813-.812h3.25a.812.812 0 0 1 .812.813v4.874a.812.812 0 0 1-.812.813h-3.25a.812.812 0 0 1-.813-.813v-4.875Z"
+    />
+  </svg>
+);

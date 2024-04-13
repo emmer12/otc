@@ -233,8 +233,13 @@ const ListCard = () => {
     }
     setForm((initialState: any) => ({
       ...initialState,
-      token_in_metadata: get,
-      token_out_metadata: give,
+      token_in_metadata: {
+        ...form.token_in_metadata,
+        ...get
+      },
+      token_out_metadata: {
+         ...form.token_out_metadata,
+        ...give},
       receiving_wallet: account,
       signatory: account,
       forever: hasDeadline ? false : true,
@@ -271,6 +276,13 @@ const ListCard = () => {
     setGet(dGet);
   }, [chainId]);
 
+  const setMax = (balance: number) => {
+    setForm((initialState: any) => ({
+      ...initialState,
+      amount_out: balance,
+    }));
+  };
+
   return (
     <>
       <SwapContainer>
@@ -302,6 +314,7 @@ const ListCard = () => {
               data={give}
               onChange={(e) => handleChange(e)}
               input_val={form.amount_out}
+              setMax={setMax}
             />
             <SwapCon onClick={handleSwap}>
               <ArrowDown />
@@ -312,10 +325,11 @@ const ListCard = () => {
               data={get}
               onChange={(e) => handleChange(e)}
               input_val={form.amount_in}
+              setMax={() => null}
             />
           </Flex>
           <Spacer height={6} />
-          <Flex justify="space-between">
+          {/* <Flex justify="space-between">
             <Text as="div" size="tiny" color="#2E203E" weight="500">
               1 VETME = 21 ETH
               <Text
@@ -340,7 +354,7 @@ const ListCard = () => {
                 12% higher
               </Text>
             </Text>
-          </Flex>
+          </Flex> */}
 
           <Spacer height={28} />
           <Flex direction="column" gap={12} style={{ width: "100%" }}>
@@ -417,8 +431,6 @@ const ListCard = () => {
                 onstyle="btn-on"
               />
             </Flex>
-
-           
           </Flex>
 
           <Spacer height={84} />

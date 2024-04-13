@@ -4,7 +4,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { fromBigNumber } from "@/utils";
 import { getTokenAllowance } from "@/helpers/contract";
 
-export const useAllowance = (address: string) => {
+export const useAllowance = (address: string, amount: number) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { account, chainId, library } = useWeb3React<Web3Provider>();
   const [allowance, setAllowance] = useState<string>("");
@@ -30,7 +30,7 @@ export const useAllowance = (address: string) => {
 
   useEffect(() => {
     getAllowance();
-  }, [address, account, toggle]);
+  }, [address, account, toggle, amount]);
 
   const refetch = () => {
     setRefetch((prev) => !prev);

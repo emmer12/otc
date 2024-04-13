@@ -123,8 +123,6 @@ const TokenSelect = ({
     // setLocalToken(token);
   };
 
-  console.log(results);
-
   return (
     <AnimatePresence>
       {show && (

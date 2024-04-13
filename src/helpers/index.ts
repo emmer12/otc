@@ -221,7 +221,7 @@ export const getDailyVolume = () => {
 };
 
 export const computeUsdPrice = (usd: any, amount: number) => {
-  return (usd * amount).toFixed(2);
+  return (usd * amount).toLocaleString('en-Us');
 };
 
 export const toEther = (weiAmount: string, decimal_place: any) =>

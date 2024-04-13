@@ -594,6 +594,15 @@ export const ActionBtn = styled.button<{ size: string }>`
   z-index: 50;
   transition: 0.3s ease-in-out;
 
+  &:disabled{
+    opacity:0.6;
+     &:hover,
+  :active {
+    background:  ${SECONDARY_COLOR_GREEN};
+     cursor: not-allowed; 
+  }
+  }
+
   &:hover,
   :active {
     background: ${SECONDARY_COLOR};

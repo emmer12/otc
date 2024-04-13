@@ -166,7 +166,8 @@ const Trans = () => {
   };
   return (
     <ContainerSm>
-      <Flex gap={35}>
+     
+      <Flex directionM="column" gap={35}>
         <TradeInfo>
           <Flex gap={24} direction="column">
             <div>
@@ -258,10 +259,13 @@ const Trans = () => {
             <TradeItem style={{ textAlign: "center" }}>
               <VisibleWrap>
                 <Button>
-                 {
-                  form.is_private ? (<><Lock /> Private </>) : "Public" 
-                 }
-                  
+                  {form.is_private ? (
+                    <>
+                      <Lock /> Private{" "}
+                    </>
+                  ) : (
+                    "Public"
+                  )}
                 </Button>
               </VisibleWrap>
             </TradeItem>
@@ -427,7 +431,7 @@ const Trans = () => {
             <Spacer height={35} />
           </TradeCon>
 
-          <ListDetailsBg />
+          <ListDetailsBg className="bg" />
         </TradeWrapper>
       </Flex>
       <Spacer height={20} />

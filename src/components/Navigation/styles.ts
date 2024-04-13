@@ -389,13 +389,16 @@ export const Bar = styled.div`
 `;
 
 export const SideBarCon = styled.div`
-  min-width: 224px;
-  background: #eff1ea;
+  min-width: 248px;
+  background: #170728;
   border: 1px solid #453953;
-  border-radius: 10px;
+  border-radius: 12px;
   height: 100%;
-  min-height: 500px;
-  padding: 32px;
+  padding: 24px 27PX;
+  align-self: flex-start;
+
+  
+  
   /* min-height: 100vh; */
 
   @media (max-width: 767px) {

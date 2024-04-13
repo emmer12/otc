@@ -34,6 +34,15 @@ export const TradeWrapper = styled.div`
 
   @media (max-width: 640px) {
     padding: 15px 15px;
+
+  width:100%;
+    background:#170728;
+
+
+  svg.bg{
+    display:none;
+  }
+
   }
 `;
 export const TradeInner = styled(Flex)`
@@ -361,6 +370,10 @@ export const TradeInfo = styled.div`
   border-radius:12px;
   padding:24px;
   background:#fff;
+
+  @media screen and (max-width: 600px) {
+    width:100%;
+  }
 `
 
 export const VisibleWrap = styled.div`

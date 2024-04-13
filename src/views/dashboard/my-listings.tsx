@@ -6,7 +6,13 @@ import { useListFetch } from "@/hooks/customHooks";
 import { useState, useMemo, useEffect } from "react";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-import { GridWrapper, InputWrapper, SearchContainer } from "../home/styles";
+import {
+  GridWrapper,
+  InputWrapper,
+  SItem,
+  SearchContainer,
+  Switch,
+} from "../home/styles";
 import {
   ListingInner,
   ListingTabs,
@@ -14,10 +20,12 @@ import {
   TabItems,
   SearchCon,
   ListingBody,
+  Body,
 } from "./styles";
 import apiHelper from "@/helpers/apiHelper";
 import { ListI } from "@/types";
 import { parseError, parseSuccess } from "@/utils";
+import { DashBg } from "@/components/bgs";
 
 function MyListings() {
   const [active, setActive] = useState<number>(0);
@@ -103,8 +111,9 @@ function MyListings() {
 
   return (
     <MyListingWrapper>
-      <Flex directionM="column-reverse" align="flex-end" gap={15}>
-        <ListingTabs className="custom-scroll">
+      <Body>
+        <Flex directionM="column-reverse" align="flex-end" gap={15}>
+          {/* <ListingTabs className="custom-scroll">
           {tabs.map((tab, i) => (
             <TabItems onClick={() => handleActive(i)} key={i}>
               {tab}
@@ -113,57 +122,41 @@ function MyListings() {
               )}
             </TabItems>
           ))}
-        </ListingTabs>
-        <SearchCon>
-          <InputWrapper>
-            <LSearch />
-            <input
-              placeholder="SEARCH"
-              value={query}
-              onChange={(e) => onChangeHandler(e)}
-            />
-            <FilterCircle />
-            <Spacer width={8} />
-            <AscDesc />
-          </InputWrapper>
-        </SearchCon>
-      </Flex>
-      <ListingInner>
-        <ListingBody>
-          {active == 0 && (
-            <GridWrapper>
-              {loading ? (
-                <span>loading...</span>
-              ) : listings.length < 1 ? (
-                <>
-                  <Text>No Listing</Text>
-                </>
-              ) : (
-                listings.map((list: any, i: number) => (
-                  <SwapGrid
-                    list={list}
-                    key={i}
-                    state="auth"
-                    account={account}
-                    confirmFriction={() => null}
-                    handleRemove={handleRemove}
-                  />
-                ))
-              )}
-            </GridWrapper>
-          )}
-
-          {active == 1 && (
-            <>
-              <GridWrapper>
+        </ListingTabs> */}
+          <div style={{ flex: 1 }}>
+            <Switch className="rounded">
+              <SItem onClick={() => null} className="active">
+                Offer Created
+              </SItem>
+              <SItem onClick={() => null}>Offer Filled</SItem>
+            </Switch>
+          </div>
+          <SearchCon>
+            <InputWrapper>
+              <LSearch />
+              <input
+                placeholder="SEARCH"
+                value={query}
+                onChange={(e) => onChangeHandler(e)}
+              />
+              <FilterCircle />
+              <Spacer width={8} />
+              <AscDesc />
+            </InputWrapper>
+          </SearchCon>
+        </Flex>
+        <ListingInner>
+          <ListingBody>
+            {active == 0 && (
+              <GridWrapper className="dashboard">
                 {loading ? (
                   <span>loading...</span>
-                ) : filtered.length < 1 ? (
+                ) : listings.length < 1 ? (
                   <>
                     <Text>No Listing</Text>
                   </>
                 ) : (
-                  filtered.map((list: any, i: number) => (
+                  listings.map((list: any, i: number) => (
                     <SwapGrid
                       list={list}
                       key={i}
@@ -175,53 +168,78 @@ function MyListings() {
                   ))
                 )}
               </GridWrapper>
-            </>
-          )}
+            )}
 
-          {active == 2 && (
-            <>
-              <GridWrapper>
-                {loading ? (
-                  <span>loading...</span>
-                ) : filtered.length < 1 ? (
-                  <>
-                    <Text>No Listing</Text>
-                  </>
-                ) : (
-                  filtered.map((list: any, i: number) => (
-                    <SwapGrid
-                      list={list}
-                      key={i}
-                      state="auth"
-                      account={account}
-                      confirmFriction={() => null}
-                      handleRemove={handleRemove}
-                    />
-                  ))
-                )}
-              </GridWrapper>
-            </>
-          )}
+            {active == 1 && (
+              <>
+                <GridWrapper>
+                  {loading ? (
+                    <span>loading...</span>
+                  ) : filtered.length < 1 ? (
+                    <>
+                      <Text>No Listing</Text>
+                    </>
+                  ) : (
+                    filtered.map((list: any, i: number) => (
+                      <SwapGrid
+                        list={list}
+                        key={i}
+                        state="auth"
+                        account={account}
+                        confirmFriction={() => null}
+                        handleRemove={handleRemove}
+                      />
+                    ))
+                  )}
+                </GridWrapper>
+              </>
+            )}
 
-          {active == 3 && (
-            <>
-              <GridWrapper>
-                {loading ? (
-                  <span>loading...</span>
-                ) : counters.length < 1 ? (
-                  <>
-                    <Text>No Listing</Text>
-                  </>
-                ) : (
-                  counters.map((counter: any, i: number) => (
-                    <CounterGrid counter={counter} key={i} state="auth" />
-                  ))
-                )}
-              </GridWrapper>
-            </>
-          )}
-        </ListingBody>
-      </ListingInner>
+            {active == 2 && (
+              <>
+                <GridWrapper>
+                  {loading ? (
+                    <span>loading...</span>
+                  ) : filtered.length < 1 ? (
+                    <>
+                      <Text>No Listing</Text>
+                    </>
+                  ) : (
+                    filtered.map((list: any, i: number) => (
+                      <SwapGrid
+                        list={list}
+                        key={i}
+                        state="auth"
+                        account={account}
+                        confirmFriction={() => null}
+                        handleRemove={handleRemove}
+                      />
+                    ))
+                  )}
+                </GridWrapper>
+              </>
+            )}
+
+            {active == 3 && (
+              <>
+                <GridWrapper>
+                  {loading ? (
+                    <span>loading...</span>
+                  ) : counters.length < 1 ? (
+                    <>
+                      <Text>No Listing</Text>
+                    </>
+                  ) : (
+                    counters.map((counter: any, i: number) => (
+                      <CounterGrid counter={counter} key={i} state="auth" />
+                    ))
+                  )}
+                </GridWrapper>
+              </>
+            )}
+          </ListingBody>
+        </ListingInner>
+      </Body>
 
       {/* <Message
         msg="Your trade has been edited"
@@ -230,6 +248,8 @@ function MyListings() {
         handleClose={() => setOpen(false)}
       /> */}
       {/* <ListModal show={open} handleClose={() => setOpen(false)} /> */}
+
+      <DashBg />
     </MyListingWrapper>
   );
 }

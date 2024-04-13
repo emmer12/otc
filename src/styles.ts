@@ -98,4 +98,6 @@ export const OtcBg = styled.div``;
 
 export const Dashboard = styled.div`
   display: flex;
+  gap:32px;
+  margin-top:24px;
 `;

@@ -269,6 +269,7 @@ export const sepolia_tokens = [
     address: "0x92B6dD0bad04CACbD563DC44580fA706F27846Ae",
     decimal_place: 18,
     icon: "https://assets.coingecko.com/coins/images/825/large/binance-coin-logo.png",
+   usd: 0.3,
   },
   {
     name: "Cool",
@@ -276,6 +277,7 @@ export const sepolia_tokens = [
     address: "0x886C5086C9cc1630c3B1D2D6C8993Cecb74a5D8D",
     decimal_place: 18,
     icon: "https://assets.coingecko.com/coins/images/825/large/binance-coin-logo.png",
+    usd: 0.3,
   },
 ]
 

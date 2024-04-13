@@ -13,8 +13,8 @@ export const tokenExpired = (token: string) => {
 };
 
 export const toBigNumber = (value: any) => utils.parseEther(value.toString());
-export const fromBigNumber = (value: any) =>
-  utils.formatUnits(value.toString(), 18);
+export const fromBigNumber = (value: any, decimal = 18) =>
+  utils.formatUnits(value.toString(), decimal);
 
 const pendingRequests: any = {};
 
@@ -154,3 +154,10 @@ export const shortenNumber = (num: number): string => {
   }
   return shortNum + suffixes[suffixNum];
 }
+
+export const showComingSoon = () => {
+  toast.info("Coming soon", {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    hideProgressBar: true,
+  });
+};

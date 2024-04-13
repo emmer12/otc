@@ -100,6 +100,39 @@ export const Button = styled.button.attrs((props) => ({
       }
     }
   }
+
+  &.ghost {
+    background: transparent;
+
+    a {
+      color: ${PRIMARY_COLOR};
+    }
+
+    &:hover,
+    &:target,
+    &:active {
+      background: #eff1ea;
+      border: none;
+    }
+  }
+
+  &.error {
+    background: #f8d8d2;
+    position: relative;
+    color: #170728;
+    border: 1px solid #170728;
+
+    a {
+      color: ${PRIMARY_COLOR};
+    }
+
+    &:hover,
+    &:target,
+    &:active {
+      background: #f1beb5;
+    }
+  }
+
   &.primary-accent {
     background: rgba(125, 169, 255, 0.3);
     border: 2px solid #7da9ff;
@@ -147,7 +180,7 @@ export const Button = styled.button.attrs((props) => ({
 
   &.lg {
     font-size: 16px;
-    height: 54px;
+    height: 56px;
   }
 
   &.md {

@@ -15,7 +15,7 @@ export const HomeHeader = styled.div`
   @media (max-width: 640px) {
     /* flex-direction: column; */
     gap: 20px;
-    flex-wrap:wrap
+    flex-wrap: wrap;
   }
 `;
 export const LeftSide = styled.div`
@@ -130,10 +130,8 @@ export const ActionSwitch = styled.div`
   }
 `;
 
-
-
 export const Switch = styled.div`
-  width:fit-content ;
+  width: fit-content;
   padding: 6px 7px;
   background: #ffffff;
   border: 1px solid #2e203e;
@@ -144,10 +142,20 @@ export const Switch = styled.div`
   font-weight: 800;
   font-size: 24px;
   gap: 7px;
-`
+
+  &.rounded {
+    border-radius: 200px;
+
+    > div {
+      border-radius: 200px;
+      text-transform: capitalize;
+      font-size: 12px;
+    }
+  }
+`;
 
 export const SItem = styled.div`
- cursor: pointer;
+  cursor: pointer;
   display: flex;
   font-weight: 400;
   font-size: 18px;
@@ -157,7 +165,7 @@ export const SItem = styled.div`
   justify-content: center;
   transition: 0.3s;
   border-radius: 8px;
-  padding:8px 12px ;
+  padding: 8px 12px;
 
   align-items: center;
   &.active,
@@ -166,31 +174,31 @@ export const SItem = styled.div`
     color: #ffffff;
     background: #170728;
   }
-`
+`;
 
 export const FItem = styled.div`
+  height: 56px;
+  width: 56px;
   cursor: pointer;
-  display:flex;
+  display: flex;
   font-weight: 400;
   font-size: 18px;
   text-transform: uppercase;
   justify-content: center;
   transition: 0.3s;
-  border-radius: 8px;
-  padding:16px ;
-  color: #BEFECD;
+  border-radius: 200px;
+  // padding: 16px;
+  color: #befecd;
   background: #170728;
-  gap:10px;
-
+  gap: 10px;
 
   align-items: center;
   &:hover {
   }
-
-`
+`;
 
 export const SearchContainer = styled.div`
-  width: 376px;
+  width: 269px;
   max-width: 80%;
 
   &.hidden {
@@ -244,12 +252,16 @@ export const GridWrapper = styled.div`
 
   display: grid;
   grid-template-columns: repeat(3, minmax(250px, 1fr));
-  gap:12px;
+  gap: 12px;
 
+  &.dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    gap: 12px;
+  }
 
   @media (max-width: 640px) {
     grid-template-columns: repeat(1, minmax(250px, 1fr));
-  
   }
 `;
 

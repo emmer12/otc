@@ -9,7 +9,8 @@ import { anim, grid_item_trans } from "@/utils/transitions";
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
 import { loader } from "@/components/styles";
-import { getPercentage } from "@/helpers";
+import { computeUsdPrice, getPercentage } from "@/helpers";
+import { Button } from "../Button";
 
 const SwapContainer = styled.div`
   width: 540px;
@@ -33,7 +34,8 @@ const SwapContainer = styled.div`
   &.auth {
     width: 520px;
     max-width: 100%;
-    background-image: url(/images/bg/c3.png);
+    height: auto;
+    /* background-image: url(/images/bg/c3.png); */
   }
 
   @media (max-width: 640px) {
@@ -258,14 +260,31 @@ const SwapGrid = ({
               <>
                 <Flex gap={4}>
                   <Text weight="400" size="s3" color="#8B8394">
-                    $0.034/Token
+                    $
+                    {list?.token_out_metadata.usd
+                      ? list?.token_out_metadata?.usd.toLocaleString("en-US")
+                      : "--"}
+                    /Token
                   </Text>
                   <Text weight="400" size="s3" color="#8B8394">
-                    (~$203k)
+                    (~$
+                    {list?.token_out_metadata.usd
+                      ? computeUsdPrice(
+                          list?.token_out_metadata.usd,
+                          list.amount_out
+                        )
+                      : "--"}
+                    )
                   </Text>
                 </Flex>
                 <Text weight="400" size="s3" color="#8B8394">
-                  $203
+                  $
+                  {list?.token_in_metadata.usd
+                    ? computeUsdPrice(
+                        list?.token_in_metadata.usd,
+                        list.amount_out
+                      )
+                    : "--"}
                 </Text>
               </>
             ) : (
@@ -277,16 +296,42 @@ const SwapGrid = ({
             )}
           </Flex>
         </Body>
-        {list ? (
-          <Progress
-            value={getPercentage(list.amount_out, list.amount_bought)}
-          />
-        ) : (
-          <div style={{ marginTop: "-24px" }}>
-            <Skeleton style={loader.progress} />
-            <Skeleton style={{ width: "50px", height: "20px" }} />
-          </div>
-        )}
+        <div>
+          {list ? (
+            <Progress
+              value={getPercentage(list.amount_out, list.amount_bought)}
+            />
+          ) : (
+            <div style={{ marginTop: "-24px" }}>
+              <Skeleton style={loader.progress} />
+              <Skeleton style={{ width: "50px", height: "20px" }} />
+            </div>
+          )}
+          {state == "auth" && (
+            <>
+              <Spacer height={24} />
+              <Flex gap={8}>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditOpen(true);
+                  }}
+                  className="secondary lg"
+                >
+                  Edit Trade
+                </Button>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  className="error lg"
+                >
+                  Close Trade
+                </Button>
+              </Flex>
+            </>
+          )}
+        </div>
       </SwapContainer>
       {token && (
         <Chart show={open} handleClose={() => setOpen(false)} token={token} />

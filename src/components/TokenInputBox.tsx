@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TokenInputBgUp, TokenInputBgDown } from "./bgs";
 import styled from "styled-components";
 import TokenBadge from "./TokenBadge";
 import { Flex, Spacer, Text } from ".";
-import { computeUsdPrice, getBlockName } from "@/helpers";
+import { computeUsdPrice, getBlockName, truncate } from "@/helpers";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
+import { useWalletBalance } from "@/hooks/useWalletBalance";
+import { selectionSetMatchesResult } from "@apollo/client/cache/inmemory/helpers";
+import { ListContext, ListContextType } from "@/context/Listcontext";
 
 const Container = styled.div`
   position: relative;
@@ -51,6 +54,7 @@ type TokenProps = {
   onChange: (e: any) => void;
   data: any;
   input_val: string | number;
+  setMax: (e: any) => void;
 };
 
 const TokenInputBox = ({
@@ -59,9 +63,12 @@ const TokenInputBox = ({
   data,
   onChange,
   input_val,
+  setMax,
 }: TokenProps) => {
   const { chainId } = useWeb3React<Web3Provider>();
   const [token_usd, setTokenUsd] = useState(0);
+  const { balance } = useWalletBalance(data?.address, data?.decimal_place);
+  const { setForm } = useContext(ListContext) as ListContextType;
 
   const getTokenPrice = async (token: any) => {
     try {
@@ -70,7 +77,33 @@ const TokenInputBox = ({
           chainId
         )}/contract/${token.address}`
       );
-      setTokenUsd(data?.market_data?.current_price?.usd);
+
+      const usdPrice = data?.market_data?.current_price?.usd;
+      setTokenUsd(usdPrice);
+
+      if (type == "offer") {
+        setForm((init: any) => {
+          return {
+            ...init,
+            token_out_metadata: {
+              ...init.token_out_metadata,
+              usd: usdPrice,
+              id: data.id,
+            },
+          };
+        });
+      } else {
+        setForm((init: any) => {
+          return {
+            ...init,
+            token_in_metadata: {
+              ...init.token_in_metadata,
+              usd: usdPrice,
+              id: data.id,
+            },
+          };
+        });
+      }
     } catch (err) {
       console.log(err);
     }
@@ -97,9 +130,18 @@ const TokenInputBox = ({
             />
             <Flex align="center" gap={5}>
               <Text color="#746A7E" size="tiny">
-                Bal:23.12
+                Bal: {truncate(String(balance), 9, "...", "end")} {data?.symbol}
               </Text>
-              <button className="max-btn">Max</button>
+
+              {type == "offer" && (
+                <button
+                  disabled={balance == 0}
+                  onClick={() => setMax(balance)}
+                  className="max-btn"
+                >
+                  Max
+                </button>
+              )}
             </Flex>
           </div>
 
