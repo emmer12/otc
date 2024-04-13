@@ -66,7 +66,7 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        animation: animate 1s 5s forwards;
+        animation: animate 1s 4600ms forwards;
       }
 
       @keyframes animate {
@@ -78,28 +78,15 @@
         }
       }
 
-      .preloader lottie-player {
-        width: 30%;
+      .preloader #lottie {
+        width: 30% !important;
       }
     </style>
-    <script type="module" crossorigin src="/assets/index.47d97b0b.js"></script>
-    <link rel="stylesheet" href="/assets/index.d911d207.css">
+    <script type="module" crossorigin src="/assets/index.732be974.js"></script>
+    <link rel="stylesheet" href="/assets/index.8c285445.css">
   </head>
   <body>
-    <div id="root">
-      <div class="preloader">
-        <lottie-player
-          src="/preloader.json"
-          background="transparent"
-          style="overflow: clip !important"
-          speed="1"
-          autoplay=""
-          class="preloader-lottie"
-        >
-        </lottie-player>
-      </div>
-    </div>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <div id="root"></div>
     
   </body>
 </html>

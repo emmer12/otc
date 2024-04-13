@@ -575,7 +575,7 @@ export const CustomLink = styled.a`
   }
 `;
 
-export const ActionBtn = styled.button<{ size: string }>`
+export const ActionBtn = styled.button<{ size?: string }>`
   all: unset;
   background: ${SECONDARY_COLOR_GREEN};
   height: ${({ size }) => size ? size : '83px'} ;
