@@ -1,32 +1,24 @@
-import styled from "styled-components";
-import { CSSTransition } from "react-transition-group";
-import { Button } from "../Button";
 import { useNavigate } from "react-router-dom";
-import { Add, ArrowRight, LoadingIll, Swap } from "../Icons";
-import { text } from "stream/consumers";
 import { ListCard } from "../Card";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import BigNumber from "bignumber.js";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-
-import {
-  ActionBtn,
-  Center,
-  Divider,
-  Flex,
-  IconWrapper,
-  Input,
-  InputBox,
-  InputCon,
-  InputInner,
-  Spacer,
-  Text,
-  TokenBadge,
-} from "..";
-import Toggle from "../Toggle";
+import TokenInputBox from "../TokenInputBox";
+import { ActionBtn, Center, Flex, Spacer, Text } from "..";
+import styled from "styled-components";
 import apiHelper from "@/helpers/apiHelper";
 import { listSign, parseError, parseSuccess } from "@/utils";
+import { ArrowDown } from "../Icons";
+import Toggle from "../Toggle";
+import { ListContext, ListContextType } from "@/context/Listcontext";
+import { TokenI } from "@/types";
+import { Connect as ConnectModal, TokenSelect } from "../Modal";
+import { ConnectContext, ConnectContextType } from "@/context/ConnectContext";
+import { useGetWalletTokens } from "@/hooks/customHooks";
+import { AnimatePresence, motion } from "framer-motion";
+import { DashBg, SwapBg } from "../bgs";
+import { anim, slideInUp } from "@/utils/transitions";
 
 const Container = styled.div`
   position: fixed;
@@ -35,82 +27,99 @@ const Container = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
-  z-index: 99999;
-  background: rgba(242, 255, 245, 0.7);
-`;
-const Inner = styled.div`
-  left: 50%;
-  top: 50%;
-  width: fit-content;
-  position: relative;
-  transform: translate(-50%, -50%);
-  /* padding: 50px 16px; */
+  z-index: 999999;
+  background: rgba(23, 7, 40, 0.6);
 `;
 
-const SwapContainer = styled.div`
-  width: 396px;
-  max-width: 100%;
-  margin-bottom: 114px;
-  background: #ffffff;
-  margin: auto;
-  background-image: url(/images/bg/list.png);
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: 100% 100%;
-  position: relative;
+const Close = styled.div`
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  right: 0px;
+  top: 0px;
+  background: #170728;
+  border: 1px solid #453953;
+  border-radius: 12px;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
 
-  .header {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+  @media (max-width: 640px) {
+    width: 50px;
+    height: 50px;
+    top: -3px;
+    right: 5px;
   }
 `;
 
+const Inner = styled.div`
+  width: 418px;
+  position: absolute;
+  left: 50%;
+  top: 100px;
+  transform: translate(-50%);
+  z-index: 999;
+`;
+
 const Body = styled.div`
-  padding: 40px 16px 16px;
+  padding: 80px 24px;
+  border-radius: 12px;
+  position: relative;
+  z-index: 3;
 
   @media (max-width: 640px) {
     /* padding: 20px 25px; */
   }
 `;
 
-const IconWrap = styled.div``;
 const SwapCon = styled.div`
-  margin-left: 38px;
-`;
-
-const DurationInput = styled.div`
-  flex: 1;
-  input {
-    /* background: #ffffff; */
-    border: 1px solid rgb(23 7 40);
-    border-radius: 20px;
-    padding: 10px;
-    outline: none;
-  }
+  border: 1px solid #170728;
+  background: #befecd;
+  border-radius: 8px;
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+  display: grid;
+  place-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 interface IListEdit {
   handleClose: () => void;
-  show: boolean;
+  showM: boolean;
   list: any;
 }
 
-const ListModal = ({ show, handleClose, list }: IListEdit) => {
+const ListModal = ({ showM, handleClose, list }: IListEdit) => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    amount_in: list.amount_in,
-    amount_out: list.amount_out,
-  });
-  const { account, library } = useWeb3React<Web3Provider>();
+  const [open, setOpen] = useState<boolean>(false);
+  const { setForm, form } = useContext(ListContext) as ListContextType;
+  const [hasDeadline, setHasDeadline] = useState<boolean>(false);
+  const [isFriction, setFriction] = useState<boolean>(list.is_friction);
+  const [isPrivate, setVisibility] = useState<boolean>(list.is_friction);
+  const { account, chainId, library } = useWeb3React<Web3Provider>();
+  const { connect } = useContext(ConnectContext) as ConnectContextType;
+  const w_tokens = useGetWalletTokens(account, chainId);
+  const [give, setGive] = useState<TokenI | undefined>(list.token_out_metadata);
+  const [get, setGet] = useState<TokenI | undefined>(list.token_in_metadata);
+  const [show, setShow] = useState<boolean>(false);
+  const [action, setAction] = useState<"giving" | "getting">("giving");
 
   const handleChange = (e: any) => {
-    setForm((prev) => {
+    setForm((prev: any) => {
       return {
         ...prev,
         [e.target.name]: e.target.value,
       };
     });
+  };
+
+  const handleSelect = (action: "giving" | "getting") => {
+    setAction(action);
+    setOpen(true);
   };
 
   const handleUpdate = async () => {
@@ -148,129 +157,191 @@ const ListModal = ({ show, handleClose, list }: IListEdit) => {
     }
   };
 
+  const isValid = () => {
+    return form.amount_in !== (0 || "") && form.amount_out !== (0 || "");
+  };
+
+  const setMax = (balance: number) => {
+    setForm((initialState: any) => ({
+      ...initialState,
+      amount_out: balance,
+    }));
+  };
+
+  const handleSelected = (token: TokenI) => {
+    setOpen(false);
+    if (action == "getting") {
+      setGet(token);
+    }
+    if (action == "giving") {
+      setGive(token);
+    }
+  };
+
+  const handleSwap = () => {
+    setForm((init: any) => {
+      return {
+        ...init,
+        amount_in: init.amount_out,
+        amount_out: init.amount_in,
+      };
+    });
+    setGive(get);
+    setGet(give);
+  };
+
+  const handleDChange = () => {
+    setHasDeadline((prev) => !prev);
+  };
+
   return (
-    <>
-      <CSSTransition
-        in={show}
-        timeout={400}
-        classNames={"alert-up"}
-        unmountOnExit
-      >
-        <Container onClick={handleClose}>
-          <Inner onClick={(e) => e.stopPropagation()}>
-            <SwapContainer>
-              <Text
-                className="header"
-                uppercase
-                weight="400"
-                size="s3"
-                color="#453953"
-              >
-                List
-              </Text>
-              <Body>
-                <InputCon>
-                  <InputBox>
-                    <label htmlFor="">You give</label>
-                    <InputInner>
-                      <Input
-                        onChange={handleChange}
-                        name="amount_out"
-                        placeholder="0.0"
-                        type="number"
-                        value={form.amount_out}
-                        step={0.1}
-                      />
-                      <div>
-                        <TokenBadge
-                          token={list.token_out_metadata}
-                          hasCaret={false}
-                          handleClick={() => null}
-                        />
-                      </div>
-                    </InputInner>
-                  </InputBox>
-                </InputCon>
+    <AnimatePresence>
+      <Container>
+        <motion.div {...anim(slideInUp)}>
+          <Inner>
+            <Body>
+              <Close onClick={handleClose}>
+                <svg
+                  width="19"
+                  height="19"
+                  viewBox="0 0 19 19"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M8.79355 9.4998L2.42959 3.13584L3.1367 2.42873L9.50066 8.79269L15.8644 2.42893L16.5715 3.13604L10.2078 9.4998L16.5717 15.8638L15.8646 16.5709L9.50066 10.2069L3.1365 16.5711L2.42939 15.864L8.79355 9.4998Z"
+                    fill="white"
+                  />
+                </svg>
+              </Close>
+              <Flex style={{ position: "relative" }} direction="column" gap={8}>
+                <TokenInputBox
+                  type="offer"
+                  handleClick={() => handleSelect("giving")}
+                  data={give}
+                  onChange={(e) => handleChange(e)}
+                  input_val={form.amount_out}
+                  setMax={setMax}
+                />
+                <SwapCon onClick={handleSwap}>
+                  <ArrowDown />
+                </SwapCon>
+                <TokenInputBox
+                  type="receive"
+                  handleClick={() => handleSelect("getting")}
+                  data={get}
+                  onChange={(e) => handleChange(e)}
+                  input_val={form.amount_in}
+                  setMax={() => null}
+                />
+              </Flex>
+              <Spacer height={6} />
 
-                <Spacer height={31} />
-
-                <Flex justify="center">
-                  {/* <div /> */}
-                  <SwapCon>
-                    <Swap />
-                  </SwapCon>
-                  {/* <div> */}
-                  {/* onClick={() => setOpenS(true)} */}
-                  {/* <Add /> */}
-                  {/* </div> */}
+              <Spacer height={28} />
+              <Flex direction="column" gap={12} style={{ width: "100%" }}>
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  style={{ width: "100%" }}
+                >
+                  <Text weight="500" size="s3">
+                    Set Duration
+                  </Text>
+                  <Toggle
+                    checked={hasDeadline}
+                    onChange={handleDChange}
+                    offstyle="btn-off"
+                    onstyle="btn-on"
+                  />
                 </Flex>
 
-                <Spacer height={6} />
+                {hasDeadline && (
+                  <input
+                    type="datetime-local"
+                    name="deadline"
+                    className="date_time"
+                    onChange={handleChange}
+                  />
+                )}
 
-                <InputCon>
-                  <InputBox>
-                    <label htmlFor="">You get</label>
-                    <InputInner>
-                      <Input
-                        onChange={handleChange}
-                        name="amount_in"
-                        value={form.amount_in}
-                        type="number"
-                        step={0.1}
-                        placeholder="0.0"
-                      />
-                      <div>
-                        <TokenBadge
-                          token={list.token_in_metadata}
-                          hasCaret={false}
-                          handleClick={() => null}
-                        />
-                      </div>
-                    </InputInner>
-                  </InputBox>
-                </InputCon>
-                <Spacer height={15} />
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  style={{ width: "100%" }}
+                >
+                  <Text weight="500" size="s3">
+                    Crowd fill
+                  </Text>
+                  <Toggle
+                    checked={isFriction}
+                    onChange={() => setFriction((prev) => !prev)}
+                    offstyle="btn-off"
+                    onstyle="btn-on"
+                  />
+                </Flex>
 
-                {/* <InputCon>
-                  <label htmlFor="">Time of Contract</label>
-                  <Flex align="center" style={{ height: "50px" }}>
-                    <DurationInput>
-                      {hasDeadline ? (
-                        <input
-                          type="datetime-local"
-                          name="deadline"
-                          onChange={handleChange}
-                        />
-                      ) : (
-                        <Text weight="700">Off (Set as Forever)</Text>
-                      )}
-                    </DurationInput>
-                    <Toggle
-                      checked={hasDeadline}
-                      onChange={handleDChange}
-                      offstyle="btn-off"
-                      onstyle="btn-on"
-                    />
-                  </Flex>
-                </InputCon> */}
-                <Spacer height={30} />
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  style={{ width: "100%" }}
+                >
+                  <Text weight="500" size="s3">
+                    Private List
+                  </Text>
+                  <Toggle
+                    checked={isPrivate}
+                    onChange={() => {
+                      setVisibility((prev) => !prev);
+                    }}
+                    offstyle="btn-off"
+                    onstyle="btn-on"
+                  />
+                </Flex>
+              </Flex>
 
+              <Spacer height={64} />
+
+              {account ? (
                 <Center>
-                  <ActionBtn onClick={handleUpdate}>
-                    Update{" "}
-                    {/* <div>
-                      <ArrowRight />
-                    </div> */}
+                  <ActionBtn size="56px" disabled={true} onClick={handleUpdate}>
+                    Continue {/* disabled={!isValid()} */}
                   </ActionBtn>
                 </Center>
-              </Body>
-            </SwapContainer>
+              ) : (
+                <ActionBtn
+                  size="56px"
+                  disabled={!isValid()}
+                  onClick={() => setShow(true)}
+                >
+                  Connect Your wallet
+                </ActionBtn>
+              )}
+            </Body>
 
-            {/* <Settings show={openS} handleClose={() => setOpenS(false)} /> */}
+            <SwapBg />
           </Inner>
-        </Container>
-      </CSSTransition>
-    </>
+        </motion.div>
+        <TokenSelect
+          handleSelected={(token: TokenI) => handleSelected(token)}
+          show={open}
+          handleClose={() => setOpen(false)}
+          chainId={chainId}
+          provider={account}
+          w_tokens={w_tokens}
+        />
+
+        <ConnectModal
+          show={show}
+          connect={(connector) => {
+            setShow(false);
+            connect(connector);
+          }}
+          handleClose={() => setShow(false)}
+        />
+      </Container>
+    </AnimatePresence>
   );
 };
 

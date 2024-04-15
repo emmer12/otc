@@ -128,6 +128,7 @@ const HomePage = () => {
                             list={list}
                             key={i}
                             state="guest"
+                            handleRemove={() => null}
                           />
                         ))}
                     </GridWrapper>
@@ -141,6 +142,7 @@ const HomePage = () => {
                           list={list}
                           key={i}
                           state="guest"
+                          handleRemove={() => null}
                         />
                       ))}
                     </GridWrapper>

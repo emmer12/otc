@@ -274,7 +274,11 @@ const CounterGrid = ({
           </Price>
 
           <DetailWrapper>
-            <Flex justify="space-between" gap={16} style={{ marginTop: 10,width: '100%' }}>
+            <Flex
+              justify="space-between"
+              gap={16}
+              style={{ marginTop: 10, width: "100%" }}
+            >
               <Details>
                 <Text size="s3" color="#5D5169 " uppercase>
                   Published : {formatDateTime(counter.list_id.createdAt)}
@@ -301,7 +305,7 @@ const CounterGrid = ({
 
       {openEdit && (
         <ListModal
-          show={openEdit}
+          showM={openEdit}
           handleClose={() => setEditOpen(false)}
           list={counter.list_id}
         />

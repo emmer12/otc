@@ -22,13 +22,14 @@ import {
   ListingBody,
   Body,
 } from "./styles";
-import apiHelper from "@/helpers/apiHelper";
+import apiHelper, { deleteList } from "@/helpers/apiHelper";
 import { ListI } from "@/types";
 import { parseError, parseSuccess } from "@/utils";
 import { DashBg } from "@/components/bgs";
 
 function MyListings() {
   const [active, setActive] = useState<number>(0);
+  const [activeTab, setActiveTab] = useState<"all" | "filled">("all");
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
@@ -49,7 +50,7 @@ function MyListings() {
 
   useEffect(() => {
     getMyListings();
-  }, []);
+  }, [activeTab]);
 
   useEffect(() => {
     notifyViewed();
@@ -64,9 +65,14 @@ function MyListings() {
   const getMyListings = async () => {
     setLoading(true);
     try {
+      let params: any = { account };
+
+      if (activeTab == "filled") {
+        params.status = "filled";
+      }
       const {
         data: { listings },
-      } = await apiHelper.getMyListings(account);
+      } = await apiHelper.getMyListings(params);
 
       const {
         data: { counters },
@@ -100,7 +106,7 @@ function MyListings() {
     if (!confirm_it) return;
 
     try {
-      await apiHelper.removeList({ id: list._id, account: account });
+      await deleteList({ id: list._id, account: account });
       setListings((prev) => prev.filter((data) => data._id !== list._id));
       setFiltered((prev) => prev.filter((data) => data._id !== list._id));
       parseSuccess("List Deleted");
@@ -125,10 +131,18 @@ function MyListings() {
         </ListingTabs> */}
           <div style={{ flex: 1 }}>
             <Switch className="rounded">
-              <SItem onClick={() => null} className="active">
+              <SItem
+                onClick={() => setActiveTab("all")}
+                className={activeTab == "all" ? "active" : ""}
+              >
                 Offer Created
               </SItem>
-              <SItem onClick={() => null}>Offer Filled</SItem>
+              <SItem
+                onClick={() => setActiveTab("filled")}
+                className={activeTab == "filled" ? "active" : ""}
+              >
+                Offer Filled
+              </SItem>
             </Switch>
           </div>
           <SearchCon>
@@ -172,7 +186,7 @@ function MyListings() {
 
             {active == 1 && (
               <>
-                <GridWrapper>
+                <GridWrapper className="dashboard">
                   {loading ? (
                     <span>loading...</span>
                   ) : filtered.length < 1 ? (
@@ -197,7 +211,7 @@ function MyListings() {
 
             {active == 2 && (
               <>
-                <GridWrapper>
+                <GridWrapper className="dashboard">
                   {loading ? (
                     <span>loading...</span>
                   ) : filtered.length < 1 ? (

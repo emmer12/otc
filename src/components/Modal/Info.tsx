@@ -106,8 +106,8 @@ interface IProps {
 
 const InformationModal = ({ show, handleClose, list }: IProps) => {
   const { token, loading } = useTokenDetails(
-    "0xe7eF051C6EA1026A70967E8F04da143C67Fa4E1f",
-    1
+    list?.token_out_metadata.address,
+    list?.chain
   );
 
   return (

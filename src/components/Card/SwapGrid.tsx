@@ -1,5 +1,5 @@
 import { ListI } from "@/types";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { Flex, ImgWrap, Spacer, Text } from "..";
@@ -11,6 +11,7 @@ import Skeleton from "react-loading-skeleton";
 import { loader } from "@/components/styles";
 import { computeUsdPrice, getPercentage } from "@/helpers";
 import { Button } from "../Button";
+import { ListContext, ListContextType } from "@/context/Listcontext";
 
 const SwapContainer = styled.div`
   width: 540px;
@@ -39,8 +40,6 @@ const SwapContainer = styled.div`
   }
 
   @media (max-width: 640px) {
-    margin-bottom: 30px;
-    margin-top: 10px;
     height: inherit;
     background-image: none;
 
@@ -100,11 +99,12 @@ const SwapGrid = ({
   state: "auth" | "guest";
   account?: string | null;
   confirmFriction: (list: ListI) => void;
-  handleRemove?: (list: ListI) => void;
+  handleRemove: (list: ListI) => void;
 }) => {
   const [token, setToken] = useState<any>(null);
   const [open, setOpen] = useState<boolean>(false);
   const [openEdit, setEditOpen] = useState<boolean>(false);
+  const { setForm, form } = useContext(ListContext) as ListContextType;
 
   const navigate = useNavigate();
   function translateY(
@@ -120,6 +120,25 @@ const SwapGrid = ({
 
   const handleTrade = (list: ListI) => {
     confirmFriction(list);
+  };
+
+  const setFormList = (list: ListI) => {
+    setForm({
+      receiving_wallet: list.receiving_wallet,
+      signatory: list.signatory,
+      token_in: list.token_in,
+      token_out: list.token_out,
+      amount_in: list.amount_in,
+      amount_out: list.amount_out,
+      is_private: list.is_private,
+      deadline: list.deadline,
+      token_in_metadata: list.token_in_metadata,
+      token_out_metadata: list.token_out_metadata,
+      nonce: list.nonce,
+      is_active: list.is_active,
+      forever: list.forever,
+      is_friction: list.is_friction,
+    });
   };
 
   return (
@@ -314,6 +333,7 @@ const SwapGrid = ({
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
+                    setFormList(list);
                     setEditOpen(true);
                   }}
                   className="secondary lg"
@@ -323,6 +343,7 @@ const SwapGrid = ({
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
+                    handleRemove(list);
                   }}
                   className="error lg"
                 >
@@ -339,7 +360,7 @@ const SwapGrid = ({
 
       {openEdit && (
         <ListModal
-          show={openEdit}
+          showM={openEdit}
           handleClose={() => setEditOpen(false)}
           list={list}
         />

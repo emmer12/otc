@@ -26,8 +26,12 @@ export default {
 `),
   removeList: (data: any) =>
     axios.delete(`${BASE_URL}/lists/${data.id}/${data.account}`),
-  getMyListings: (account: string | null | undefined) =>
-    axios.get(`${BASE_URL}/lists?account=${account}`),
+  getMyListings: (account: any) =>
+    axios.get(`${BASE_URL}/lists`, {
+      params: {
+        ...account,
+      }
+    }),
   myCounters: (account: string | null | undefined) =>
     axios.get(`${BASE_URL}/lists/counter/${account}`),
   markAsViewed: (account: string | null | undefined) =>
@@ -40,3 +44,6 @@ export default {
 
 export const getTokenList = (id: string | undefined) =>
   axios.get(`${BASE_URL_V1}/list/token/${id}`);
+
+export const deleteList = (data: any) =>
+  axios.delete(`${BASE_URL_V1}/list/token/${data.id}/${data.account}`);

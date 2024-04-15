@@ -9,7 +9,7 @@ import * as animationData from "./preloader.json";
 import "react-loading-skeleton/dist/skeleton.css";
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {

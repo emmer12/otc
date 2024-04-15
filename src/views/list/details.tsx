@@ -78,8 +78,8 @@ const ListDetails = () => {
 
   // list?.token_out_metadata.address
   const { price, loading: loadingPrice } = useTokenPrice(
-    "0xe7eF051C6EA1026A70967E8F04da143C67Fa4E1f",
-    1
+    list?.token_out_metadata.address,
+    list?.chain
   );
   const { approve, loading: approvalLoading } = useApprove();
   const {

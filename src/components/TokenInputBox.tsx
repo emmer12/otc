@@ -17,6 +17,22 @@ const Container = styled.div`
   height: 109px;
   padding: 12px 16px;
   width: 100%;
+  background-image: url(/images/bg/s-top.svg);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid #73697d;
+  border-radius: 12px;
+  border-bottom: 0px;
+  border-top: 0px;
+
+  &.top {
+    background-image: url(/images/bg/s-top.svg);
+  }
+
+  &.bott {
+    background-image: url(/images/bg/s-bott.svg);
+  }
+
   .bg {
     position: absolute;
     inset: 0px;
@@ -116,7 +132,7 @@ const TokenInputBox = ({
   }, [data]);
 
   return (
-    <Container>
+    <Container className={type == "offer" ? "top" : "bott"}>
       <div className="inner">
         <Text size="tiny" uppercase>
           {type == "offer" ? "Offer" : "to Receive"}
@@ -182,11 +198,11 @@ const TokenInputBox = ({
 
       {/*  BG Shape */}
 
-      {type == "offer" ? (
+      {/* {type == "offer" ? (
         <TokenInputBgUp className="bg" />
       ) : (
         <TokenInputBgDown className="bg" />
-      )}
+      )} */}
     </Container>
   );
 };

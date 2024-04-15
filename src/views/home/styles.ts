@@ -193,6 +193,7 @@ export const FItem = styled.div`
   gap: 10px;
 
   align-items: center;
+  flex-shrink: 0;
   &:hover {
   }
 `;
@@ -258,6 +259,9 @@ export const GridWrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(2, minmax(250px, 1fr));
     gap: 12px;
+    @media (max-width: 640px) {
+      grid-template-columns: repeat(1, minmax(250px, 1fr));
+    }
   }
 
   @media (max-width: 640px) {
