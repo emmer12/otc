@@ -320,6 +320,11 @@ export const TextCus = styled.h3`
   font-size:32px;
   font-weight:40.1px;
   font-weight:500;
+
+
+    @media screen and (max-width: 600px) {
+      font-size:28px;
+  }
 `
 
 export const Range = styled.div`

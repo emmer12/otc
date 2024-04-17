@@ -330,16 +330,19 @@ const SwapGrid = ({
             <>
               <Spacer height={24} />
               <Flex gap={8}>
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setFormList(list);
-                    setEditOpen(true);
-                  }}
-                  className="secondary lg"
-                >
-                  Edit Trade
-                </Button>
+                {list?.status < 3 && (
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFormList(list);
+                      setEditOpen(true);
+                    }}
+                    className="secondary lg"
+                  >
+                    Edit Trade
+                  </Button>
+                )}
+
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();

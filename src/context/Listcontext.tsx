@@ -14,10 +14,10 @@ import {
 } from "@/utils";
 import BigNumber from "bignumber.js";
 import { List } from "@/views";
-import { BASE_URL } from "@/helpers/apiHelper";
+import { BASE_URL, listToken, updateToken } from "@/helpers/apiHelper";
 
 export type ListContextType = {
-  saveList: () => void;
+  saveList: (id?: any) => void;
   clearLocal: () => void;
   form: ListI;
   setForm: any;
@@ -58,7 +58,7 @@ const ListProvider: React.FC<Props> = ({ children }) => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
 
-  const saveList = async () => {
+  const saveList = async (id?: any) => {
     try {
       setLoading(true);
       let data = { ...form };
@@ -87,7 +87,7 @@ const ListProvider: React.FC<Props> = ({ children }) => {
       //   data.signature = "signature";
       const {
         data: { list },
-      } = await axios.post(`${BASE_URL}/lists`, data);
+      } = id ? await updateToken(id, data) : await listToken(data);
       if (list.is_private) {
         const link = getTradeLink(list._id);
         setPrivateLink(link);

@@ -47,3 +47,11 @@ export const getTokenList = (id: string | undefined) =>
 
 export const deleteList = (data: any) =>
   axios.delete(`${BASE_URL_V1}/list/token/${data.id}/${data.account}`);
+
+
+export const listToken = (data: any) =>
+  axios.post(`${BASE_URL_V1}/list/token`, data);
+
+
+export const updateToken = (id: string | undefined, data: any) =>
+  axios.patch(`${BASE_URL_V1}/list/token/${id}`, data);

@@ -12,3 +12,6 @@ export { default as oasisTokens } from "./oasis";
 export { default as optimismTokens } from "./optimism";
 export { default as goerliTokens } from "./goerli";
 export { default as horizonTokens } from "./horizon";
+
+
+export const ESCROW_FEE = 1.25

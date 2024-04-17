@@ -270,7 +270,7 @@ const ListDetails = () => {
                   <TokenLogoWrap>
                     <img
                       onError={(e: any) => (e.target.src = "/no-token.png")}
-                      src={"/no-token.png"}
+                      src={list?.token_out_metadata.icon || "/no-token.png"}
                       alt="Logo"
                     />
                   </TokenLogoWrap>
@@ -621,7 +621,8 @@ const ListDetails = () => {
                     size="tiny"
                     style={{ lineHeight: "17.88px" }}
                   >
-                    23.23%
+                    {/* 23.23% */}
+                    --
                   </Text>
                 </Flex>
               </Flex>

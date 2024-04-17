@@ -37,6 +37,7 @@ import { Counter, CounterOffer, Message } from "@/components/Modal";
 import { ListI } from "@/types";
 import Empty from "@/components/Empty";
 import { anim, grid_trans } from "@/utils/transitions";
+import VolumeSection from "@/components/sections/VolumnSection";
 
 const HomePage = () => {
   const [display, setDisplay] = useState<"grid" | "list">("grid");
@@ -112,8 +113,6 @@ const HomePage = () => {
           </Flex>
         </HomeHeader>
         <HomeBody>
-          {/* <VolumeSection loading={loading} volume={volume} /> */}
-
           {mode == "swap" ? (
             <Swap>
               {display === "grid" ? (
@@ -238,6 +237,8 @@ const HomePage = () => {
           />
         )}
       </Wrapper>
+
+      <VolumeSection loading={loading} volume={volume} />
     </ContainerSm>
   );
 };

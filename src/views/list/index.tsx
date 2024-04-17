@@ -2,7 +2,6 @@ import {
   Avatar,
   CardGray,
   Center,
-  Container,
   ContainerSm,
   Flex,
   OnlyDesktop,
@@ -13,24 +12,17 @@ import {
 } from "@/components";
 import { Button } from "@/components/Button";
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import {
   TradeWrapper,
   TradeCon,
-  LeftContent,
   VisibleWrap,
-  RightContent,
-  TradeInner,
   TradeItem,
-  SwitchTab,
-  Tab,
-  LTop,
   Footer,
   Stepper,
   Step,
-  RTop,
   TradeInfo,
 } from "./styles";
 import { ListContext, ListContextType } from "@/context/Listcontext";
@@ -54,8 +46,9 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import Api from "@/helpers/apiHelper";
 import { Message, Share } from "@/components/Modal";
-import { ActionSwitch, SwitchItem2 } from "../home/styles";
 import { ListDetailsBg } from "@/components/bgs";
+import { ESCROW_FEE } from "@/constansts/tokens";
+import { useTokenPrice } from "@/hooks/useTokenPrice";
 
 const Trans = () => {
   const [status, setStatus] = useState<number>(1);
@@ -64,15 +57,19 @@ const Trans = () => {
   const [open, setOpen] = useState<boolean>(false); //
   const [openS, setOpenS] = useState<boolean>(false); //
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get("id");
 
   const { setForm, form, saveList, loading, clearLocal, privateLink } =
     useContext(ListContext) as ListContextType;
   const context = useWeb3React<Web3Provider>();
   const { library, chainId, account } = context;
 
+  const { price } = useTokenPrice(form.token_out_metadata.address, chainId);
+
   const listToken = async () => {
     try {
-      await saveList();
+      await saveList(id);
       setStatus(3);
     } catch (err) {}
   };
@@ -157,16 +154,23 @@ const Trans = () => {
 
   const handleCancel = () => {
     clearLocal();
-    navigate("/");
+
+    if(id){
+      navigate("/dashboard");
+    }else{
+      navigate("/");
+    }
   };
 
   const copyLink = () => {
     navigator.clipboard.writeText(privateLink);
     parseSuccess("Copied");
   };
+
+  const fee = (ESCROW_FEE / 100) * form.amount_out;
+
   return (
     <ContainerSm>
-     
       <Flex directionM="column" gap={35}>
         <TradeInfo>
           <Flex gap={24} direction="column">
@@ -224,7 +228,7 @@ const Trans = () => {
               <Flex direction="column">
                 <Flex align="center" gap={4}>
                   <Text color="#746A7E" size="s3">
-                    Escrow Fee (1%)
+                    Escrow Fee ({ESCROW_FEE}%)
                   </Text>
                   <Info />
                 </Flex>
@@ -235,13 +239,13 @@ const Trans = () => {
                     size="tiny"
                     style={{ lineHeight: "17.88px" }}
                   >
-                    32.23 USDT
+                    {fee.toFixed(4)} {form.token_out_metadata.symbol}
                     <Text
                       style={{ display: "inline" }}
                       color="#746A7E"
                       size="s3"
                     >
-                      ($23k)
+                      (${(price * fee).toFixed(2)})
                     </Text>
                   </Text>
                 </Flex>
@@ -253,7 +257,7 @@ const Trans = () => {
         <TradeWrapper>
           <TradeCon>
             <Text className="header" as="h2" size="s3" uppercase>
-              List Transaction Queue
+              {id ? "Update" : "List"} Transaction Queue
             </Text>
             <Spacer height={20} />
             <TradeItem style={{ textAlign: "center" }}>
@@ -337,7 +341,7 @@ const Trans = () => {
                           // </Button>
                           <CustomButton
                             classNames="secondary"
-                            text="List Token"
+                            text={id ? "Update" : "List Token"}
                             onClick={() => listToken()}
                             loading={loading || approving}
                             disabled={loading || approving}
@@ -385,7 +389,7 @@ const Trans = () => {
                           // </Button>
                           <CustomButton
                             classNames="secondary"
-                            text="List Token"
+                            text={id ? "Update" : "List Token"}
                             onClick={() => listToken()}
                             loading={loading || approving}
                             disabled={loading || approving}

@@ -99,7 +99,7 @@ const ListModal = ({ showM, handleClose, list }: IListEdit) => {
   const { setForm, form } = useContext(ListContext) as ListContextType;
   const [hasDeadline, setHasDeadline] = useState<boolean>(false);
   const [isFriction, setFriction] = useState<boolean>(list.is_friction);
-  const [isPrivate, setVisibility] = useState<boolean>(list.is_friction);
+  const [isPrivate, setVisibility] = useState<boolean>(list.is_private);
   const { account, chainId, library } = useWeb3React<Web3Provider>();
   const { connect } = useContext(ConnectContext) as ConnectContextType;
   const w_tokens = useGetWalletTokens(account, chainId);
@@ -155,6 +155,45 @@ const ListModal = ({ showM, handleClose, list }: IListEdit) => {
     } catch (error) {
       parseError(error || "Unable to update, please try again");
     }
+  };
+
+  const handleContinue = () => {
+    if (!get || !give) {
+      parseError("Input field is required");
+      return;
+    }
+    setForm((initialState: any) => ({
+      ...initialState,
+      token_in_metadata: {
+        ...form.token_in_metadata,
+        ...get,
+      },
+      token_out_metadata: {
+        ...form.token_out_metadata,
+        ...give,
+      },
+      receiving_wallet: account,
+      signatory: account,
+      forever: hasDeadline ? false : true,
+      is_friction: isFriction,
+      is_private: isPrivate,
+    }));
+
+    localStorage.setItem(
+      "list_data",
+      JSON.stringify({
+        ...form,
+        token_in_metadata: get,
+        token_out_metadata: give,
+        receiving_wallet: account,
+        signatory: account,
+        forever: hasDeadline ? false : true,
+        is_friction: isFriction,
+        is_private: isPrivate,
+      })
+    );
+
+    navigate("/list?id=" + list._id);
   };
 
   const isValid = () => {
@@ -305,7 +344,11 @@ const ListModal = ({ showM, handleClose, list }: IListEdit) => {
 
               {account ? (
                 <Center>
-                  <ActionBtn size="56px" disabled={true} onClick={handleUpdate}>
+                  <ActionBtn
+                    size="56px"
+                    disabled={!isValid()}
+                    onClick={handleContinue}
+                  >
                     Continue {/* disabled={!isValid()} */}
                   </ActionBtn>
                 </Center>
