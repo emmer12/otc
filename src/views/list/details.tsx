@@ -26,6 +26,7 @@ import {
   CopyIcon,
   Info,
   Copy,
+  ScanLogo,
 } from "@/components/Icons";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import InformationModal from "@/components/Modal/Info";
@@ -41,6 +42,8 @@ import Slider from "react-smooth-range-input";
 import { useTokenPrice } from "@/hooks/useTokenPrice";
 import {
   formatDate,
+  formatTimeAgo,
+  getScanLink,
   listSign,
   parseError,
   parseSuccess,
@@ -111,9 +114,11 @@ const ListDetails = () => {
   const handleSwap = async () => {
     setSetShowModal(ModalType.LOADING);
     if (Number(allowance) < list?.amount_in) {
+      const actualAmount: number = +Number(amount).toFixed(4);
+
       await approve(
         list?.token_in_metadata?.address,
-        amount,
+        actualAmount,
         list?.token_in_metadata?.symbol
       );
       setSetShowModal(null);
@@ -652,71 +657,68 @@ const ListDetails = () => {
               </Text>
               <Spacer height={16} />
 
-              {/* <table style={{ width: "100%" }}>
-                <TableHead>
-                  <tr>
-                    <th>Date/Time</th>
-                    <th>Filled Amount</th>
-                    <th>Paid Amount</th>
-                    <th>Tx</th>
-                  </tr>
-                </TableHead>
-                <TableBody>
-                  <tr>
-                    <td>2 hours ago</td>
-                    <td>
-                      <Flex>
-                        <span>23.123</span>
-                      </Flex>
-                    </td>
-                    <td>
-                      <Flex>
-                        <span>23.123</span>
-                      </Flex>
-                    </td>
-                    <td>
-                      <Flex gap={4} align="center">
-                        <Text
-                          color="#2E203E"
-                          weight="500"
-                          size="tiny"
-                          style={{ lineHeight: "17.88px" }}
-                        >
-                          0xf7...557b
-                        </Text>
-                        <ArrowUpward />
-                      </Flex>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>2 hours ago</td>
-                    <td>
-                      <Flex>
-                        <span>23.123</span>
-                      </Flex>
-                    </td>
-                    <td>
-                      <Flex>
-                        <span>23.123</span>
-                      </Flex>
-                    </td>
-                    <td>
-                      <Flex gap={4} align="center">
-                        <Text
-                          color="#2E203E"
-                          weight="500"
-                          size="tiny"
-                          style={{ lineHeight: "17.88px" }}
-                        >
-                          0xf7...557b
-                        </Text>
-                        <ArrowUpward />
-                      </Flex>
-                    </td>
-                  </tr>
-                </TableBody>
-              </table> */}
+              {list?.transactions.length == 0 ? (
+                <>No Transactions</>
+              ) : (
+                <table style={{ width: "100%" }}>
+                  <TableHead>
+                    <tr>
+                      <th>Date/Time</th>
+                      <th>Amount</th>
+                      <th>Tx</th>
+                    </tr>
+                  </TableHead>
+                  <TableBody>
+                    {list?.transactions.map((transaction: any, i: number) => (
+                      <tr key={i}>
+                        <td>{formatTimeAgo(transaction.createdAt)}</td>
+                        <td>
+                          <Flex>
+                            <span>{transaction.amount_out}</span>
+                            <Spacer width={6} />
+                            {list?.is_private ? (
+                              "(Private Sale)"
+                            ) : (
+                              <>
+                                <Text size="s2" weight="400">
+                                  {list?.token_out_metadata?.symbol}
+                                </Text>
+                              </>
+                            )}
+                          </Flex>
+                        </td>
+                        <td>
+                          <Flex gap={4} align="center">
+                            <Text
+                              color="#2E203E"
+                              weight="500"
+                              size="tiny"
+                              style={{ lineHeight: "17.88px" }}
+                            >
+                              <a
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "4px",
+                                }}
+                                href={getScanLink(
+                                  transaction.chain,
+                                  transaction.transaction_hash
+                                )}
+                                target="_blank"
+                              >
+                                <ScanLogo />
+                                {truncate(transaction.transaction_hash, 9)}
+                              </a>
+                            </Text>
+                            <ArrowUpward />
+                          </Flex>
+                        </td>
+                      </tr>
+                    ))}
+                  </TableBody>
+                </table>
+              )}
             </Card>
           </Flex>
         </Flex>

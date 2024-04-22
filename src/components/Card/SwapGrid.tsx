@@ -330,7 +330,7 @@ const SwapGrid = ({
             <>
               <Spacer height={24} />
               <Flex gap={8}>
-                {list?.status < 3 && (
+                {Number(list?.status) < 3 && (
                   <Button
                     onClick={(e) => {
                       e.stopPropagation();

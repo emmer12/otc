@@ -201,7 +201,7 @@ const Trans = () => {
             </div>
             <div>
               <Text color="#746A7E" size="s3">
-                Offer
+                Receive
               </Text>
               <Flex gap={4} align="center">
                 <Text size="big" color="#000000" weight="500">

@@ -106,6 +106,8 @@ export const formatSecTime = (data: any) =>
 export const formatDate = (data: any) =>
   moment(data).format('MMMM DD, YYYY');
 
+export const formatTimeAgo = (data: any) =>
+  moment(data).fromNow();
 
 
 export const getForever = 25256820600;
@@ -138,8 +140,10 @@ export const getScanLink = (chainId: any, hash: string) => {
       return `https://explorer.mantle.xyz/tx/${hash}`;
     case 8453:
       return `https://basescan.org/tx/${hash}`;
+    case 11155111:
+      return `https://basescan.org/tx/${hash}`;
     default:
-      return `https://etherscan.io/tx/${hash}`;
+      return `https://sepolia.etherscan.io/tx/${hash}`;
       break;
   }
 };

@@ -38,6 +38,7 @@ export type ListI = {
   nonce_friction?: any;
   chain?: number;
   amount_bought?: number;
+  transactions?: any
 };
 
 export enum Blockchain {

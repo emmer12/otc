@@ -930,8 +930,8 @@ export const AngleDown = () => (
 export const ScanLogo = () => (
   <svg
     viewBox="0 0 293.775 293.671"
-    height="30.671"
-    width="30.775"
+    height="20.671"
+    width="20.775"
     xmlns="http://www.w3.org/2000/svg"
   >
     <g
