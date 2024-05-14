@@ -51,6 +51,7 @@
     "react-topbar-progress-indicator": "^4.1.1",
     "react-transition-group": "^4.4.5",
     "styled-components": "^5.3.6",
+     "swr": "^2.2.4",
     "web3": "^1.8.1",
     "widgets10": "^0.0.3",
     "yup": "^1.0.2"
